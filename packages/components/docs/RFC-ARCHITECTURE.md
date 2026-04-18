@@ -3,7 +3,7 @@
 > Status: **Shipped — all 9 steps landed.**
 > Author: @matias
 > Linear: "Poetic UI Phase 2: Public-Ready Architecture" project (DES-38 → DES-49)
-> Last updated: 2026-04-19
+> Last updated: 2026-04-18
 
 ### Step status
 
@@ -178,6 +178,20 @@ packages/
 │   ├── docs/RFC-ARCHITECTURE.md
 │   └── (**/*.stories.tsx alongside each component)
 │
+├── content/                @poeticui/content       (NEW package — technical-content primitives, DES-57..63)
+│   ├── src/
+│   │   ├── code-block.tsx            Shiki-powered, async Server Component, dual-theme CSS vars
+│   │   ├── math.tsx                  KaTeX BlockMath + InlineMath (client, opt-in CSS)
+│   │   ├── persistent-tabs.tsx       generic tabs + localStorage sync (client)
+│   │   ├── package-manager-tabs.tsx  bun / pnpm / npm / yarn, composed on PersistentTabs
+│   │   ├── language-tabs.tsx         <Example lang="ts">code</Example> children API
+│   │   ├── pref-store.ts             useSyncExternalStore + cross-tab storage events
+│   │   └── utils/{pm-commands,default-highlighter,storage-keys}.ts
+│   ├── styles/
+│   │   ├── code-block.css            dual-theme variable selectors
+│   │   └── katex.css                 re-exports katex.min.css + currentColor override
+│   └── package.json                  deps: shiki, katex, react-katex
+│
 └── brand/                  @ap/brand               (NEW package — AP's opinionated overlay)
     ├── src/
     │   ├── theme/
@@ -201,7 +215,14 @@ packages/
 
 **`@poeticui/components`** — ~50 React components. Consume tokens exclusively. Zero brand assumptions. Zero framework lock-in beyond React + HeadlessUI. This is what eventually publishes publicly on npm. Includes Storybook as the authoring + docs surface.
 
+**`@poeticui/content`** — React primitives for **technical content**: syntax-highlighted code, math equations, package-manager / language tab strips with cross-instance preference sync. Neutral (no brand coupling), framework-agnostic (no `next/*` imports), bundle-disciplined (`sideEffects: false`, per-component subpath exports). **Opt-in** — consumers who don't install pay zero bytes. Hard runtime deps: `shiki`, `katex`, `react-katex`. Designed for docs pages, API references, marketing/landing pages, in-app contextual help. Depends on `@poeticui/components` + `@poeticui/tokens`.
+
 **`@ap/brand`** — AP-specific product chrome + theme overlays. Private. Depends on `@poeticui/components` + `@poeticui/tokens`. Contains `AppShell`, `AccountDropdownMenu`, `SidebarBrandBadge`, `SidebarUserChip`, `NavbarAvatarDropdown`, plus the 4 AP theme files.
+
+#### When to reach for Content vs. Components
+
+- **`@poeticui/components`** is the default for any interactive UI primitive — Button, Dialog, Dropdown, Table, Fieldset, Sidebar, Tabs. Every dashboard page needs these.
+- **`@poeticui/content`** is for **authoring surfaces** that display technical information to humans — docs pages, API references, onboarding walkthroughs, marketing landing pages, in-app help drawers showing webhook payloads. Most dashboards don't need it; marketing/docs sites do. Install only when a concrete feature reaches for `<CodeBlock>`, `<BlockMath>`, or `<PackageManagerTabs>`.
 
 ### Dependency arrows
 
@@ -209,9 +230,14 @@ packages/
 apps/dashboard
       │ imports @ap/brand (AppShell, SidebarBrandBadge, theme CSS)
       │ imports @poeticui/components (Button, DataTable, Fieldset, …)
+      │ imports @poeticui/content (optional — CodeBlock, Math, tab strips)
       │ imports @poeticui/tokens (CSS)
       ▼
 @ap/brand
+      │ imports @poeticui/components
+      │ imports @poeticui/tokens
+      ▼
+@poeticui/content
       │ imports @poeticui/components
       │ imports @poeticui/tokens
       ▼
