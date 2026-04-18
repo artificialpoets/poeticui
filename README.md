@@ -27,15 +27,18 @@ cd monorepo && bash tooling/bootstrap.sh
 
 ### From any other (future) app
 
-Install as a registered npm dependency via GitHub Packages:
+> **External publishing is currently deferred.** The `@poeticui` npm scope doesn't align with any existing GitHub org (this repo lives under `artificialpoets/`), and GitHub Packages requires scope-to-owner alignment. Resolving that is an explicit future decision (create a `poeticui` org, rename packages to `@artificialpoets/*`, or pick a non-GitHub registry).
+>
+> Today's only consumer is the `artificialpoets/monorepo` submodule. The plumbing for publishing is already in place (`.npmrc`, `publishConfig` on each package, Changesets + workflow) — it just isn't activated.
+
+When publishing is re-enabled, the consumer flow will look like:
 
 ```bash
-# One-time: create a PAT with read:packages scope, then:
+# .npmrc (one-time per dev, per machine)
 echo "@poeticui:registry=https://npm.pkg.github.com" >> ~/.npmrc
-echo "//npm.pkg.github.com/:_authToken=ghp_YOUR_PAT_HERE" >> ~/.npmrc
-```
+echo "//npm.pkg.github.com/:_authToken=ghp_YOUR_PAT_WITH_READ_PACKAGES" >> ~/.npmrc
 
-```bash
+# Install
 bun add @poeticui/components @poeticui/tokens @poeticui/content
 ```
 
@@ -52,7 +55,9 @@ bun run storybook:build
 
 ## Release
 
-Changesets drives versioning. To propose a version bump, add a changeset entry in the same PR that contains the change:
+Changesets drives versioning + CHANGELOGs. External publishing is **not active** — see "From any other (future) app" above for rationale.
+
+To propose a version bump, add a changeset entry in the same PR that contains the change:
 
 ```bash
 bun run changeset
@@ -60,7 +65,14 @@ bun run changeset
 # → commits .changeset/<slug>.md in your PR
 ```
 
-When PRs land on `main`, the `release.yml` workflow opens (or updates) a "Version Packages" PR. Merging that PR publishes the bumped packages to GitHub Packages and creates GitHub Releases automatically.
+When PRs land on `main`, the `release.yml` workflow opens (or updates) a "Version Packages" PR. Merging that PR applies the bumps + writes per-package `CHANGELOG.md` entries. The monorepo's submodule pin is then bumped to the new SHA to pick up the version/CHANGELOG commit.
+
+When/if external publishing becomes necessary:
+
+1. Resolve the scope/org question (see the README section above + the comment at the top of `.github/workflows/release.yml`).
+2. Add `publish: bun run release` back to the `changesets/action@v1` `with:` block in `release.yml`.
+3. Restore the `packages: write` permission to the job.
+4. The next Version Packages PR merge will also publish.
 
 ## Storybook
 
