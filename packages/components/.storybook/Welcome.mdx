@@ -1,0 +1,42 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Welcome" />
+
+# Poetic UI
+
+**Neutral React primitives that consume design tokens — zero brand assumptions, ready for open source.**
+
+Poetic UI is split across three layers so a consumer app can pick only the pieces it needs:
+
+| Layer | Package | Purpose |
+|---|---|---|
+| **Tokens** | `@poeticui/tokens` | Pure CSS. OKLCH palette + semantic aliases + typography base + Tailwind v4 theme mapping. Works as a `<link>` in any HTML page. No React dependency. |
+| **Components** | `@poeticui/components` | ~50 React primitives. Consume tokens exclusively. Zero brand assumptions. This is what eventually publishes on npm. |
+| **Brand overlay** | `@ap/brand` (private) | AP-specific `AppShell`, sidebar brand badge, themed overrides (platform orange / poehost blue / intranet amber). Layered on top of the neutral library. |
+
+Everything in this Storybook is the **middle layer** — neutral, brand-agnostic. The theme switcher in the toolbar flips between the default light/dark neutral themes.
+
+## Explore
+
+- **Design Tokens** — OKLCH palette, semantic token map, typography + spacing scale
+- **Chart Recipes** — Composition patterns for Recharts (lives in dashboard, see page for why)
+- **Core / Data Display / Forms / Feedback / Layout / Navigation / Misc / Tables** — the components, grouped by role
+
+Every component has a `Default` story, one story per meaningful variant, and a `VariantMatrix` for at-a-glance combinatorial review.
+
+## Authoring new components
+
+Read [`CONTRIBUTING.md`](https://github.com/artificial-poets/monorepo/blob/main/packages/components/CONTRIBUTING.md) for the full contract. TL;DR:
+
+1. **Semantic tokens only** — no raw color utilities. `bg-card`, not `bg-white`.
+2. **`cx()` not `clsx`** — `cx` layers tailwind-merge so consumer `className` wins on conflicts.
+3. **CVA for variants** — Pattern A (single `cva()`) or Pattern B (separate color lookup).
+4. **Slot composition over monolith props** — families like `<Fieldset>` → `<FieldGroup>` → `<Field>` → `<Label>`.
+5. **HeadlessUI wrappers are canonical** — import our `Dropdown`, not `@headlessui/react` `Menu`.
+6. **Charts stay outside the library** — chart components (`BarChart`, `AreaChart`, etc.) live in the dashboard because they need data adapters. Chart Recipes doc shows the patterns.
+
+## Architecture reference
+
+- `CONTRIBUTING.md` — authoring spec (§1–§8)
+- `docs/RFC-ARCHITECTURE.md` — the three-layer split explained
+- `src/styles/tokens.css` — token map (re-exports `@poeticui/tokens`)

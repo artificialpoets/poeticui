@@ -1,0 +1,18 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Feedback/Overview" />
+
+# Feedback
+
+Surfaces that communicate state to the user — successes, errors, empty data, confirmation prompts.
+
+- **Callout** — tinted banner. 6 variants (`neutral`, `info`, `success`, `warning`, `destructive`, `primary`). Slot family: `Callout` → `CalloutTitle` + `CalloutDescription`.
+- **EmptyState** — structural placeholder. Icon + title + description + optional action button. 3 sizes, bordered flag.
+- **Dialog** — modal with 9 size presets + default/alert variant. Slot family: `Dialog` → `DialogTitle` + `DialogDescription` + `DialogBody` + `DialogActions`.
+- **Alert (Legacy)** — thin alias for `Dialog variant="alert"`. Kept for backward compat; new code should use `Dialog` directly.
+
+**When to pick which**:
+- Tip/info/warning **inline inside a page** → `Callout`
+- Destructive confirm or multi-step flow → `Dialog`
+- "No results" state for a table or grid → `EmptyState`
+- Async error → toast (from `sonner`, imported in consumer apps) — not a primitive here

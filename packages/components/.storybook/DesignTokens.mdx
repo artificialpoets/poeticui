@@ -1,0 +1,76 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Design Tokens" />
+
+# Design Tokens
+
+Poetic UI ships three kinds of tokens, composed in layers. Most components consume **semantic tokens** — the role-oriented aliases (`bg-card`, `text-muted-foreground`, `border-border`). A few data-heavy ones (charts) consume the **raw palette**.
+
+## Semantic token map
+
+These are the aliases most components use. They auto-flip in dark mode because `:root` and `.dark` both define them.
+
+| Role | Token | Typical usage |
+|---|---|---|
+| Body text | `--foreground` | `text-foreground` |
+| Dimmed text | `--muted-foreground` | `text-muted-foreground` |
+| Page chrome | `--background` | `bg-background` |
+| Elevated surface | `--card` | `bg-card`, `bg-popover/90` |
+| Subtle surface | `--muted` | `bg-muted`, striped rows |
+| Divider | `--border` | `border-border`, `ring-border` |
+| Focus ring | `--ring` | `outline-ring`, `ring-ring` |
+| Brand accent | `--primary` + `--primary-foreground` | `bg-primary text-primary-foreground` |
+| Destructive | `--destructive` + `--destructive-foreground` | `text-destructive`, `bg-destructive/10` |
+| Success | `--success` | `text-success`, `bg-success/10` |
+| Warning | `--warning` | `text-warning`, `bg-warning/10` |
+| Info | `--info` | `text-info`, `bg-info/10` |
+| Chart data | `--chart-1` … `--chart-10` | `text-chart-1`, `bg-chart-1/20` (DATA, not UI) |
+
+**Opacity slots:** every token accepts `/N` opacity — `bg-primary/10`, `border-destructive/40`, `ring-ring/50`. Prefer these over picking a lighter shade from the raw palette.
+
+## Theme contract
+
+Every product theme MUST override these 6 variables in both `:root` and `.dark`:
+
+```
+--primary, --primary-foreground
+--ring
+--sidebar-primary, --sidebar-primary-foreground, --sidebar-ring
+```
+
+See `@poeticui/tokens/themes/neutral.css` for the default (shadcn-compatible zinc). The AP-specific themes (`@ap/brand/theme/platform`, `.../poehost`, `.../intranet`) follow the same contract with product accents.
+
+## OKLCH palette
+
+The full palette is 26 color ramps × 11 shades, defined in OKLCH (perceptually uniform). Every ramp is reachable as a Tailwind utility — e.g. `bg-zinc-500`, `border-indigo-300`. Use these only for **chart data** and **brand themes**; UI styling always goes through semantic tokens.
+
+## Typography
+
+Heading levels 1–4 are defined in `@poeticui/tokens/typography`. Reach for semantic HTML + `<Heading>` / `<Text>`:
+
+- `<Heading>` — h1 by default, override via `as` (semantics) + `level` (visual)
+- `<Text>` — body `<p>` with correct line-height + muted-foreground color
+- `<Strong>` — inline emphasis
+- `<Code>` — monospace inline
+- `<TextLink>` — inline link, picks up `--primary`
+
+## Spacing + radius
+
+Tailwind's default scale. Prefer:
+- `p-5`, `p-6` for card padding (no micro-variation at the call site)
+- `rounded-xl`, `rounded-2xl` for cards; `rounded-md` for controls; `rounded-full` for pills + avatars
+- `gap-2`, `gap-3`, `gap-4`, `gap-6` for flex/grid rhythm — don't freestyle
+
+## Color conversion utility
+
+If you need to convert a token value between OKLCH / hex / rgba formats during design review, import the utility from `.storybook/utils/color.ts`:
+
+```ts
+import { parseCssRgb, rgbaToOklch, formatOklch } from "./utils/color";
+
+const rgba = parseCssRgb("rgb(24 24 27)"); // zinc-900
+const oklch = rgbaToOklch(rgba);
+formatOklch(oklch); // "oklch(0.232 0.005 285.89)"
+```
+
+Ported from the original `/design-system/global-defaults` page — kept as a docs-only helper, not elevated to `@poeticui/tokens` since only the Storybook page consumes it.

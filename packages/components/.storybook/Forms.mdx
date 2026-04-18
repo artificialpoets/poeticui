@@ -1,0 +1,20 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Forms/Overview" />
+
+# Forms
+
+Input primitives + the `Fieldset`/`Field` composition family that ties them to labels and descriptions. All wrap HeadlessUI for accessibility correctness.
+
+- **Input / InputGroup** — 12 input types. `InputGroup` slots leading/trailing icons.
+- **Textarea** — multi-line, resizable flag.
+- **Checkbox / CheckboxGroup / CheckboxField** — single or grouped, with indeterminate state.
+- **Radio / RadioGroup / RadioField** — single-select.
+- **Switch / SwitchGroup / SwitchField** — toggle.
+- **Select** — native select with our chrome. Supports `multiple`.
+- **Combobox** — generic type-safe, with client-side filtering.
+- **Listbox** — single-select dropdown, render-props pattern.
+- **DateRangePicker** — two-month calendar + preset shortcuts (7d/30d/90d/custom). Controlled + uncontrolled modes.
+- **Fieldset** family — `Fieldset` → `Legend` → `FieldGroup` → `Field` → `Label` + `Description` + `ErrorMessage`. Order inside `<Field>` matters: label → description → control → error.
+
+**Pattern**: always wrap inputs in `<Field>` + `<Label>`. The `data-slot` attributes drive layout; don't hand-roll spacing.

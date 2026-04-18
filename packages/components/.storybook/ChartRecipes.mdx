@@ -1,0 +1,109 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Chart Recipes" />
+
+# Chart Recipes
+
+Chart components (`BarChart`, `AreaChart`, `FunnelChart`, `IntentWaffleChart`, `CategoryBar`) deliberately live **outside** `@poeticui/components` — in `apps/dashboard/components/charts/`. They wrap Recharts with AP-specific data adapters and depend on Recharts' (heavy) runtime, which the neutral primitives deliberately avoid.
+
+This page is a recipe book for composing those charts inside a page. Copy-paste-safe patterns.
+
+## The 10-color chart palette
+
+```
+--chart-1  --chart-2  --chart-3  --chart-4  --chart-5
+--chart-6  --chart-7  --chart-8  --chart-9  --chart-10
+```
+
+Use in order. Slice based on series count:
+
+```ts
+import { DEFAULT_CHART_COLORS } from "@/lib/chart-utils";
+const palette = DEFAULT_CHART_COLORS.slice(0, seriesCount);
+```
+
+## Area chart — 2 series (traffic split)
+
+```tsx
+<AreaChart
+  data={data}
+  index="date"
+  categories={["Desktop", "Mobile"]}
+  colors={DEFAULT_CHART_COLORS.slice(0, 2)}
+  valueFormatter={(v) => v.toLocaleString()}
+  fill="gradient"
+  showLegend
+/>
+```
+
+## Area chart — 5 series (traffic channels)
+
+Same as above with 5 categories. Avoid > 6 series in one chart — reach for a table or split into small multiples instead.
+
+## Bar chart — stacked (device × channel)
+
+```tsx
+<BarChart
+  data={data}
+  index="period"
+  categories={["Organic", "Direct", "Paid", "Referral"]}
+  colors={DEFAULT_CHART_COLORS.slice(0, 4)}
+  type="stacked"
+  valueFormatter={(v) => v.toLocaleString()}
+/>
+```
+
+## Funnel chart — retention / drop-off
+
+```tsx
+<FunnelChart
+  data={[
+    { name: "1st page", value: 100 },
+    { name: "3rd page", value: 64 },
+    { name: "5th page", value: 41 },
+    { name: "7th page", value: 23 },
+  ]}
+  color="var(--chart-1)"
+  evolutionGradient
+  valueFormatter={(v) => `${v}%`}
+/>
+```
+
+## Intent waffle — content mix
+
+```tsx
+<IntentWaffleChart
+  input={{
+    informational: 45,
+    navigational: 18,
+    commercial: 22,
+    transactional: 15,
+  }}
+  order={["informational", "navigational", "commercial", "transactional"]}
+  showLegend
+/>
+```
+
+## Category bar — segmented pill (status breakdown)
+
+```tsx
+<CategoryBar
+  data={[
+    { name: "Active", value: 42, color: "chart-3" },
+    { name: "Pending", value: 13, color: "chart-5" },
+    { name: "Archived", value: 5, color: "chart-7" },
+  ]}
+/>
+```
+
+## Tooltip pattern
+
+Chart tooltips follow a consistent shape — a card with label above, swatch + value rows below, and an optional summary footer. See `AudienceAcquisitionTooltip` or `SearchStatsAreaTooltip` in the dashboard for reference implementations.
+
+## Why these aren't primitives
+
+- **Data adapters are app-specific** — `BarChart` in the dashboard pivots raw PostHog rows into Recharts-ready arrays; that logic belongs to the app, not the library.
+- **Recharts is heavy** — bundling it in `@poeticui/components` would double the library's footprint. Consumers who don't need charts shouldn't pay for them.
+- **Token bindings are portable** — the `--chart-1` …`--chart-10` custom properties live in `@poeticui/tokens`, so any chart library (Recharts, Visx, nivo) can wire to the palette without depending on our component code.
+
+If you need chart components in `@poeticui/components`, that's a follow-up (DES-56) — the move involves extracting the data adapters into their own package first.

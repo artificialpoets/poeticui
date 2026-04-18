@@ -1,0 +1,15 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Layout/Overview" />
+
+# Layout
+
+Page-level scaffolding primitives. Neutral — brand-specific `AppShell` lives in `@ap/brand/layout`.
+
+- **PageHeader** — title + description + right-slot (filters, CTAs). Drop at the top of every page.
+- **SectionHeader** — inside-page heading with optional icon. `as` prop for semantic level (h2–h6), default `h3`.
+- **DrawerShell** — right-side slide-in panel. Pair with `useState` + table row clicks.
+- **SidebarLayout** — full app shell: fixed sidebar + navbar + content. Reach for this when building a new product route.
+- **StackedLayout** — navbar-only variant for full-width app surfaces (chart-heavy dashboards, split-views).
+
+**Composition**: `PageHeader` → `SectionHeader` → content. Mix freely inside any layout scaffold.

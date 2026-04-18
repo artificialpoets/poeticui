@@ -1,0 +1,21 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Data Display/Overview" />
+
+# Data Display
+
+Presentational primitives for rendering content. No interactivity state, no HeadlessUI.
+
+- **Badge / BadgeButton** — status pills, clickable or static. 20 color presets.
+- **Avatar / AvatarButton** — image with initials fallback, round/square.
+- **Card** — the bordered container. Use for stat tiles, detail panels, bounded sections.
+- **Heading / Subheading** — semantic heading + pair.
+- **Text / Strong / Code / TextLink** — body copy family.
+- **Divider** — soft or hard separator.
+- **Skeleton** — animated placeholder. Compose with other skeletons to mimic real layouts.
+- **Stat** — unified KPI block. Icon + label + value + trend + optional card frame.
+- **Table** — structured rows. See also the `Tables` category for `DataTable` (with sorting/filtering baked in).
+- **DescriptionList** — label/value pairs (dt/dd).
+- **ImageWithFallback** — multi-tier src array + initials placeholder. Good for favicons and avatars with unreliable sources.
+
+**What doesn't belong here**: anything a user clicks/types into (that's Forms or Core), loading/error states around data (that's Feedback).

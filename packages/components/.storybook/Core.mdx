@@ -1,0 +1,12 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Core/Overview" />
+
+# Core
+
+The foundational primitives every page needs. Stay as neutral as possible — no data fetching, no app-specific state.
+
+- **Button** — solid, outline, plain variants × 22 color presets. CVA Pattern B (color matrix is only meaningful in the solid branch).
+- **Link** — wraps Next.js `Link` with Headless.DataInteractive. Keep this as the one link primitive so focus states and accessibility behave consistently.
+
+**What doesn't belong here**: composite widgets with their own state, anything HeadlessUI-based (those live in `Forms` / `Misc`), data tables (they're in `Tables`).

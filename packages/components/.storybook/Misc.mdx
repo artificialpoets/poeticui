@@ -1,0 +1,13 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Misc/Overview" />
+
+# Misc
+
+Floating surfaces and contextual helpers that don't fit cleanly into other categories.
+
+- **Dropdown** family — the canonical wrapper around HeadlessUI `Menu`. `Dropdown` → `DropdownButton` + `DropdownMenu` + `DropdownItem` (+ `DropdownDivider`, `DropdownSection`, `DropdownHeader`, `DropdownHeading`, `DropdownLabel`, `DropdownDescription`, `DropdownShortcut`). Use this, never import from `@headlessui/react` directly.
+- **Popover** family — `Popover` + `PopoverButton` + `PopoverPanel`. Mirrors Dropdown styling but hosts arbitrary content (forms, help text), not menu items.
+- **Hint** — hover-triggered tooltip. Wraps any element with a dotted-underline cue.
+
+**Pattern**: Dropdown for *menu* (list of actions), Popover for *content* (form, explanation). Different semantic roles → different components.

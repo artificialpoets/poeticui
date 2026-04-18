@@ -1,0 +1,19 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Tables/Overview" />
+
+# Tables
+
+Composable table primitives + orchestrators. The low-level `Table` family is in `Data Display`; this category holds the higher-level abstractions.
+
+- **DataTable** — full-featured: sorting + search + pagination + empty state out of the box. Pass `columns` and `rows`, get back a working table.
+- **FilteredTableShell** — minimal layout wrapper for hand-built tables with header controls.
+- **TableFilterTrigger** — unstyled dropdown trigger that sits inside a `<TableHeader>` as a column filter. Pairs with `<Dropdown>` / `<DropdownMenu>`.
+- **TablePaginationFooter** — controlled pagination widget. Page X of Y, per-page select, prev/next.
+- **ActionsColumn** — the common "Actions" column helpers: `ActionsTableHeader` + `ActionsTableCell`.
+- **DataTableColumnHeader / DataTableEmptyState / DataTableFilterChips / DataTableFilterPopover** — internal building blocks used by `DataTable` and available standalone for custom table flows.
+
+**Pick your abstraction**:
+- Standard sortable+filterable table → **DataTable**
+- Custom layout with bespoke filter controls above → **FilteredTableShell** + hand-built table
+- Just need a header-column filter dropdown → **TableFilterTrigger** inside any `<Table>`

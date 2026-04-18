@@ -1,0 +1,16 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Navigation/Overview" />
+
+# Navigation
+
+Primitives for moving between pages and sections.
+
+- **Navbar** family — `Navbar` → `NavbarSection` + `NavbarItem` + `NavbarDivider` + `NavbarSpacer` + `NavbarLabel`. The motion layout provides animated current-page indicators.
+- **Sidebar** family — `Sidebar` → `SidebarHeader` + `SidebarBody` + `SidebarFooter` + `SidebarSection` + `SidebarItem` + `SidebarLabel` + `SidebarDivider` + `SidebarSpacer` + `SidebarHeading`. Vertical counterpart to Navbar.
+- **Breadcrumbs** — simple `items` array of `{ label, href? }`. Last item (or any without `href`) renders as static text.
+- **Pagination** — standalone widget: prev/next + numbered pages + gap. Not coupled to a state hook; you wire it to your own page state.
+- **Tabs** — controlled/uncontrolled tab panels. Router-agnostic.
+- **SegmentedTabs** — compact pill-style selector. Options array OR children compound API.
+
+**Pattern**: `current` on `NavbarItem` / `SidebarItem` drives the active indicator. Set it based on `pathname.startsWith(...)` in Next.js.
