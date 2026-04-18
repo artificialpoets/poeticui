@@ -1,0 +1,206 @@
+import { Meta } from "@storybook/blocks";
+import { BlockMath, InlineMath } from "@poeticui/content";
+import {
+  CodeBlockStorybook,
+  LanguageTabsStorybook,
+  PackageManagerTabsStorybook,
+} from "./content-helpers";
+
+<Meta title="Content/Overview" />
+
+# @poeticui/content
+
+**Primitives for rendering technical content** — syntax-highlighted code, math equations, and persistent-preference tabs. A sibling workspace package next to `@poeticui/tokens` / `@poeticui/components` / `@ap/brand`.
+
+Opt-in on purpose: apps that don't need code blocks or math (most line-of-business dashboards) never install this package, so they pay zero bytes. Apps that do need it (marketing pages, API landing pages, in-app help, docs) reach for exactly the primitive they want via subpath imports.
+
+```tsx
+// Top-level import (tree-shakes fine because sideEffects: false)
+import { CodeBlock, BlockMath, PackageManagerTabs } from "@poeticui/content";
+
+// Or per-component subpaths — zero-risk tree-shaking via the barrel:
+import { CodeBlock } from "@poeticui/content/code-block";
+import { BlockMath } from "@poeticui/content/math";
+import { PackageManagerTabs } from "@poeticui/content/package-manager-tabs";
+```
+
+## The five primitives
+
+### 1. `<CodeBlock>` — Shiki syntax highlighting, dual-theme
+
+Async Server Component. Renders syntax-highlighted HTML at render time and ships zero client JS for the highlighter. Emits dual-theme CSS variables so the `.dark` ancestor class flips colors instantly with no re-render.
+
+**TypeScript**
+
+<CodeBlockStorybook
+  lang="ts"
+  code={`interface User {
+  id: string;
+  email: string;
+  createdAt: Date;
+}
+
+export async function getUser(id: string): Promise<User | null> {
+  const row = await db.query.users.findFirst({ where: eq(users.id, id) });
+  return row ?? null;
+}`}
+/>
+
+**Bash**
+
+<CodeBlockStorybook
+  lang="bash"
+  code={`# Bootstrap a new workspace + install deps
+bun create next-app my-app --typescript
+cd my-app
+bun add @poeticui/content @poeticui/components`}
+/>
+
+**JSON**
+
+<CodeBlockStorybook
+  lang="json"
+  code={`{
+  "name": "@poeticui/content",
+  "version": "0.1.0",
+  "sideEffects": ["./styles/*.css"]
+}`}
+/>
+
+**Python**
+
+<CodeBlockStorybook
+  lang="python"
+  code={`def fibonacci(n: int) -> list[int]:
+    out = [0, 1]
+    while len(out) < n:
+        out.append(out[-1] + out[-2])
+    return out[:n]`}
+/>
+
+---
+
+### 2. `<BlockMath>` / `<InlineMath>` — KaTeX
+
+Pythagoras inline: <InlineMath math={String.raw`a^2 + b^2 = c^2`} />.
+
+Full display-style equations:
+
+<BlockMath math={String.raw`\int_0^\infty e^{-x^2}\,dx = \frac{\sqrt{\pi}}{2}`} />
+
+<BlockMath math={String.raw`\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}`} />
+
+CSS is opt-in — import `@poeticui/content/styles/katex` in your app entry once. Without it, math renders structurally but without KaTeX's font and spacing.
+
+---
+
+### 3. `<PersistentTabs>` — localStorage-backed tab strip
+
+Generic primitive under the Package Manager / Language specializations below. Same API as `<SegmentedTabs>` from `@poeticui/components/navigation`, plus a `storageKey` and `defaultValue` — pick your own key, get cross-component + cross-tab sync for free.
+
+Built on `useSyncExternalStore` + a pub/sub over the browser's `storage` event. SSR-safe.
+
+---
+
+### 4. `<PackageManagerTabs>` — bun / pnpm / npm / yarn
+
+<PackageManagerTabsStorybook add="@poeticui/content @poeticui/components" />
+
+Pick a tab — every other `<PackageManagerTabs>` on the page updates instantly. Reload, or open the same page in a second browser tab: your choice persists.
+
+Supported verbs (pass exactly one):
+
+- `install` — bare install
+- `add` — install dependency
+- `remove` — remove dependency
+- `run` — run package script
+- `exec` — one-off execution (bunx / npx / pnpm dlx / yarn dlx)
+- `create` — scaffold project (bun create / npm create / …)
+
+```tsx
+<PackageManagerTabs install />
+<PackageManagerTabs add="react react-dom" />
+<PackageManagerTabs run="build" />
+<PackageManagerTabs exec="tsc --watch" />
+<PackageManagerTabs create="next-app my-app --typescript" />
+```
+
+---
+
+### 5. `<LanguageTabs>` + `<Example>` — cross-language code samples
+
+Children-based API. The `<Example>` marker tells `<LanguageTabs>` which samples to expose. Pref syncs across every instance on the page under `poeticui:pref:language`.
+
+<LanguageTabsStorybook
+  examples={[
+    {
+      lang: "ts",
+      label: "TypeScript",
+      code: `import { Poet } from "@acme/api-client";
+
+const client = new Poet({ apiKey: process.env.POET_KEY });
+const result = await client.poems.create({
+  title: "The rose",
+  body: "A rose by any other name…",
+});`,
+    },
+    {
+      lang: "js",
+      label: "JavaScript",
+      code: `import { Poet } from "@acme/api-client";
+
+const client = new Poet({ apiKey: process.env.POET_KEY });
+const result = await client.poems.create({
+  title: "The rose",
+  body: "A rose by any other name…",
+});`,
+    },
+    {
+      lang: "python",
+      label: "Python",
+      code: `from acme_api_client import Poet
+
+client = Poet(api_key=os.environ["POET_KEY"])
+result = client.poems.create(
+    title="The rose",
+    body="A rose by any other name…",
+)`,
+    },
+    {
+      lang: "bash",
+      label: "cURL",
+      code: `curl -X POST https://api.acme.com/v1/poems \\
+  -H "Authorization: Bearer $POET_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"title": "The rose", "body": "A rose by any other name…"}'`,
+    },
+  ]}
+/>
+
+```tsx
+<LanguageTabs defaultValue="ts">
+  <Example lang="ts" label="TypeScript">
+    {`const client = new Poet({ apiKey: process.env.POET_KEY });`}
+  </Example>
+  <Example lang="python" label="Python">
+    {`client = Poet(api_key=os.environ["POET_KEY"])`}
+  </Example>
+</LanguageTabs>
+```
+
+---
+
+## Four layers of bundle control
+
+The package is designed so consumers can precisely pick what ships to the browser.
+
+1. **Package layer** — don't install `@poeticui/content` and you pay zero bytes. Most dashboards and admin UIs fall here.
+2. **Import layer** — subpath exports. `import { CodeBlock } from "@poeticui/content/code-block"` only pulls Shiki; not KaTeX, not react-katex.
+3. **Route layer** — in Next App Router, any primitive only loads on the routes that import it. Marketing landing page imports `<CodeBlock>`; dashboard index route doesn't — different chunks.
+4. **Dynamic-import layer** — `const { CodeBlock } = await import("@poeticui/content/code-block")` defers the Shiki WASM to first use.
+
+## See also
+
+- **[API Landing Page](?path=/docs/content-examples-api-landing-page--docs)** — realistic mock combining all five primitives in a developer-facing landing page
+- `packages/content/README.md` — public-facing usage docs (4-layer bundle control explained at length)
+- `packages/components/docs/RFC-ARCHITECTURE.md` — how Content slots in next to Tokens / Components / Brand

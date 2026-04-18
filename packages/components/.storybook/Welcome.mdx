@@ -6,7 +6,7 @@ import { Meta } from "@storybook/blocks";
 
 **Neutral React primitives that consume design tokens — zero brand assumptions, ready for open source.**
 
-Poetic UI is split across three layers so a consumer app can pick only the pieces it needs:
+Poetic UI is split across four layers so a consumer app can pick only the pieces it needs:
 
 <table>
   <thead>
@@ -28,6 +28,11 @@ Poetic UI is split across three layers so a consumer app can pick only the piece
       <td>~50 React primitives. Consume tokens exclusively. Zero brand assumptions. This is what eventually publishes on npm.</td>
     </tr>
     <tr>
+      <td><strong>Content</strong></td>
+      <td><code>@poeticui/content</code></td>
+      <td>Technical-content primitives: syntax-highlighted <code>&lt;CodeBlock&gt;</code>, KaTeX math, persistent-preference tabs for package managers and languages. Opt-in: consumers who don't install pay zero bytes.</td>
+    </tr>
+    <tr>
       <td><strong>Brand overlay</strong></td>
       <td><code>@ap/brand</code> (private)</td>
       <td>AP-specific <code>AppShell</code>, sidebar brand badge, themed overrides (platform orange / poehost blue / intranet amber). Layered on top of the neutral library.</td>
@@ -41,6 +46,7 @@ Everything in this Storybook is the **middle layer** — neutral, brand-agnostic
 
 - **Design Tokens** — OKLCH palette, semantic token map, typography + spacing scale
 - **Chart Recipes** — Composition patterns for Recharts (lives in dashboard, see page for why)
+- **Content** — Code blocks, math, package-manager + language tab strips. See the [overview](?path=/docs/content-overview--docs) or the [API Landing Page](?path=/docs/content-examples-api-landing-page--docs) showcase for a realistic end-to-end page.
 - **Core / Data Display / Forms / Feedback / Layout / Navigation / Misc / Tables** — the components, grouped by role
 
 Every component has a `Default` story, one story per meaningful variant, and a `VariantMatrix` for at-a-glance combinatorial review.

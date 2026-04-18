@@ -1,0 +1,238 @@
+import { Meta } from "@storybook/blocks";
+import { BlockMath, InlineMath } from "@poeticui/content";
+import {
+  CodeBlockStorybook,
+  LanguageTabsStorybook,
+  PackageManagerTabsStorybook,
+} from "../content-helpers";
+
+<Meta title="Content/Examples/API Landing Page" />
+
+<div style={{ maxWidth: "68rem", margin: "0 auto" }}>
+
+<div
+  style={{
+    padding: "2.5rem 0 1rem 0",
+    borderBottom: "1px solid var(--border)",
+    marginBottom: "2rem",
+  }}
+>
+  <p style={{ fontSize: "0.75rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--muted-foreground)", margin: 0 }}>
+    The Poet API — v1
+  </p>
+  <h1 style={{ fontSize: "3rem", lineHeight: 1.1, marginTop: "0.75rem", marginBottom: "1rem" }}>
+    Ship AI-generated content with one fetch call.
+  </h1>
+  <p style={{ fontSize: "1.125rem", color: "var(--muted-foreground)", maxWidth: "48rem", margin: 0 }}>
+    Typed SDKs in 6 languages. Streaming + non-streaming. Pay per request, with a generous free tier.
+    This entire page is authored with <code>@poeticui/content</code> primitives — the same bundle-safe toolkit you'd use to build your own.
+  </p>
+</div>
+
+## 1. Install the client
+
+<PackageManagerTabsStorybook add="@acme/api-client" />
+
+The client is framework-agnostic — works in Next App Router, Remix, Astro, Node scripts, Deno, Cloudflare Workers.
+
+## 2. Authenticate
+
+Authentication is a single header. Store your key in an environment variable, never in client code.
+
+<CodeBlockStorybook
+  lang="bash"
+  code={`# Request an API key from your dashboard
+export POET_KEY="sk_live_abc123…"
+
+# Verify it works
+curl -H "Authorization: Bearer $POET_KEY" https://api.acme.com/v1/me`}
+/>
+
+## 3. Make your first request
+
+Every SDK exposes the same shape: a top-level client constructed with your key, plus one method per resource. Pick your stack:
+
+<LanguageTabsStorybook
+  examples={[
+    {
+      lang: "ts",
+      label: "TypeScript",
+      code: `import { Poet } from "@acme/api-client";
+
+const client = new Poet({ apiKey: process.env.POET_KEY! });
+
+const poem = await client.poems.create({
+  title: "The rose",
+  style: "haiku",
+  maxTokens: 64,
+});
+
+console.log(poem.body);`,
+    },
+    {
+      lang: "js",
+      label: "JavaScript",
+      code: `import { Poet } from "@acme/api-client";
+
+const client = new Poet({ apiKey: process.env.POET_KEY });
+
+const poem = await client.poems.create({
+  title: "The rose",
+  style: "haiku",
+  maxTokens: 64,
+});
+
+console.log(poem.body);`,
+    },
+    {
+      lang: "python",
+      label: "Python",
+      code: `from acme_api_client import Poet
+
+client = Poet(api_key=os.environ["POET_KEY"])
+
+poem = client.poems.create(
+    title="The rose",
+    style="haiku",
+    max_tokens=64,
+)
+
+print(poem.body)`,
+    },
+    {
+      lang: "go",
+      label: "Go",
+      code: `package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+
+    "github.com/acme/poet-go"
+)
+
+func main() {
+    client := poet.NewClient(os.Getenv("POET_KEY"))
+    p, err := client.Poems.Create(context.Background(), &poet.CreateRequest{
+        Title:     "The rose",
+        Style:     "haiku",
+        MaxTokens: 64,
+    })
+    if err != nil { panic(err) }
+    fmt.Println(p.Body)
+}`,
+    },
+    {
+      lang: "php",
+      label: "PHP",
+      code: `<?php
+require 'vendor/autoload.php';
+
+use Acme\\Poet\\Client;
+
+$client = new Client(getenv('POET_KEY'));
+$poem = $client->poems->create([
+    'title' => 'The rose',
+    'style' => 'haiku',
+    'maxTokens' => 64,
+]);
+
+echo $poem->body;`,
+    },
+    {
+      lang: "bash",
+      label: "cURL",
+      code: `curl -X POST https://api.acme.com/v1/poems \\
+  -H "Authorization: Bearer $POET_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "title": "The rose",
+    "style": "haiku",
+    "maxTokens": 64
+  }'`,
+    },
+  ]}
+/>
+
+Your chosen language here syncs with the one you picked in [Content / Overview](?path=/docs/content-overview--docs) — that's `<LanguageTabs>` doing cross-page preference sync via `localStorage`.
+
+## 4. Pricing — usage-based
+
+Pay for exactly what you use, with a free-tier buffer before metering starts. The cost formula is published in full so you can estimate ahead of shipping:
+
+<BlockMath math={String.raw`\text{cost}(n) = \max\left(n_\text{billable} \cdot \$0.001,\; \$5.00\right)`} />
+
+where <InlineMath math={String.raw`n_\text{billable} = \max(0,\; n_\text{requests} - 10{,}000)`} /> — the first 10 000 requests each month are on the house.
+
+### Example bills
+
+<CodeBlockStorybook
+  lang="ts"
+  code={`// 8,000 requests this month → free tier covers it
+cost(8_000) === $5.00   // floor
+
+// 25,000 requests → 15,000 billable
+cost(25_000) === max(15_000 * 0.001, 5) === $15.00
+
+// 1M requests → 990,000 billable
+cost(1_000_000) === max(990_000 * 0.001, 5) === $990.00`}
+/>
+
+## 5. Rate limits — token bucket
+
+Every API key gets a token bucket. Each request consumes one token; tokens refill at a steady rate. The maximum concurrent burst is the bucket depth:
+
+<BlockMath math={String.raw`\text{tokens}_{t+1} = \min\left(\text{capacity},\; \text{tokens}_t + r \cdot \Delta t\right) - 1`} />
+
+Defaults:
+
+- **Capacity** — <InlineMath math={String.raw`\text{capacity} = 120`} /> tokens (burst)
+- **Refill rate** — <InlineMath math={String.raw`r = 2`} /> tokens/sec
+- **Sustained** — 120 req/min steady-state
+
+Exceed the bucket and you get a `429 Too Many Requests` with a `Retry-After` header. Contact us for higher limits.
+
+## 6. Webhooks — streaming status updates
+
+Long-running generations stream partial tokens via SSE, and status updates to your webhook endpoint:
+
+<CodeBlockStorybook
+  lang="json"
+  code={`{
+  "event": "poem.completed",
+  "created": 1726838492,
+  "data": {
+    "id": "poem_abc123",
+    "status": "completed",
+    "tokensUsed": 58,
+    "body": "A single rose blooms —\\nsunlight tracing each soft petal,\\nthen gone. Still, it was."
+  }
+}`}
+/>
+
+Verify every webhook with the `X-Poet-Signature` header before acting. Worked example:
+
+<CodeBlockStorybook
+  lang="ts"
+  code={`import crypto from "node:crypto";
+
+export function verifyWebhook(body: string, sig: string, secret: string): boolean {
+  const expected = crypto
+    .createHmac("sha256", secret)
+    .update(body)
+    .digest("hex");
+  return crypto.timingSafeEqual(
+    Buffer.from(sig, "hex"),
+    Buffer.from(expected, "hex"),
+  );
+}`}
+/>
+
+## What powers this page?
+
+Every code block, math equation, and language tab you just read is rendered by **`@poeticui/content`** — five primitives (`<CodeBlock>`, `<BlockMath>`, `<InlineMath>`, `<PackageManagerTabs>`, `<LanguageTabs>`) that compose into a complete docs + marketing authoring kit.
+
+See [Content / Overview](?path=/docs/content-overview--docs) for the API tour, or the package's own README for the four layers of bundle control.
+
+</div>

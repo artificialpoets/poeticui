@@ -43,6 +43,7 @@ const preview: Preview = {
           "Welcome",
           "Design Tokens",
           "Chart Recipes",
+          "Content",
           "Core",
           "Forms",
           "Data Display",

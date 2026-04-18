@@ -23,6 +23,9 @@
 @import "@poeticui/tokens/tailwind-theme";
 @import "@poeticui/tokens/themes/neutral";
 @import "@poeticui/components/styles/components";
+/* Content primitives — CSS opt-in. Code-block dual-theme CSS vars + KaTeX fonts. */
+@import "@poeticui/content/styles/code-block";
+@import "@poeticui/content/styles/katex";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
