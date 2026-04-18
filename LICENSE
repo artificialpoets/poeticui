@@ -1,0 +1,33 @@
+Copyright (c) 2026 Artificial Poets. All rights reserved.
+
+This software and its associated documentation files (the "Software") are
+proprietary and confidential to Artificial Poets. The Software is made
+available under a private licensing arrangement between Artificial Poets
+and its authorized users.
+
+## No public license granted
+
+No rights are granted to any person outside Artificial Poets (or
+expressly authorized consumers of the `@poeticui/*` private packages on
+GitHub Packages) to use, copy, modify, merge, publish, distribute,
+sublicense, or sell copies of the Software, or to permit persons to whom
+the Software is furnished to do so.
+
+## Internal use
+
+Artificial Poets employees, contractors, and authorized consumer apps
+(e.g. the `artificialpoets/monorepo` private repository) may use the
+Software in accordance with their internal access agreements. All
+external distribution requires written permission.
+
+## Disclaimer
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES, OR OTHER LIABILITY.
+
+If the Software is ever relicensed for public distribution, this file
+will be replaced with the applicable open-source license (currently
+anticipated: MIT).

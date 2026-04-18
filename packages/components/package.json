@@ -1,7 +1,19 @@
 {
   "name": "@poeticui/components",
   "version": "0.0.1",
-  "private": true,
+  "description": "Poetic UI — neutral React UI primitives. Consume design tokens exclusively; zero brand assumptions; framework-agnostic (no next/* imports).",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artificialpoets/poeticui.git",
+    "directory": "packages/components"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
+  "files": [
+    "src"
+  ],
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
@@ -47,6 +59,7 @@
     "dayjs": "^1.11.0"
   },
   "devDependencies": {
+    "@poeticui/content": "*",
     "@storybook/addon-a11y": "^8",
     "@storybook/addon-essentials": "^8",
     "@storybook/addon-themes": "^8",

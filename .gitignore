@@ -1,0 +1,26 @@
+node_modules/
+.turbo/
+dist/
+storybook-static/
+*.tsbuildinfo
+.DS_Store
+
+# Bun
+.bun-debug*
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*

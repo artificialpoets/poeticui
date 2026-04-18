@@ -1,0 +1,18 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "outputs": ["dist/**", "storybook-static/**"]
+    },
+    "test": {},
+    "lint": {},
+    "storybook": {
+      "cache": false,
+      "persistent": true
+    },
+    "storybook:build": {
+      "outputs": ["storybook-static/**"]
+    }
+  }
+}
+

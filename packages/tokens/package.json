@@ -1,8 +1,19 @@
 {
   "name": "@poeticui/tokens",
   "version": "0.1.0",
-  "private": true,
   "description": "Poetic UI design tokens — pure CSS, zero dependencies. Works in any context: Next.js, WordPress, plain HTML.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artificialpoets/poeticui.git",
+    "directory": "packages/tokens"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
+  "files": [
+    "src"
+  ],
   "exports": {
     ".":                  "./src/index.css",
     "./palette":          "./src/palette.css",
