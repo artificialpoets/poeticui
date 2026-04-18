@@ -17,6 +17,12 @@
  * APIs.
  */
 
+// Relative imports into the sibling @poeticui/content workspace package.
+// We deliberately do NOT import via the "@poeticui/content" package name
+// because that would require declaring @poeticui/content as a devDep of
+// @poeticui/components — which creates a build-graph cycle
+// (components → content → components). Relative paths sidestep the cycle
+// and work identically at runtime (Bun resolves either way).
 import {
   commandFor,
   getDefaultHighlighter,
@@ -28,9 +34,9 @@ import {
   type ContentHighlighter,
   type PackageManager,
   type PackageManagerVerb,
-} from "@poeticui/content";
-import { SegmentedTabs } from "@poeticui/components/navigation";
-import { cx } from "@poeticui/components/lib";
+} from "../../content/src";
+import { SegmentedTabs } from "../src/navigation";
+import { cx } from "../src/lib";
 import React, { useEffect, useMemo, useState } from "react";
 
 // ── Lazy-highlight hook ────────────────────────────────────────────────
