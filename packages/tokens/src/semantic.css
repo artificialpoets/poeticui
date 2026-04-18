@@ -1,5 +1,32 @@
-/* AP Semantic Tokens — maps palette colors to design system roles.
+/* Poetic UI Semantic Tokens — maps palette colors to design system roles.
    Requires @poeticui/tokens/palette (or @poeticui/tokens) to be imported first.
+
+   THEME CONTRACT
+   ==============
+   Every theme overlay MUST define these 6 slots in both :root and .dark:
+
+     --primary                    Brand action color (buttons, links, active)
+     --primary-foreground         Text color on --primary backgrounds
+     --ring                       Focus ring color (typically matches --primary)
+     --sidebar-primary            Active sidebar item indicator color
+     --sidebar-primary-foreground Text color on active sidebar item
+     --sidebar-ring               Sidebar focus ring
+
+   Optional brand override (for themes with two brand accents):
+     --secondary, --secondary-foreground
+       Default (below) is a muted neutral — matches shadcn's "secondary
+       button is grey" convention. Override only if the brand truly has a
+       second accent color.
+
+   Optional semantic-role tint (rare — the default meanings are intentional):
+     --destructive, --success, --warning, --info (+ each *-foreground)
+
+   Optional surface override (very rare):
+     --background, --card, --popover, --muted, --accent
+
+   Principle P4: every token below has a :root value AND a .dark value.
+   Components never write dark:<palette> pairs — they reference the token
+   and let the mode switch happen automatically.
 
    Usage (standalone): @import '@poeticui/tokens/palette'; @import '@poeticui/tokens/semantic';
      -> --primary, --background, etc. available as CSS custom properties
@@ -34,7 +61,7 @@
     --heading-3-size-fluid: clamp(1.25rem, 2vw + 0.75rem, 1.375rem);
     --heading-4-size-fluid: clamp(0.875rem, 1vw + 0.5rem, 1rem);
 
-    /* Surfaces — derived from palette (single source of truth) */
+    /* ─── Surface (neutral; rare to override) ─────────────────────────── */
     --background: var(--color-neutral-50);
     --foreground: var(--color-neutral-950);
     --card: oklch(1 0 0);
@@ -42,30 +69,34 @@
     --popover: oklch(1 0 0);
     --popover-foreground: var(--color-neutral-950);
 
-    /* Brand — derived from palette */
+    /* ─── Brand (required in every theme) ─────────────────────────────── */
     --primary: var(--color-orange-500);
     --primary-foreground: oklch(1 0 0);
     --secondary: var(--color-neutral-100);
     --secondary-foreground: var(--color-neutral-800);
 
-    /* Utility — derived from palette */
+    /* ─── Utility surfaces (neutral) ──────────────────────────────────── */
     --muted: var(--color-neutral-100);
     --muted-foreground: var(--color-neutral-500);
     --accent: var(--color-neutral-100);
     --accent-foreground: var(--color-neutral-800);
+
+    /* ─── Semantic roles (meaning, not brand) ─────────────────────────── */
     --destructive: var(--color-red-500);
     --destructive-foreground: oklch(1 0 0);
     --success: var(--color-green-600);
     --success-foreground: oklch(1 0 0);
     --warning: var(--color-amber-500);
     --warning-foreground: var(--color-neutral-950);
+    --info: var(--color-blue-500);
+    --info-foreground: oklch(1 0 0);
 
-    /* Borders & inputs — derived from palette */
+    /* ─── Structure ───────────────────────────────────────────────────── */
     --border: var(--color-neutral-200);
     --input: var(--color-neutral-200);
     --ring: var(--primary);
 
-    /* Charts — chromatic palette (reference theme only; no duplicate oklch) */
+    /* ─── Chart (data-viz chromatic accents; NOT brand) ───────────────── */
     --chart-1: var(--color-blue-500);
     /* Rose between blue and amber: avoids emerald/green (success) and stays off cyan/teal (blue family) */
     --chart-2: var(--color-rose-500);
@@ -78,7 +109,7 @@
     --chart-9: var(--color-pink-500);
     --chart-10: var(--color-lime-500);
 
-    /* Sidebar (dark sidebar in light mode) — derived from palette */
+    /* ─── Sidebar (dark-first chrome, decoupled from theme mode) ──────── */
     --sidebar: var(--color-neutral-950);
     --sidebar-foreground: var(--color-neutral-50);
     --sidebar-primary: var(--color-orange-500);
@@ -90,7 +121,7 @@
   }
 
   .dark {
-    /* Surfaces — derived from palette */
+    /* ─── Surface (neutral; rare to override) ─────────────────────────── */
     --background: var(--color-neutral-950);
     --foreground: var(--color-neutral-50);
     --card: var(--color-neutral-900);
@@ -98,30 +129,34 @@
     --popover: var(--color-neutral-900);
     --popover-foreground: var(--color-neutral-50);
 
-    /* Brand — same palette refs (primary/destructive unchanged) */
+    /* ─── Brand (required in every theme) ─────────────────────────────── */
     --primary: var(--color-orange-500);
     --primary-foreground: oklch(1 0 0);
     --secondary: var(--color-neutral-800);
     --secondary-foreground: var(--color-neutral-50);
 
-    /* Utility — derived from palette */
+    /* ─── Utility surfaces (neutral) ──────────────────────────────────── */
     --muted: var(--color-neutral-800);
     --muted-foreground: var(--color-neutral-500);
     --accent: var(--color-neutral-800);
     --accent-foreground: var(--color-neutral-50);
+
+    /* ─── Semantic roles (meaning, not brand) ─────────────────────────── */
     --destructive: var(--color-red-500);
     --destructive-foreground: oklch(1 0 0);
     --success: var(--color-green-400);
     --success-foreground: var(--color-neutral-950);
     --warning: var(--color-amber-400);
     --warning-foreground: var(--color-neutral-950);
+    --info: var(--color-blue-400);
+    --info-foreground: var(--color-neutral-950);
 
-    /* Borders & inputs — dark overlays */
+    /* ─── Structure ───────────────────────────────────────────────────── */
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
     --ring: var(--primary);
 
-    /* Charts — chromatic palette (use 500 in light + dark for consistency) */
+    /* ─── Chart (data-viz chromatic accents; NOT brand) ───────────────── */
     --chart-1: var(--color-blue-500);
     --chart-2: var(--color-rose-500);
     --chart-3: var(--color-amber-500);
@@ -133,7 +168,7 @@
     --chart-9: var(--color-pink-500);
     --chart-10: var(--color-lime-500);
 
-    /* Sidebar — derived from palette */
+    /* ─── Sidebar (dark-first chrome, decoupled from theme mode) ──────── */
     --sidebar: var(--color-neutral-950);
     --sidebar-foreground: var(--color-neutral-50);
     --sidebar-primary: var(--color-orange-500);
