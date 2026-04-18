@@ -1,0 +1,19 @@
+/* Minimal Storybook preview stylesheet.
+ *
+ * NOTE: Tailwind v4 + Storybook 8 + Vite + bun monorepos have tricky
+ * resolution (@import "tailwindcss" doesn't work outside @tailwindcss/vite
+ * or PostCSS contexts). For now, stories rely on token CSS for semantic
+ * styling and inline styles for layout. Full Tailwind support in Storybook
+ * can be added with @tailwindcss/vite once the monorepo resolution is
+ * debugged — see `RFC §Open questions → Storybook package location`.
+ *
+ * Loaded by preview.tsx.
+ */
+
+:root {
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.sb-story-wrapper {
+  padding: 2rem;
+}

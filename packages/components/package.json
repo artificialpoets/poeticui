@@ -27,7 +27,9 @@
     "lint": "eslint src/",
     "build": "echo '@poeticui/components: source-only package, no build step'",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "storybook": "storybook dev -p 6006",
+    "storybook:build": "storybook build -o storybook-static"
   },
   "dependencies": {
     "@poeticui/tokens": "*",
@@ -45,6 +47,11 @@
     "dayjs": "^1.11.0"
   },
   "devDependencies": {
+    "@storybook/addon-a11y": "^8",
+    "@storybook/addon-essentials": "^8",
+    "@storybook/addon-themes": "^8",
+    "@storybook/react-vite": "^8",
+    "@storybook/test": "^8",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -53,6 +60,7 @@
     "@types/react-dom": "^19",
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
+    "@vitejs/plugin-react": "^4",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.20",
     "eslint": "^8.57.1",
@@ -69,8 +77,10 @@
     "prettier": "^3.6.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "storybook": "^8",
     "tailwind-merge": "^3.5.0",
     "ts-jest": "^29.4.9",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vite": "^5"
   }
 }
