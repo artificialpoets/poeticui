@@ -1,0 +1,37 @@
+/* Neutral — Poetic UI's default theme.
+
+   Zinc-based, shadcn-compatible. This is what a consumer sees out of
+   the box if they `@import '@poeticui/tokens'` and don't layer a brand
+   overlay on top. Looks clean, professional, and brand-agnostic.
+
+   To bring your own brand:
+     1. Keep the @poeticui/tokens import.
+     2. Add a second CSS file after it that overrides the 6 required slots:
+          --primary, --primary-foreground, --ring,
+          --sidebar-primary, --sidebar-primary-foreground, --sidebar-ring
+        in both :root and .dark.
+
+   See packages/tokens/src/semantic.css header comment for the full
+   theme contract. */
+
+@layer base {
+  :root {
+    /* Neutral primary — a balanced zinc, not colored. Signals
+       "design system default, override me with your brand". */
+    --primary: var(--color-zinc-900);
+    --primary-foreground: oklch(1 0 0);
+    --ring: var(--color-zinc-900);
+    --sidebar-primary: var(--color-zinc-50);
+    --sidebar-primary-foreground: var(--color-zinc-900);
+    --sidebar-ring: var(--color-zinc-50);
+  }
+
+  .dark {
+    --primary: var(--color-zinc-50);
+    --primary-foreground: var(--color-zinc-900);
+    --ring: var(--color-zinc-50);
+    --sidebar-primary: var(--color-zinc-50);
+    --sidebar-primary-foreground: var(--color-zinc-900);
+    --sidebar-ring: var(--color-zinc-50);
+  }
+}

@@ -9,9 +9,7 @@
     "./semantic":         "./src/semantic.css",
     "./typography":       "./src/typography.css",
     "./tailwind-theme":   "./src/tailwind-theme.css",
-    "./themes/platform":  "./src/themes/platform.css",
-    "./themes/poehost":   "./src/themes/poehost.css",
-    "./themes/intranet":  "./src/themes/intranet.css"
+    "./themes/neutral":   "./src/themes/neutral.css"
   },
   "scripts": {
     "build": "echo '@poeticui/tokens: source-only package, no build step'"
