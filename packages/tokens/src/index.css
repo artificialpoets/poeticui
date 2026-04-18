@@ -1,0 +1,10 @@
+/* @ap/tokens — AP design tokens barrel import.
+   Consuming app must import 'tailwindcss' and @custom-variant dark BEFORE this file.
+
+   Imports in order: palette → semantic → typography → tailwind-theme
+   Each file can also be imported individually for environments that don't need all layers. */
+
+@import './palette.css';
+@import './semantic.css';
+@import './typography.css';
+@import './tailwind-theme.css';

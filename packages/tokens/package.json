@@ -1,0 +1,19 @@
+{
+  "name": "@ap/tokens",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AP design tokens — pure CSS, zero dependencies. Works in any context: Next.js, WordPress, plain HTML.",
+  "exports": {
+    ".":                  "./src/index.css",
+    "./palette":          "./src/palette.css",
+    "./semantic":         "./src/semantic.css",
+    "./typography":       "./src/typography.css",
+    "./tailwind-theme":   "./src/tailwind-theme.css",
+    "./themes/platform":  "./src/themes/platform.css",
+    "./themes/poehost":   "./src/themes/poehost.css",
+    "./themes/intranet":  "./src/themes/intranet.css"
+  },
+  "scripts": {
+    "build": "echo '@ap/tokens: source-only package, no build step'"
+  }
+}

@@ -1,0 +1,22 @@
+/* Intranet product theme — amber/ops accent
+   See themes/platform.css for the theme contract and list of optional overrides. */
+
+@layer base {
+  :root {
+    --primary: var(--color-amber-500);
+    --primary-foreground: oklch(1 0 0);
+    --ring: var(--color-amber-500);
+    --sidebar-primary: var(--color-amber-500);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-ring: var(--color-amber-500);
+  }
+
+  .dark {
+    --primary: var(--color-amber-400);
+    --primary-foreground: oklch(1 0 0);
+    --ring: var(--color-amber-400);
+    --sidebar-primary: var(--color-amber-400);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-ring: var(--color-amber-400);
+  }
+}

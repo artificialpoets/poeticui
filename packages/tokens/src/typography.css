@@ -1,0 +1,73 @@
+/* AP Typography — heading element resets and utility classes.
+   Requires @ap/tokens/semantic (or @ap/tokens) for heading scale variables.
+
+   Usage (standalone): import after semantic.css
+   Usage (Tailwind v4): import via @ap/tokens barrel */
+
+@layer base {
+  h1 {
+    font-family: var(--font-sans);
+    font-size: var(--heading-1-size);
+    font-weight: 400;
+    line-height: var(--heading-1-line-height);
+    letter-spacing: var(--heading-1-letter-spacing);
+  }
+
+  h2 {
+    font-family: var(--font-sans);
+    font-size: var(--heading-2-size);
+    font-weight: 400;
+    line-height: var(--heading-2-line-height);
+    letter-spacing: var(--heading-2-letter-spacing);
+  }
+
+  h3 {
+    font-family: var(--font-sans);
+    font-size: var(--heading-3-size);
+    font-weight: 400;
+    line-height: var(--heading-3-line-height);
+    letter-spacing: var(--heading-3-letter-spacing);
+  }
+
+  h4 {
+    font-family: var(--font-mono);
+    font-size: var(--heading-4-size);
+    font-weight: 400;
+    line-height: var(--heading-4-line-height);
+    letter-spacing: var(--heading-4-letter-spacing);
+  }
+}
+
+@layer utilities {
+  .type-h1 {
+    font-family: var(--font-sans);
+    font-size: var(--heading-1-size);
+    font-weight: 400;
+    line-height: var(--heading-1-line-height);
+    letter-spacing: var(--heading-1-letter-spacing);
+  }
+
+  .type-h2 {
+    font-family: var(--font-sans);
+    font-size: var(--heading-2-size);
+    font-weight: 400;
+    line-height: var(--heading-2-line-height);
+    letter-spacing: var(--heading-2-letter-spacing);
+  }
+
+  .type-h3 {
+    font-family: var(--font-sans);
+    font-size: var(--heading-3-size);
+    font-weight: 400;
+    line-height: var(--heading-3-line-height);
+    letter-spacing: var(--heading-3-letter-spacing);
+  }
+
+  .type-h4 {
+    font-family: var(--font-mono);
+    font-size: var(--heading-4-size);
+    font-weight: 400;
+    line-height: var(--heading-4-line-height);
+    letter-spacing: var(--heading-4-letter-spacing);
+  }
+}

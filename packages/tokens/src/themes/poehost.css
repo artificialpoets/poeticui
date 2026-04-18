@@ -1,0 +1,22 @@
+/* PoeHost product theme — blue accent
+   See themes/platform.css for the theme contract and list of optional overrides. */
+
+@layer base {
+  :root {
+    --primary: var(--color-blue-600);
+    --primary-foreground: oklch(1 0 0);
+    --ring: var(--color-blue-600);
+    --sidebar-primary: var(--color-blue-600);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-ring: var(--color-blue-600);
+  }
+
+  .dark {
+    --primary: var(--color-blue-500);
+    --primary-foreground: oklch(1 0 0);
+    --ring: var(--color-blue-500);
+    --sidebar-primary: var(--color-blue-500);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-ring: var(--color-blue-500);
+  }
+}
