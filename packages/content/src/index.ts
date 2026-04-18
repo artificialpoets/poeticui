@@ -30,3 +30,7 @@ export {
 
 // Math rendering
 export { BlockMath, InlineMath, mathVariants, type MathProps } from "./math";
+
+// Persistent preferences (localStorage-backed, cross-component + cross-tab sync)
+export { getPref, setPref, subscribe, usePref } from "./pref-store";
+export { PersistentTabs, type PersistentTabsProps } from "./persistent-tabs";
