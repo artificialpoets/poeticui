@@ -2,35 +2,23 @@ import type { Preview } from "@storybook/react";
 import { withThemeByClassName } from "@storybook/addon-themes";
 import React from "react";
 
-// Poetic UI tokens — palette + semantic vars + Tailwind theme mapping
-import "@poeticui/tokens/palette";
-import "@poeticui/tokens/semantic";
-import "@poeticui/tokens/typography";
-import "@poeticui/tokens/tailwind-theme";
-
-// Out-of-the-box neutral theme (shadcn-compatible default)
-import "@poeticui/tokens/themes/neutral";
-
-// Generic component styles
-import "@poeticui/components/styles/components";
-
-// Tailwind base layer — stories use Tailwind utilities directly
+// All CSS (Tailwind base + tokens + neutral theme + components) lives in
+// preview.css so the Tailwind v4 Vite plugin can resolve @apply against
+// the token custom-property map at build time. Importing tokens via JS
+// hides them from Tailwind's CSS processor.
 import "./preview.css";
 
-// AP brand themes (for theme switcher toolbar)
-import "@ap/brand/theme/platform";
-import "@ap/brand/theme/poehost";
-import "@ap/brand/theme/intranet";
-
 /**
- * Storybook preview — applies the token layering:
- *   1. @poeticui/tokens (palette + semantic + typography + tailwind mapping)
- *   2. neutral default theme (zinc-based)
- *   3. OPTIONAL brand overlay (picked via the toolbar theme switcher below)
+ * Storybook preview — brand-agnostic neutral theme.
  *
- * The `withThemeByClassName` decorator sets a data-theme attribute that our
- * theme CSS can target. Each theme is itself an `@layer base` block so it
- * overrides on top of the neutral default.
+ * Brand overlays (`@ap/brand/theme/*`) are deliberately NOT imported
+ * here — the library Storybook is brand-agnostic so `@poeticui/components`
+ * stays open-source-publishable. Consumers layer their own theme on top
+ * of `@poeticui/tokens` in their app (see `packages/brand/theme/*` for
+ * the AP-specific overrides).
+ *
+ * The `withThemeByClassName` decorator toggles the `.dark` class so the
+ * theme switcher in the Storybook toolbar flips light/dark mode.
  */
 const preview: Preview = {
   parameters: {
@@ -46,6 +34,25 @@ const preview: Preview = {
         { name: "background", value: "var(--background)" },
         { name: "card", value: "var(--card)" },
       ],
+    },
+    options: {
+      storySort: {
+        // Top-level ordering. Anything not listed lands alphabetically
+        // after the listed entries.
+        order: [
+          "Welcome",
+          "Design Tokens",
+          "Chart Recipes",
+          "Core",
+          "Forms",
+          "Data Display",
+          "Feedback",
+          "Layout",
+          "Navigation",
+          "Misc",
+          "Tables",
+        ],
+      },
     },
   },
   decorators: [

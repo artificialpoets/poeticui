@@ -1,4 +1,5 @@
 import type { StorybookConfig } from "@storybook/react-vite";
+import tailwindcss from "@tailwindcss/vite";
 
 const config: StorybookConfig = {
   stories: [
@@ -17,6 +18,18 @@ const config: StorybookConfig = {
   },
   typescript: {
     reactDocgen: "react-docgen-typescript",
+  },
+  /**
+   * Inject the Tailwind v4 Vite plugin so stories can use utility classes
+   * (flex, gap-*, p-*, etc.). Without this, only CSS-variable tokens work
+   * and any Tailwind utility in a story renders as a no-op.
+   *
+   * The plugin scans files pointed at by `@source` directives inside our
+   * CSS entry (see `.storybook/preview.css`).
+   */
+  async viteFinal(config) {
+    config.plugins = [...(config.plugins ?? []), tailwindcss()];
+    return config;
   },
 };
 

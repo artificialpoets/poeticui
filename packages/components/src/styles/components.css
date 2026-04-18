@@ -1,5 +1,11 @@
 /* .type-h1 through .type-h4 now live in @poeticui/tokens/typography */
 
+/* Tailwind v4: gives `@apply` below access to utility classes without
+   re-emitting the Tailwind base. Needed when this file is compiled in
+   an isolated context (e.g. Storybook/Vite) — harmless in the dashboard
+   PostCSS pipeline where Tailwind is already loaded. */
+@reference "tailwindcss";
+
 /* ========================================================================
    Component layer — reduce class count for repeated patterns
    Use semantic tokens so dark mode is built-in.

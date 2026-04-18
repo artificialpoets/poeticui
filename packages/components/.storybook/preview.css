@@ -1,19 +1,30 @@
-/* Minimal Storybook preview stylesheet.
+/* Storybook preview entry — CSS token layering.
  *
- * NOTE: Tailwind v4 + Storybook 8 + Vite + bun monorepos have tricky
- * resolution (@import "tailwindcss" doesn't work outside @tailwindcss/vite
- * or PostCSS contexts). For now, stories rely on token CSS for semantic
- * styling and inline styles for layout. Full Tailwind support in Storybook
- * can be added with @tailwindcss/vite once the monorepo resolution is
- * debugged — see `RFC §Open questions → Storybook package location`.
+ * All CSS imports live here (not in preview.tsx) so the Tailwind v4 Vite
+ * plugin can see token definitions when it resolves `@apply` directives.
+ * Importing tokens via JS from preview.tsx doesn't give Tailwind visibility
+ * into the custom-property map, causing "Cannot apply unknown utility"
+ * errors for any `bg-foreground`, `border-border`, etc. used in components.css.
  *
- * Loaded by preview.tsx.
+ * Layering (top → bottom = earlier → later cascade):
+ *   1. Tailwind v4 base (utilities + base layer)
+ *   2. @poeticui/tokens palette         — 26-color OKLCH palette
+ *   3. @poeticui/tokens semantic        — :root + .dark maps
+ *   4. @poeticui/tokens typography      — h1–h4 base rules
+ *   5. @poeticui/tokens tailwind-theme  — maps CSS vars → Tailwind utilities
+ *   6. @poeticui/tokens themes/neutral  — shadcn-compatible default theme
+ *   7. @poeticui/components/styles/components — generic component classes
  */
 
-:root {
-  font-family: system-ui, -apple-system, sans-serif;
-}
+@import "tailwindcss";
+@import "@poeticui/tokens/palette";
+@import "@poeticui/tokens/semantic";
+@import "@poeticui/tokens/typography";
+@import "@poeticui/tokens/tailwind-theme";
+@import "@poeticui/tokens/themes/neutral";
+@import "@poeticui/components/styles/components";
 
-.sb-story-wrapper {
-  padding: 2rem;
-}
+@custom-variant dark (&:where(.dark, .dark *));
+
+@source "../src";
+@source "../.storybook";
