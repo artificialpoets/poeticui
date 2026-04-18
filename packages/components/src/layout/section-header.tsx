@@ -32,9 +32,7 @@ export function SectionHeader({
       className={cx("flex items-center gap-2 pb-2", className)}
       data-slot="section-header"
     >
-      {Icon && (
-        <Icon className="size-4 text-muted-foreground" aria-hidden />
-      )}
+      {Icon && <Icon className="size-4 text-muted-foreground" aria-hidden />}
       <Tag className="text-sm font-semibold text-foreground">{title}</Tag>
     </div>
   );

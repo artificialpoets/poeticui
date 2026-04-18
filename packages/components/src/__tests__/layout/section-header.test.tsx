@@ -13,7 +13,9 @@ describe("SectionHeader", () => {
 
   test("as prop changes the semantic tag", () => {
     render(<SectionHeader title="Tech stack" as="h2" />);
-    expect(screen.getByRole("heading", { name: "Tech stack" }).tagName).toBe("H2");
+    expect(screen.getByRole("heading", { name: "Tech stack" }).tagName).toBe(
+      "H2",
+    );
   });
 
   test("icon slot renders a lucide icon", () => {
@@ -32,9 +34,7 @@ describe("SectionHeader", () => {
   });
 
   test("className prop merges onto root", () => {
-    const { container } = render(
-      <SectionHeader title="X" className="mt-6" />,
-    );
+    const { container } = render(<SectionHeader title="X" className="mt-6" />);
     expect(container.firstElementChild?.className).toMatch(/mt-6/);
   });
 });

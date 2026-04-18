@@ -12,12 +12,16 @@ describe("EmptyState", () => {
   });
 
   test("optional description renders when provided", () => {
-    render(<EmptyState title="No sites" description="Connect your first site." />);
+    render(
+      <EmptyState title="No sites" description="Connect your first site." />,
+    );
     expect(screen.getByText("Connect your first site.")).toBeInTheDocument();
   });
 
   test("icon slot renders a lucide icon in a muted circle", () => {
-    const { container } = render(<EmptyState title="Nothing here" icon={Inbox} />);
+    const { container } = render(
+      <EmptyState title="Nothing here" icon={Inbox} />,
+    );
     expect(container.querySelector("svg.lucide")).toBeInTheDocument();
     const circle = container.querySelector("[aria-hidden]");
     expect(circle?.className).toMatch(/rounded-full/);
@@ -56,9 +60,7 @@ describe("EmptyState", () => {
   });
 
   test("className override merges cleanly (cx + tailwind-merge)", () => {
-    const { container } = render(
-      <EmptyState title="X" className="py-4" />,
-    );
+    const { container } = render(<EmptyState title="X" className="py-4" />);
     // md default is py-12; py-4 should win via tailwind-merge
     expect(container.firstElementChild?.className).toMatch(/\bpy-4\b/);
     expect(container.firstElementChild?.className).not.toMatch(/\bpy-12\b/);

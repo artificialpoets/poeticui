@@ -191,9 +191,7 @@ export function Stat({
 
 // ─── Helpers ──────────────────────────────────────────────────────────────
 
-function changeBadgeColor(
-  change: string,
-): "lime" | "pink" | "zinc" {
+function changeBadgeColor(change: string): "lime" | "pink" | "zinc" {
   if (change === "—" || change === "0" || change === "") return "zinc";
   return change.trim().startsWith("-") ? "pink" : "lime";
 }

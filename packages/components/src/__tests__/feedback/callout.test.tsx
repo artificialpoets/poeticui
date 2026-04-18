@@ -42,9 +42,7 @@ describe("Callout", () => {
   test.each(["success", "warning", "primary", "info"] as const)(
     "variant=%s renders with matching role tokens",
     (variant) => {
-      const { container } = render(
-        <Callout variant={variant}>body</Callout>,
-      );
+      const { container } = render(<Callout variant={variant}>body</Callout>);
       const root = container.firstElementChild;
       expect(root?.className).toMatch(new RegExp(`border-${variant}`));
       expect(root?.className).toMatch(new RegExp(`bg-${variant}`));

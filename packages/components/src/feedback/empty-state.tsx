@@ -45,7 +45,8 @@ const titleSizeClasses = {
 // ─── Types ────────────────────────────────────────────────────────────────
 
 export interface EmptyStateProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
+  extends
+    Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
     VariantProps<typeof emptyStateVariants> {
   /** Optional icon rendered in a muted circle above the title. */
   icon?: React.ComponentType<{ className?: string }>;

@@ -53,7 +53,9 @@ describe("Stat", () => {
         trend={{ direction: "down", label: "-1.2% vs yesterday" }}
       />,
     );
-    expect(container.querySelector(".lucide-trending-down")).toBeInTheDocument();
+    expect(
+      container.querySelector(".lucide-trending-down"),
+    ).toBeInTheDocument();
     const trendWrap = screen.getByText("-1.2% vs yesterday").closest("div");
     expect(trendWrap?.className).toMatch(/text-destructive/);
   });
@@ -79,9 +81,7 @@ describe("Stat", () => {
   });
 
   test("bordered=true wraps in card chrome", () => {
-    const { container } = render(
-      <Stat label="X" value="Y" bordered />,
-    );
+    const { container } = render(<Stat label="X" value="Y" bordered />);
     expect(container.firstElementChild?.className).toMatch(/rounded-xl/);
     expect(container.firstElementChild?.className).toMatch(/border-border/);
     expect(container.firstElementChild?.className).toMatch(/bg-card/);
@@ -95,9 +95,7 @@ describe("Stat", () => {
   test.each(["sm", "md", "lg"] as const)(
     "size=%s applies the matching value + icon classes",
     (size) => {
-      const { container } = render(
-        <Stat label="X" value="Y" size={size} icon={Users} />,
-      );
+      render(<Stat label="X" value="Y" size={size} icon={Users} />);
       // Each size has a characteristic text-* class on the value
       const matches: Record<typeof size, RegExp> = {
         sm: /text-base/,

@@ -36,7 +36,9 @@ type CalloutVariant = NonNullable<
 // ─── Context (propagates variant to sub-components) ──────────────────────
 
 type CalloutContextValue = { variant: CalloutVariant };
-const CalloutContext = createContext<CalloutContextValue>({ variant: "neutral" });
+const CalloutContext = createContext<CalloutContextValue>({
+  variant: "neutral",
+});
 
 function useCalloutVariant(): CalloutVariant {
   return useContext(CalloutContext).variant;
@@ -45,7 +47,8 @@ function useCalloutVariant(): CalloutVariant {
 // ─── <Callout> ────────────────────────────────────────────────────────────
 
 export interface CalloutProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
+  extends
+    Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
     VariantProps<typeof calloutVariants> {
   /** Optional icon slot — rendered at the top-left of the callout. */
   icon?: React.ComponentType<{ className?: string }>;
@@ -106,8 +109,7 @@ export function Callout({
 
 // ─── <CalloutTitle> ──────────────────────────────────────────────────────
 
-export interface CalloutTitleProps
-  extends React.HTMLAttributes<HTMLHeadingElement> {
+export interface CalloutTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
   /** Semantic heading level. Default `h3`. */
   as?: "h2" | "h3" | "h4" | "h5" | "h6";
 }
