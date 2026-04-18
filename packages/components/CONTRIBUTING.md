@@ -1,6 +1,6 @@
-# Contributing to @ap/ui (Poetic UI)
+# Contributing to @poeticui/components (Poetic UI)
 
-This document is the written spec for **how we build components in Poetic UI**. Read it before adding or modifying anything in `packages/ui/src/`. Reviewers will reference it; new contributors should come out of a single read knowing enough to ship a PR that looks like the rest of the library.
+This document is the written spec for **how we build components in Poetic UI**. Read it before adding or modifying anything in `packages/components/src/`. Reviewers will reference it; new contributors should come out of a single read knowing enough to ship a PR that looks like the rest of the library.
 
 The guide is organized into seven sections that track the decisions you'll make while designing a component, followed by a **fully-worked `Toggle` example** that puts every rule together.
 
@@ -49,14 +49,14 @@ Use slot composition when the component has **more than one child slot** whose o
 
 ### How to design the sub-component API
 
-1. **Every sub-component is its own named export.** No object-as-namespace tricks (`Dialog.Title`); just top-level named exports. The import surface becomes `import { Dialog, DialogTitle, DialogBody } from "@ap/ui/feedback"`.
+1. **Every sub-component is its own named export.** No object-as-namespace tricks (`Dialog.Title`); just top-level named exports. The import surface becomes `import { Dialog, DialogTitle, DialogBody } from "@poeticui/components/feedback"`.
 2. **Styling between siblings uses `data-slot` selectors.** Each sub-component sets `data-slot="label"` / `"control"` / `"description"` / `"icon"` on its root element. The parent targets them with Tailwind attribute selectors:
    ```css
    "[&>[data-slot=label]+[data-slot=control]]:mt-3"
    ```
    This lets the sub-components stay position-agnostic — they can appear in any order and the parent still knows how to space them.
 3. **ARIA flows through HeadlessUI.** When the family is auth-y (form Field / Legend / ErrorMessage), build on `@headlessui/react`'s `Field` / `Label` / `Description` primitives. They wire `aria-labelledby`, `aria-describedby`, `aria-invalid`, and `aria-errormessage` automatically via context. See §4.
-4. **Prefer context over prop drilling for cross-sibling state.** When a parent needs to broadcast a variant (e.g. `Dialog variant="alert"` styling its children), use a small React context defined in the parent file. See `packages/ui/src/feedback/dialog.tsx` for the canonical example — `DialogTitle` and `DialogActions` read from `DialogContext` rather than taking a redundant `variant` prop at every call site.
+4. **Prefer context over prop drilling for cross-sibling state.** When a parent needs to broadcast a variant (e.g. `Dialog variant="alert"` styling its children), use a small React context defined in the parent file. See `packages/components/src/feedback/dialog.tsx` for the canonical example — `DialogTitle` and `DialogActions` read from `DialogContext` rather than taking a redundant `variant` prop at every call site.
 
 ### What the parent contributes
 
@@ -177,7 +177,7 @@ export function Button({ variant, color, size, className, ...props }) {
 }
 ```
 
-Reference: `packages/ui/src/core/button.tsx`.
+Reference: `packages/components/src/core/button.tsx`.
 
 ### CVA conventions (non-negotiable)
 
@@ -199,7 +199,7 @@ Reference: `packages/ui/src/core/button.tsx`.
 
 ## 3. Semantic token usage
 
-Raw Tailwind color utilities (`text-gray-500`, `bg-white`, `border-red-200`, `text-neutral-950 dark:text-white`) are **banned** in `@ap/ui` source. The dashboard ESLint rule enforces the same ban there (see DES-17). You must reach for the semantic token that expresses the role.
+Raw Tailwind color utilities (`text-gray-500`, `bg-white`, `border-red-200`, `text-neutral-950 dark:text-white`) are **banned** in `@poeticui/components` source. The dashboard ESLint rule enforces the same ban there (see DES-17). You must reach for the semantic token that expresses the role.
 
 ### The token map
 
@@ -217,6 +217,7 @@ Raw Tailwind color utilities (`text-gray-500`, `bg-white`, `border-red-200`, `te
 | Destructive | `text-destructive`, `bg-destructive/10`, `border-destructive/40` | Errors, destructive actions |
 | Success | `text-success`, `bg-success/10` | Positive confirmation, success chips |
 | Warning | `text-warning`, `bg-warning/10` | Amber warnings |
+| Info | `text-info`, `bg-info/10`, `border-info/40` | Informational callouts, tip banners (blue) |
 | Chart data | `text-chart-1` … `text-chart-10` | Non-semantic data-viz accents (blue, violet, cyan, etc.) |
 
 ### When the color is "data" (not styling)
@@ -225,7 +226,7 @@ Charts, Kanban-stage color maps, user-picked badge colors — these reference th
 
 ### White text on colored backgrounds
 
-Never write `text-white` in `@ap/ui`. If the text paints on a brand or status background, pair the background with its matching foreground token:
+Never write `text-white` in `@poeticui/components`. If the text paints on a brand or status background, pair the background with its matching foreground token:
 
 ```tsx
 // ❌ Don't
@@ -254,7 +255,7 @@ We use `@headlessui/react` (v2.2+) for accessibility-heavy primitives — Menu, 
 
 ### Conventions
 
-1. **Re-export the primitive family under our names.** Consumers import from `@ap/ui`, not `@headlessui/react`:
+1. **Re-export the primitive family under our names.** Consumers import from `@poeticui/components`, not `@headlessui/react`:
 
    ```tsx
    export function Popover(props: Headless.PopoverProps) {
@@ -347,7 +348,7 @@ The generic `T` flows consumer prop types through so `<DropdownButton as={Link} 
 
 ## 6. Testing conventions
 
-We use Jest + `@testing-library/react` (no `@testing-library/user-event` in `@ap/ui` — use `fireEvent`). Tests live in `packages/ui/src/__tests__/{directory}/{component}.test.tsx`, mirroring the source tree.
+We use Jest + `@testing-library/react` (no `@testing-library/user-event` in `@poeticui/components` — use `fireEvent`). Tests live in `packages/components/src/__tests__/{directory}/{component}.test.tsx`, mirroring the source tree.
 
 ### Required coverage per component
 
@@ -394,7 +395,7 @@ HeadlessUI Menu / Popover use `ResizeObserver` internally. jsdom doesn't ship it
 ## 7. File organization
 
 ```
-packages/ui/src/
+packages/components/src/
   core/              # Button, Link — foundational primitives used by everything else
   data-display/      # Avatar, Badge, Card, Skeleton, Stat, Table
   feedback/          # Alert, Dialog, Hint, Toast wrapper
@@ -431,7 +432,7 @@ export * from './data-display';
 // ...
 ```
 
-The `package.json` subpath exports (`@ap/ui/forms`, `@ap/ui/tables`) map directly to the category `index.ts`:
+The `package.json` subpath exports (`@poeticui/components/forms`, `@poeticui/components/tables`) map directly to the category `index.ts`:
 
 ```json
 {
@@ -457,12 +458,12 @@ A hypothetical two-state toggle button (pressed / not-pressed) that demonstrates
 - It paints on semantic tokens only — `bg-primary`, `text-primary-foreground`, `bg-muted`, `border-border` (§3).
 - No accessibility complexity beyond `role="button"` + `aria-pressed`, so **no HeadlessUI wrapper needed** (§4).
 - It wraps `<button>` → **forwardRef** so it can be focused programmatically (§5).
-- Lives at `packages/ui/src/core/toggle.tsx` with a test at `packages/ui/src/__tests__/core/toggle.test.tsx` (§7).
+- Lives at `packages/components/src/core/toggle.tsx` with a test at `packages/components/src/__tests__/core/toggle.test.tsx` (§7).
 
 ### Source
 
 ```tsx
-// packages/ui/src/core/toggle.tsx
+// packages/components/src/core/toggle.tsx
 "use client";
 
 import { cva, type VariantProps } from "class-variance-authority";
@@ -539,7 +540,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle
 ### Test
 
 ```tsx
-// packages/ui/src/__tests__/core/toggle.test.tsx
+// packages/components/src/__tests__/core/toggle.test.tsx
 import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
 

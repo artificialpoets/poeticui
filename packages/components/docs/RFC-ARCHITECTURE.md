@@ -1,9 +1,28 @@
 # RFC: Phase 2 — Poetic UI abstraction + `@ap/brand` split
 
-> Status: **Draft — v2 (supersedes v1)**
+> Status: **Mostly shipped (7 of 9 steps landed; Storybook partial, /design-system deletion pending).**
 > Author: @matias
-> Linear: DES-33 (+ Phase 2 successor epic, TBD)
+> Linear: "Poetic UI Phase 2: Public-Ready Architecture" project (DES-38 → DES-49)
 > Last updated: 2026-04-18
+
+### Step status
+
+| Step | Issue | Status |
+|------|-------|--------|
+| 1. Rename `@ap/tokens` → `@poeticui/tokens` | DES-39 | ✅ Done (`c05f8bad`) |
+| 2. Rename `@ap/ui` → `@poeticui/components` + dir rename | DES-40 | ✅ Done (`9190b36f`) |
+| 3. Extract `@ap/brand` | DES-43 | ✅ Done (`6c4ddb2c`) |
+| 4. Add `--info` + formalize theme contract | DES-42 | ✅ Done (`0dbb658f`) |
+| 5. Typography cleanup | DES-41 | ✅ Done (`813bdb99`) |
+| 6a. Storybook scaffold | DES-44 | ⚠️ Partial (`265d02e3`) — config + smoke story in place, boot deferred pending Tailwind-v4/Vite interop fix |
+| 6b. Port stories | DES-45 | ⏳ Blocked on 6a boot |
+| 6c. Delete `/design-system` page | DES-46 | ⏳ Blocked on 6b |
+| 7. Enforcement + CI | DES-47 | ✅ Done (`c09a45ba`) |
+| 8. Documentation sweep | DES-48 | ✅ In progress |
+| 9. Verification | — | Final verification bundled with the PR |
+
+Follow-ups filed during the work:
+- **DES-49** — Decouple `Link` + `Avatar` from `next/*` (surfaced by the DES-47 ESLint rule; currently allowlisted with a FIXME).
 
 ## Summary
 
