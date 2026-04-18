@@ -1,0 +1,70 @@
+/* AP Design System — Swagger UI Theme
+   Import via customCss in NestJS SwaggerModule.setup() */
+
+:root {
+  --ap-bg: #0a0a0a;
+  --ap-card: #141414;
+  --ap-border: #262626;
+  --ap-primary: #f97316;
+  --ap-text: #e5e5e5;
+  --ap-muted: #737373;
+}
+
+html { background: var(--ap-bg); }
+body { background: var(--ap-bg); color: var(--ap-text); }
+
+.swagger-ui { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+.swagger-ui .topbar { background: var(--ap-card); border-bottom: 1px solid var(--ap-border); padding: 8px 0; }
+.swagger-ui .topbar .download-url-wrapper .select-label select { border-color: var(--ap-border); }
+.swagger-ui .topbar a { max-width: 180px; }
+
+.swagger-ui .info { margin: 30px 0; }
+.swagger-ui .info .title { color: #fff; }
+.swagger-ui .info .description p { color: var(--ap-muted); }
+
+.swagger-ui .scheme-container { background: var(--ap-card); border: 1px solid var(--ap-border); border-radius: 8px; padding: 12px; margin-bottom: 20px; }
+
+.swagger-ui .opblock-tag { color: #fff; border-bottom-color: var(--ap-border); }
+.swagger-ui .opblock-tag:hover { background: var(--ap-card); }
+
+.swagger-ui .opblock { background: var(--ap-card); border-color: var(--ap-border); border-radius: 6px; margin-bottom: 8px; }
+.swagger-ui .opblock .opblock-summary { border-bottom-color: var(--ap-border); }
+.swagger-ui .opblock .opblock-summary-method { border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+.swagger-ui .opblock .opblock-summary-path { color: var(--ap-text); }
+.swagger-ui .opblock .opblock-summary-description { color: var(--ap-muted); }
+
+.swagger-ui .opblock.opblock-get { border-color: #3b82f6; }
+.swagger-ui .opblock.opblock-get .opblock-summary-method { background: #3b82f6; }
+.swagger-ui .opblock.opblock-post { border-color: var(--ap-primary); }
+.swagger-ui .opblock.opblock-post .opblock-summary-method { background: var(--ap-primary); }
+.swagger-ui .opblock.opblock-put { border-color: #eab308; }
+.swagger-ui .opblock.opblock-put .opblock-summary-method { background: #eab308; }
+.swagger-ui .opblock.opblock-delete { border-color: #ef4444; }
+.swagger-ui .opblock.opblock-delete .opblock-summary-method { background: #ef4444; }
+.swagger-ui .opblock.opblock-patch { border-color: #8b5cf6; }
+.swagger-ui .opblock.opblock-patch .opblock-summary-method { background: #8b5cf6; }
+
+.swagger-ui .opblock-body { background: var(--ap-bg); }
+.swagger-ui table tbody tr td { border-bottom-color: var(--ap-border); color: var(--ap-text); padding: 8px; }
+.swagger-ui table thead tr th { border-bottom-color: var(--ap-border); color: var(--ap-muted); }
+.swagger-ui .parameter__name { color: #fff; }
+.swagger-ui .parameter__type { color: var(--ap-muted); }
+
+.swagger-ui .model-box { background: var(--ap-card); }
+.swagger-ui section.models { border: 1px solid var(--ap-border); border-radius: 6px; }
+.swagger-ui section.models h4 { border-bottom-color: var(--ap-border); }
+
+.swagger-ui .btn { border-radius: 4px; }
+.swagger-ui .btn.authorize { color: var(--ap-primary); border-color: var(--ap-primary); }
+.swagger-ui .btn.execute { background: var(--ap-primary); border-color: var(--ap-primary); color: #fff; }
+
+.swagger-ui select, .swagger-ui input[type=text], .swagger-ui textarea {
+  background: var(--ap-bg); color: var(--ap-text); border: 1px solid var(--ap-border); border-radius: 4px;
+}
+
+.swagger-ui .response-col_status { color: #fff; }
+.swagger-ui .responses-inner { background: var(--ap-card); border-radius: 4px; }
+
+.swagger-ui a.nostyle { color: var(--ap-primary); }
+.swagger-ui a.nostyle:hover { color: #fb923c; }

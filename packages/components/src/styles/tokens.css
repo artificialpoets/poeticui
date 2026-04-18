@@ -1,0 +1,8 @@
+/* Design tokens — re-exported from @poeticui/tokens.
+   The consuming app must import 'tailwindcss' and define @custom-variant dark
+   BEFORE importing this file.
+
+   This file is kept as the stable export path for @poeticui/components/styles/tokens.
+   The canonical source of truth is packages/tokens/src/. */
+
+@import '@poeticui/tokens';

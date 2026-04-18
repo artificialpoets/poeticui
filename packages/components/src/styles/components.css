@@ -1,0 +1,237 @@
+/* .type-h1 through .type-h4 now live in @poeticui/tokens/typography */
+
+/* ========================================================================
+   Component layer — reduce class count for repeated patterns
+   Use semantic tokens so dark mode is built-in.
+   ======================================================================== */
+@layer components {
+  .modal-backdrop {
+    @apply fixed inset-0 flex w-screen justify-center overflow-y-auto bg-foreground/15 px-2 py-2 transition duration-100 focus:outline-0 data-closed:opacity-0 data-enter:ease-out data-leave:ease-in dark:bg-foreground/50 sm:px-6 sm:py-8 lg:px-8 lg:py-16;
+  }
+
+  .modal-panel {
+    @apply rounded-2xl bg-card shadow-lg ring-1 ring-border transition duration-100 will-change-transform data-closed:opacity-0 data-enter:ease-out data-leave:ease-in forced-colors:outline;
+  }
+
+  .dropdown-panel {
+    @apply absolute left-0 z-10 mt-2 origin-top-left divide-y divide-border rounded-xl bg-card shadow-lg outline outline-transparent ring-1 ring-border transition focus:outline-hidden data-closed:scale-95 data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in;
+  }
+
+  .date-range-dropdown {
+    @apply overflow-hidden rounded-2xl border border-border bg-card text-card-foreground;
+    color-scheme: light;
+  }
+
+  .dropdown-panel.date-range-dropdown {
+    @apply shadow-none ring-0;
+  }
+
+  .dark .date-range-dropdown {
+    color-scheme: dark;
+  }
+
+  .date-range-dropdown input[type='date']::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.72;
+  }
+
+  .date-range-dropdown input[type='date']::-webkit-datetime-edit,
+  .date-range-dropdown input[type='date']::-webkit-datetime-edit-fields-wrapper,
+  .date-range-dropdown input[type='date']::-webkit-datetime-edit-text,
+  .date-range-dropdown input[type='date']::-webkit-datetime-edit-month-field,
+  .date-range-dropdown input[type='date']::-webkit-datetime-edit-day-field,
+  .date-range-dropdown input[type='date']::-webkit-datetime-edit-year-field {
+    color: inherit;
+  }
+
+  .dark .date-range-dropdown input[type='date']::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.9;
+  }
+
+  .date-range-sidebar {
+    @apply flex w-52 shrink-0 flex-col overflow-y-auto border-r border-border bg-muted/20 py-2;
+  }
+
+  .date-range-content {
+    @apply flex min-h-0 min-w-0 flex-1 flex-col bg-card p-4;
+  }
+
+  .date-range-input-label {
+    @apply mb-1 block text-xs font-medium text-muted-foreground;
+  }
+
+  .input-date {
+    @apply w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground focus:outline-hidden focus:ring-2 focus:ring-ring;
+  }
+
+  .date-range-calendar-scroll {
+    @apply min-h-0 flex-1 overflow-auto pr-1;
+    scrollbar-gutter: stable;
+  }
+
+  .date-range-footer {
+    @apply flex justify-end gap-2 border-t border-border bg-muted/10 px-4 py-3;
+  }
+
+  .date-range-btn-secondary {
+    @apply rounded-md px-3 py-1.5 text-sm font-medium text-foreground transition hover:bg-muted;
+  }
+
+  .date-range-btn-primary {
+    @apply rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90 focus:bg-primary/90;
+  }
+
+  .panel-action-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring;
+  }
+
+  /**
+   * Native <select> styled to match .panel-action-secondary (pagination and panel footers).
+   * Explicit min-height + box-border so height aligns with adjacent Previous/Next buttons.
+   * appearance-none + symmetric padding + drawn chevron: OS arrows reserve uneven inset (lopsided gaps).
+   */
+  .panel-action-select {
+    @apply box-border min-h-10 rounded-lg border border-border bg-card py-2 text-center text-sm font-semibold tabular-nums text-foreground transition hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring cursor-pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    /* Equal horizontal inset; wide enough that the 1rem chevron fits inside the right padding. */
+    padding-left: 1rem;
+    padding-right: 1.75rem;
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+    background-position: right 0.75rem center;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23737373' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  }
+
+  .dark .panel-action-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23a3a3a3' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  }
+
+  .panel-action-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring;
+  }
+
+  .active-filter-chip {
+    @apply inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary;
+  }
+
+  .content-card {
+    @apply grow pt-0 px-6 pb-6 lg:rounded-lg lg:rounded-tl-none lg:bg-card lg:px-10 lg:pb-10 lg:pt-0 lg:shadow-xs lg:border lg:border-t-0 lg:border-border lg:text-card-foreground;
+  }
+
+  .content-card-stacked {
+    @apply grow p-6 lg:rounded-lg lg:bg-card lg:p-10 lg:shadow-xs lg:ring-1 lg:ring-border lg:text-card-foreground;
+  }
+
+  .date-range-trigger {
+    @apply inline-flex w-full items-center justify-center gap-x-1.5 rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground transition hover:bg-accent/50;
+  }
+
+  .date-range-preset-btn {
+    @apply cursor-pointer rounded-md px-4 py-2 text-left text-sm text-foreground transition-colors hover:bg-muted;
+  }
+
+  .date-range-calendar-month {
+    @apply w-full shrink-0;
+  }
+
+  .date-range-calendar-month-label {
+    @apply text-center text-sm font-medium text-foreground;
+  }
+
+  .date-range-calendar-weekdays {
+    @apply mt-2 grid grid-cols-7 gap-px text-center text-xs text-muted-foreground;
+  }
+
+  .date-range-calendar-day {
+    @apply aspect-square rounded-md text-sm text-foreground transition;
+  }
+
+  .date-range-calendar-day-selectable {
+    @apply cursor-pointer hover:bg-muted;
+  }
+
+  .date-range-calendar-day-in-range {
+    @apply bg-primary/15 text-foreground;
+  }
+
+  .date-range-calendar-day-edge {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+
+  .date-range-calendar-day-today {
+    @apply ring-1 ring-primary;
+  }
+
+  .tab-select {
+    @apply col-start-1 row-start-1 w-full appearance-none rounded-md bg-card py-2 pr-8 pl-3 text-base text-foreground outline-1 -outline-offset-1 outline-border focus:outline-2 focus:-outline-offset-2 focus:outline-ring;
+  }
+
+  .table-panel {
+    @apply mt-4 flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border border-border bg-card;
+  }
+
+  /**
+   * Wrapper for table-with-filters layout: fills viewport with a min height that fits
+   * header, at least 5 rows, totals footer, and pagination. Use around the table-panel.
+   */
+  .table-with-filters-viewport {
+    height: calc(100vh - 8rem);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .table-with-filters-viewport .table-panel {
+    flex: 1 1 0;
+    min-height: 22rem; /* ~header + 5 rows + totals + pagination */
+  }
+
+  /* When table has fewer than 6 rows, use auto height instead of viewport fill */
+  .table-with-filters-viewport--auto {
+    height: auto;
+  }
+
+  .table-with-filters-viewport--auto .table-panel {
+    flex: none;
+    min-height: 0;
+  }
+
+  .table-scroll-region {
+    @apply relative min-h-0 flex-1 overflow-auto overscroll-contain;
+  }
+
+  .table-footer {
+    @apply flex min-h-14 shrink-0 flex-nowrap items-center justify-between gap-4 overflow-x-auto border-t border-border bg-card px-6 py-4 lg:px-10;
+  }
+
+  .table-footer .panel-action-secondary {
+    @apply min-h-10 shadow-none;
+  }
+
+  .table-footer .panel-action-select {
+    @apply shadow-none;
+  }
+
+  .table-section-heading {
+    font-family: var(--font-mono);
+    font-size: var(--heading-4-size);
+    font-weight: 400;
+    line-height: var(--heading-4-line-height);
+    letter-spacing: var(--heading-4-letter-spacing);
+    color: var(--foreground);
+  }
+
+  .table-section-subtitle {
+    @apply mt-1 text-sm text-muted-foreground;
+  }
+
+  .table-header-sticky {
+    @apply sticky top-0 z-10 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/85;
+    /* Use an overlaid separator so it doesn't visually merge with the first row border. */
+    box-shadow:
+      0 1px 0 var(--border),
+      0 10px 24px -24px rgb(0 0 0 / 0.5);
+  }
+}
