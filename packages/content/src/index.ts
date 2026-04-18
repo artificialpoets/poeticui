@@ -27,3 +27,6 @@ export {
   DEFAULT_THEMES,
   type ContentHighlighter,
 } from "./utils/default-highlighter";
+
+// Math rendering
+export { BlockMath, InlineMath, mathVariants, type MathProps } from "./math";

@@ -1,0 +1,32 @@
+/*
+ * @poeticui/content — KaTeX stylesheet (opt-in).
+ *
+ * Import this once in your app entry (or any module that runs early) to
+ * load KaTeX's visual styling:
+ *
+ *     import "@poeticui/content/styles/katex";
+ *
+ * Without this import, <BlockMath> / <InlineMath> render their KaTeX
+ * output structurally — the math is visible but unstyled (KaTeX falls
+ * back to browser defaults for fonts + spacing). This is intentional:
+ * consumers who don't render math don't pay the ~70 KB cost of the
+ * KaTeX CSS.
+ *
+ * The overrides below:
+ *   1. Import KaTeX's bundled stylesheet
+ *   2. Force `.katex` to inherit its text color from the surrounding
+ *      context, so math in a `.dark` tree picks up `text-foreground`
+ *      instead of KaTeX's hard-coded black.
+ */
+
+@import "katex/dist/katex.min.css";
+
+.katex {
+  color: currentColor;
+}
+
+/* Block-level (display-style) math gets a bit of breathing room. */
+.katex-block,
+.katex-display {
+  margin: 1em 0;
+}
