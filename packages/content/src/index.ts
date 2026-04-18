@@ -34,3 +34,22 @@ export { BlockMath, InlineMath, mathVariants, type MathProps } from "./math";
 // Persistent preferences (localStorage-backed, cross-component + cross-tab sync)
 export { getPref, setPref, subscribe, usePref } from "./pref-store";
 export { PersistentTabs, type PersistentTabsProps } from "./persistent-tabs";
+
+// Composed tabs — package manager + language pickers with per-PM / per-lang
+// command generators baked in.
+export {
+  PackageManagerTabs,
+  type PackageManagerTabsProps,
+} from "./package-manager-tabs";
+export {
+  commandFor,
+  PACKAGE_MANAGERS,
+  type PackageManager,
+  type PackageManagerVerb,
+} from "./utils/pm-commands";
+export {
+  LanguageTabs,
+  Example,
+  type LanguageTabsProps,
+  type ExampleProps,
+} from "./language-tabs";
