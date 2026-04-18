@@ -2,6 +2,8 @@
 
 import type React from "react";
 
+import { Heading } from "../data-display/heading";
+
 export function PageHeader({
   title,
   description,
@@ -14,7 +16,9 @@ export function PageHeader({
   return (
     <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
       <div className="max-w-3xl">
-        <h1 className="type-h2 text-foreground">{title}</h1>
+        <Heading as="h1" level={2}>
+          {title}
+        </Heading>
         {description ? (
           <p className="mt-3 text-sm/6 text-muted-foreground">{description}</p>
         ) : null}
