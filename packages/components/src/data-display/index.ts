@@ -7,4 +7,5 @@ export * from "./divider";
 export * from "./heading";
 export * from "./image-with-fallback";
 export * from "./skeleton";
+export * from "./stat";
 export * from "./table";
