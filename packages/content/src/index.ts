@@ -17,3 +17,13 @@
 // Storage key constants — exported early so consumers can wire their own
 // persistence layer against the same namespace.
 export * from "./utils/storage-keys";
+
+// Code rendering
+export { CodeBlock, type CodeBlockProps } from "./code-block";
+export {
+  createHighlighter,
+  getDefaultHighlighter,
+  DEFAULT_LANGS,
+  DEFAULT_THEMES,
+  type ContentHighlighter,
+} from "./utils/default-highlighter";

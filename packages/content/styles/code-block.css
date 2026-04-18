@@ -1,0 +1,35 @@
+/*
+ * @poeticui/content — CodeBlock dual-theme stylesheet.
+ *
+ * Shiki emits code with both light + dark colors as CSS variables on
+ * every token span. This stylesheet picks between them based on the
+ * `.dark` ancestor class. Without these rules, code renders fine in the
+ * light theme but won't flip on dark mode.
+ *
+ * Opt-in: import this file from your app entry (or equivalent):
+ *
+ *     import "@poeticui/content/styles/code-block";
+ *
+ * The selectors are scoped under `.shiki` (Shiki's default class) so
+ * they won't accidentally touch unrelated DOM.
+ */
+
+/* Light mode (default) — use --shiki-light / --shiki-light-bg vars. */
+.shiki {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+.shiki span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg, transparent);
+}
+
+/* Dark mode — swap in --shiki-dark / --shiki-dark-bg vars. */
+.dark .shiki {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
+.dark .shiki span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg, transparent);
+}

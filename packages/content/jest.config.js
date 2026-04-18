@@ -21,7 +21,15 @@ module.exports = {
     '^@poeticui/components/(.+)$': '<rootDir>/../components/src/$1/index.ts',
     '^@poeticui/components$': '<rootDir>/../components/src/index.ts',
     '^@poeticui/tokens$': '<rootDir>/../tokens/src/index.ts',
+    // Shiki is ESM-only and its transitive deps can't be evaluated by
+    // Jest's default CJS runtime. Unit tests use a minimal mock that
+    // emits Shiki-shaped HTML — enough to verify wrapper logic (lang
+    // fallback, className passthrough, custom-highlighter handoff).
+    // Real Shiki output is verified visually via Storybook + the static
+    // build pipeline.
+    '^shiki$': '<rootDir>/src/__tests__/mocks/shiki.ts',
   },
   testPathIgnorePatterns: ['/node_modules/'],
+  testRegex: '/__tests__/(?!mocks/).*\\.test\\.(ts|tsx)$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
 }

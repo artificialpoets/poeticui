@@ -18,6 +18,7 @@
     "./language-tabs": "./src/language-tabs.tsx",
     "./pref-store": "./src/pref-store.ts",
     "./storage-keys": "./src/utils/storage-keys.ts",
+    "./styles/code-block": "./styles/code-block.css",
     "./styles/katex": "./styles/katex.css"
   },
   "scripts": {
@@ -29,7 +30,8 @@
   "dependencies": {
     "@poeticui/components": "*",
     "@poeticui/tokens": "*",
-    "class-variance-authority": "^0.7.1"
+    "class-variance-authority": "^0.7.1",
+    "shiki": "^4.0.2"
   },
   "peerDependencies": {
     "react": "^19.0.0",
