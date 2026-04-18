@@ -8,11 +8,32 @@ import { Meta } from "@storybook/blocks";
 
 Poetic UI is split across three layers so a consumer app can pick only the pieces it needs:
 
-| Layer | Package | Purpose |
-|---|---|---|
-| **Tokens** | `@poeticui/tokens` | Pure CSS. OKLCH palette + semantic aliases + typography base + Tailwind v4 theme mapping. Works as a `<link>` in any HTML page. No React dependency. |
-| **Components** | `@poeticui/components` | ~50 React primitives. Consume tokens exclusively. Zero brand assumptions. This is what eventually publishes on npm. |
-| **Brand overlay** | `@ap/brand` (private) | AP-specific `AppShell`, sidebar brand badge, themed overrides (platform orange / poehost blue / intranet amber). Layered on top of the neutral library. |
+<table>
+  <thead>
+    <tr>
+      <th>Layer</th>
+      <th>Package</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Tokens</strong></td>
+      <td><code>@poeticui/tokens</code></td>
+      <td>Pure CSS. OKLCH palette + semantic aliases + typography base + Tailwind v4 theme mapping. Works as a <code>&lt;link&gt;</code> in any HTML page. No React dependency.</td>
+    </tr>
+    <tr>
+      <td><strong>Components</strong></td>
+      <td><code>@poeticui/components</code></td>
+      <td>~50 React primitives. Consume tokens exclusively. Zero brand assumptions. This is what eventually publishes on npm.</td>
+    </tr>
+    <tr>
+      <td><strong>Brand overlay</strong></td>
+      <td><code>@ap/brand</code> (private)</td>
+      <td>AP-specific <code>AppShell</code>, sidebar brand badge, themed overrides (platform orange / poehost blue / intranet amber). Layered on top of the neutral library.</td>
+    </tr>
+  </tbody>
+</table>
 
 Everything in this Storybook is the **middle layer** — neutral, brand-agnostic. The theme switcher in the toolbar flips between the default light/dark neutral themes.
 

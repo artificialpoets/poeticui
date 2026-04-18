@@ -1,0 +1,21 @@
+<!--
+  Runtime shim for the browser — gives any module that references bare
+  `process` a minimal Node-like global. Pairs with the Vite `define`
+  substitution in `main.ts` (which handles `process.env.X` at bundle
+  time).
+
+  This is needed because two primitives still import from `next/*`
+  (`src/core/link.tsx` → `next/link`, `src/data-display/avatar.tsx` →
+  `next/image`), and Next's client internals reference `process` at
+  module-load time. Tracked as DES-49 (decouple Link + Avatar from
+  next/*) — remove this shim once that's done.
+-->
+<script>
+  window.process = window.process || {
+    env: { NODE_ENV: "production" },
+    browser: true,
+    platform: "browser",
+    version: "",
+    versions: { node: "" },
+  };
+</script>

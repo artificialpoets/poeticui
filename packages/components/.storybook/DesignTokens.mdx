@@ -10,21 +10,82 @@ Poetic UI ships three kinds of tokens, composed in layers. Most components consu
 
 These are the aliases most components use. They auto-flip in dark mode because `:root` and `.dark` both define them.
 
-| Role | Token | Typical usage |
-|---|---|---|
-| Body text | `--foreground` | `text-foreground` |
-| Dimmed text | `--muted-foreground` | `text-muted-foreground` |
-| Page chrome | `--background` | `bg-background` |
-| Elevated surface | `--card` | `bg-card`, `bg-popover/90` |
-| Subtle surface | `--muted` | `bg-muted`, striped rows |
-| Divider | `--border` | `border-border`, `ring-border` |
-| Focus ring | `--ring` | `outline-ring`, `ring-ring` |
-| Brand accent | `--primary` + `--primary-foreground` | `bg-primary text-primary-foreground` |
-| Destructive | `--destructive` + `--destructive-foreground` | `text-destructive`, `bg-destructive/10` |
-| Success | `--success` | `text-success`, `bg-success/10` |
-| Warning | `--warning` | `text-warning`, `bg-warning/10` |
-| Info | `--info` | `text-info`, `bg-info/10` |
-| Chart data | `--chart-1` … `--chart-10` | `text-chart-1`, `bg-chart-1/20` (DATA, not UI) |
+<table>
+  <thead>
+    <tr>
+      <th>Role</th>
+      <th>Token</th>
+      <th>Typical usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Body text</td>
+      <td><code>--foreground</code></td>
+      <td><code>text-foreground</code></td>
+    </tr>
+    <tr>
+      <td>Dimmed text</td>
+      <td><code>--muted-foreground</code></td>
+      <td><code>text-muted-foreground</code></td>
+    </tr>
+    <tr>
+      <td>Page chrome</td>
+      <td><code>--background</code></td>
+      <td><code>bg-background</code></td>
+    </tr>
+    <tr>
+      <td>Elevated surface</td>
+      <td><code>--card</code></td>
+      <td><code>bg-card</code>, <code>bg-popover/90</code></td>
+    </tr>
+    <tr>
+      <td>Subtle surface</td>
+      <td><code>--muted</code></td>
+      <td><code>bg-muted</code>, striped rows</td>
+    </tr>
+    <tr>
+      <td>Divider</td>
+      <td><code>--border</code></td>
+      <td><code>border-border</code>, <code>ring-border</code></td>
+    </tr>
+    <tr>
+      <td>Focus ring</td>
+      <td><code>--ring</code></td>
+      <td><code>outline-ring</code>, <code>ring-ring</code></td>
+    </tr>
+    <tr>
+      <td>Brand accent</td>
+      <td><code>--primary</code> + <code>--primary-foreground</code></td>
+      <td><code>bg-primary text-primary-foreground</code></td>
+    </tr>
+    <tr>
+      <td>Destructive</td>
+      <td><code>--destructive</code> + <code>--destructive-foreground</code></td>
+      <td><code>text-destructive</code>, <code>bg-destructive/10</code></td>
+    </tr>
+    <tr>
+      <td>Success</td>
+      <td><code>--success</code></td>
+      <td><code>text-success</code>, <code>bg-success/10</code></td>
+    </tr>
+    <tr>
+      <td>Warning</td>
+      <td><code>--warning</code></td>
+      <td><code>text-warning</code>, <code>bg-warning/10</code></td>
+    </tr>
+    <tr>
+      <td>Info</td>
+      <td><code>--info</code></td>
+      <td><code>text-info</code>, <code>bg-info/10</code></td>
+    </tr>
+    <tr>
+      <td>Chart data</td>
+      <td><code>--chart-1</code> … <code>--chart-10</code></td>
+      <td><code>text-chart-1</code>, <code>bg-chart-1/20</code> (DATA, not UI)</td>
+    </tr>
+  </tbody>
+</table>
 
 **Opacity slots:** every token accepts `/N` opacity — `bg-primary/10`, `border-destructive/40`, `ring-ring/50`. Prefer these over picking a lighter shade from the raw palette.
 
