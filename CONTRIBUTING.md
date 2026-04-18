@@ -59,7 +59,9 @@ Bump levels:
 - **minor** — new primitive, new prop on an existing primitive (non-breaking)
 - **major** — breaking API change (removed prop, renamed component, dependency bump that forces consumer changes)
 
-When the PR merges, the `Release` workflow opens or updates a "Version Packages" PR that aggregates pending changesets. Merging that PR publishes to GitHub Packages under `@poeticui/*` and creates GitHub Releases automatically. No manual `npm publish`.
+When the PR merges, the `Release` workflow opens or updates a "Version Packages" PR that aggregates pending changesets. Merging that PR applies the bumps + writes per-package `CHANGELOG.md` entries on `main`.
+
+**External publishing is currently deferred** (see the top of `.github/workflows/release.yml` for the rationale — the `@poeticui` scope doesn't match any GitHub org). Today's only consumer is the `artificialpoets/monorepo` submodule, which picks up new versions by bumping its submodule pin to the post-release SHA.
 
 Packages are versioned **independently** (`tokens@0.1.1` and `components@0.2.0` can ship together). Only packages listed in the changeset bump.
 
