@@ -1,9 +1,9 @@
 # RFC: Phase 2 — Poetic UI abstraction + `@ap/brand` split
 
-> Status: **Mostly shipped (7 of 9 steps landed; Storybook partial, /design-system deletion pending).**
+> Status: **Shipped — all 9 steps landed.**
 > Author: @matias
 > Linear: "Poetic UI Phase 2: Public-Ready Architecture" project (DES-38 → DES-49)
-> Last updated: 2026-04-18
+> Last updated: 2026-04-19
 
 ### Step status
 
@@ -14,11 +14,11 @@
 | 3. Extract `@ap/brand` | DES-43 | ✅ Done (`6c4ddb2c`) |
 | 4. Add `--info` + formalize theme contract | DES-42 | ✅ Done (`0dbb658f`) |
 | 5. Typography cleanup | DES-41 | ✅ Done (`813bdb99`) |
-| 6a. Storybook scaffold | DES-44 | ⚠️ Partial (`265d02e3`) — config + smoke story in place, boot deferred pending Tailwind-v4/Vite interop fix |
-| 6b. Port stories | DES-45 | ⏳ Blocked on 6a boot |
-| 6c. Delete `/design-system` page | DES-46 | ⏳ Blocked on 6b |
+| 6a. Storybook scaffold + Tailwind v4 wiring | DES-44 | ✅ Done — `@tailwindcss/vite` integrated, CSS layering fixed |
+| 6b. Port stories (~50 component stories + 11 MDX docs) | DES-45 | ✅ Done |
+| 6c. Delete `/design-system` page + 4 e2e specs | DES-46 | ✅ Done |
 | 7. Enforcement + CI | DES-47 | ✅ Done (`c09a45ba`) |
-| 8. Documentation sweep | DES-48 | ✅ In progress |
+| 8. Documentation sweep | DES-48 | ✅ Done |
 | 9. Verification | — | Final verification bundled with the PR |
 
 Follow-ups filed during the work:
@@ -138,7 +138,7 @@ packages/
     └── docs/RFC-ARCHITECTURE.md    ← this file
 ```
 
-**Dashboard consumes both directly.** `apps/dashboard/` imports from `@ap/ui/layout` for both neutral primitives (`SidebarLayout`) and brand-flavored ones (`AppShell`, `SidebarBrandBadge`). There's also a `/design-system` showcase page (`apps/dashboard/app/design-system/`) — we're going to delete it in favor of Storybook.
+**Dashboard consumes both directly.** `apps/dashboard/` imports from `@poeticui/components/layout` for neutral primitives (`SidebarLayout`, `StackedLayout`, `PageHeader`) and from `@ap/brand/layout` for brand-flavored ones (`AppShell`, `SidebarBrandBadge`, `AccountDropdownMenu`). The former `/design-system` showcase page has been deleted (DES-46); Storybook (`bun run storybook`) is the single source of truth for component previewing and documentation.
 
 ---
 

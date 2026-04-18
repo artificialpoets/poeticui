@@ -611,8 +611,33 @@ Ship a PR that follows this template and a reviewer should only need to check yo
 
 ---
 
+## Storybook — preview & docs
+
+Every new component lands with a `<component>.stories.tsx` file next to the source. The Storybook surface is the design system reference — live previews, variant matrices, theme switcher, a11y checks, and MDX doc pages.
+
+```
+bun run storybook          # dev server on :6006
+bun run storybook:build    # static build → packages/components/storybook-static/
+```
+
+### Story file conventions
+
+- **File location**: `<component>.stories.tsx` next to the component file
+- **Title format**: `"<Category>/<Component>"` — one of `Core`, `Data Display`, `Forms`, `Feedback`, `Layout`, `Misc`, `Navigation`, `Tables`
+- **Meta**: `satisfies Meta<typeof Component>` with `tags: ["autodocs"]`
+- **argTypes**: `control: "select"` with explicit `options` for union-type props; `control: "boolean"` for booleans; omit for `React.ReactNode` slots
+- **Required exports**: `Default`, one story per meaningful variant, and a final `VariantMatrix` render for combinatorial review
+- **Composite families** (Dropdown, Dialog, Fieldset, Table): **one story file** in the family's barrel folder, multiple top-level stories showing different slot compositions
+
+Reference file: `src/core/button.stories.tsx` — matches every convention above.
+
+### MDX docs
+
+Category intros live at `.storybook/*.mdx`. `Welcome.mdx` is the landing page, `DesignTokens.mdx` documents the token contract + OKLCH palette, `ChartRecipes.mdx` holds Recharts composition patterns (charts live in the dashboard). Add one sentence to the relevant category MDX when introducing a new component.
+
 ## See also
 
 - `docs/RFC-ARCHITECTURE.md` — the neutral-primitives / branded-overlay split that shapes the library's future package structure.
 - `src/styles/tokens.css` — the full token map (re-exported from `@poeticui/tokens`).
 - `apps/dashboard/eslint.config.mjs` — the raw-color ban rule, for reference.
+- **Storybook** — `bun run storybook` from the monorepo root → `http://localhost:6006`. Full component catalog, live previews, theme switcher, a11y notes.
