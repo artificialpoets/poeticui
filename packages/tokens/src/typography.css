@@ -1,8 +1,8 @@
 /* AP Typography — heading element resets and utility classes.
-   Requires @ap/tokens/semantic (or @ap/tokens) for heading scale variables.
+   Requires @poeticui/tokens/semantic (or @poeticui/tokens) for heading scale variables.
 
    Usage (standalone): import after semantic.css
-   Usage (Tailwind v4): import via @ap/tokens barrel */
+   Usage (Tailwind v4): import via @poeticui/tokens barrel */
 
 @layer base {
   h1 {

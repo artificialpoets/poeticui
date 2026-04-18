@@ -1,8 +1,8 @@
 {
-  "name": "@ap/tokens",
+  "name": "@poeticui/tokens",
   "version": "0.1.0",
   "private": true,
-  "description": "AP design tokens — pure CSS, zero dependencies. Works in any context: Next.js, WordPress, plain HTML.",
+  "description": "Poetic UI design tokens — pure CSS, zero dependencies. Works in any context: Next.js, WordPress, plain HTML.",
   "exports": {
     ".":                  "./src/index.css",
     "./palette":          "./src/palette.css",
@@ -14,6 +14,6 @@
     "./themes/intranet":  "./src/themes/intranet.css"
   },
   "scripts": {
-    "build": "echo '@ap/tokens: source-only package, no build step'"
+    "build": "echo '@poeticui/tokens: source-only package, no build step'"
   }
 }

@@ -1,5 +1,5 @@
 /* Tailwind v4 utility mapping — maps semantic CSS vars to Tailwind color utilities.
-   Requires @ap/tokens/palette + @ap/tokens/semantic to be imported first.
+   Requires @poeticui/tokens/palette + @poeticui/tokens/semantic to be imported first.
    Consuming app must import 'tailwindcss' BEFORE this file.
 
    After importing, use: bg-background, text-foreground, bg-primary,

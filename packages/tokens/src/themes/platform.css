@@ -4,7 +4,7 @@
    THEME CONTRACT
    ==============
    A product theme MUST override the following variables in both :root and .dark.
-   All other semantic variables inherit from @ap/tokens/semantic and need not be repeated.
+   All other semantic variables inherit from @poeticui/tokens/semantic and need not be repeated.
 
    Required overrides:
      --primary                    Brand action color (buttons, links, active states)

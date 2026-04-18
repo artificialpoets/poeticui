@@ -1,10 +1,10 @@
 /* AP Semantic Tokens — maps palette colors to design system roles.
-   Requires @ap/tokens/palette (or @ap/tokens) to be imported first.
+   Requires @poeticui/tokens/palette (or @poeticui/tokens) to be imported first.
 
-   Usage (standalone): @import '@ap/tokens/palette'; @import '@ap/tokens/semantic';
+   Usage (standalone): @import '@poeticui/tokens/palette'; @import '@poeticui/tokens/semantic';
      -> --primary, --background, etc. available as CSS custom properties
 
-   Usage (Tailwind v4): import via @ap/tokens barrel — do not import this file directly. */
+   Usage (Tailwind v4): import via @poeticui/tokens barrel — do not import this file directly. */
 
 @layer base {
   :root {
