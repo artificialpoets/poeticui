@@ -26,6 +26,7 @@
     "./code-block": "./src/code-block.tsx",
     "./math": "./src/math.tsx",
     "./persistent-tabs": "./src/persistent-tabs.tsx",
+    "./client-code-block": "./src/client-code-block.tsx",
     "./package-manager-tabs": "./src/package-manager-tabs.tsx",
     "./language-tabs": "./src/language-tabs.tsx",
     "./pref-store": "./src/pref-store.ts",
