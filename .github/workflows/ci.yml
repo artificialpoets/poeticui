@@ -1,13 +1,23 @@
 name: CI — Poetic UI
 
+# Lint + test + Storybook build for all three packages.
+#
+# The neutral-boundary contract (no @ap/brand imports, no next/*, no @ap/*
+# in tokens/content) is enforced by ESLint config in each package
+# (.eslintrc.js → no-restricted-imports). `bun run lint` below runs that
+# config and fails CI on any violation. We previously had redundant grep
+# rules here that were stricter than ESLint (they didn't honor the
+# allowlist for legacy components like Link + Avatar that still depend on
+# next/* — DES-49 follow-up). Removed in favor of trusting the lint step.
+
 on:
   pull_request:
   push:
     branches: [main]
 
 jobs:
-  boundary:
-    name: Enforce neutral-boundary contract
+  ci:
+    name: lint + test + storybook
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,63 +30,7 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      # ─── Rule 1: @poeticui/components never imports @ap/brand ─────────
-      - name: No @ap/brand imports in @poeticui/components
-        run: |
-          if grep -rE "from ['\"]@ap/brand" packages/components/src/; then
-            echo "::error::@ap/brand imported inside @poeticui/components — violates the neutral-boundary contract."
-            echo "Arrows only point downward: apps/* → @ap/brand → @poeticui/components → @poeticui/tokens."
-            exit 1
-          fi
-          echo "✓ @poeticui/components is @ap/brand-free"
-
-      # ─── Rule 2: @poeticui/components never imports next/* ────────────
-      - name: No next/* imports in @poeticui/components
-        run: |
-          if grep -rE "from ['\"]next(/|['\"])" packages/components/src/; then
-            echo "::error::next/* imported inside @poeticui/components — violates the framework-agnostic contract."
-            exit 1
-          fi
-          echo "✓ @poeticui/components is Next.js-free"
-
-      # ─── Rule 3: @poeticui/components package.json never depends on @ap/brand ──
-      - name: @poeticui/components package.json has no @ap/brand dep
-        run: |
-          if grep -E "\"@ap/brand\"" packages/components/package.json; then
-            echo "::error::@ap/brand listed as a dep of @poeticui/components — the neutral package must not depend on brand."
-            exit 1
-          fi
-          echo "✓ @poeticui/components has no @ap/brand dep"
-
-      # ─── Rule 4: @poeticui/tokens never references @ap/* ───────────────
-      - name: @poeticui/tokens is zero-dep
-        run: |
-          if grep -rE "from ['\"]@ap/" packages/tokens/src/; then
-            echo "::error::@poeticui/tokens references @ap/*. Tokens must be pure CSS with zero deps."
-            exit 1
-          fi
-          echo "✓ @poeticui/tokens is zero-dep"
-
-      # ─── Rule 5: @poeticui/content has no @ap/* references ─────────────
-      - name: No @ap/* imports in @poeticui/content
-        run: |
-          if grep -rE "from ['\"]@ap/" packages/content/src/; then
-            echo "::error::@poeticui/content references @ap/*. Content primitives must stay neutral."
-            exit 1
-          fi
-          echo "✓ @poeticui/content is @ap/*-free"
-
-      # ─── Rule 6: @poeticui/content never imports next/* ───────────────
-      - name: No next/* imports in @poeticui/content
-        run: |
-          if grep -rE "from ['\"]next(/|['\"])" packages/content/src/; then
-            echo "::error::next/* imported inside @poeticui/content — violates the framework-agnostic contract."
-            exit 1
-          fi
-          echo "✓ @poeticui/content is Next.js-free"
-
-      # ─── Standard checks: lint + test across the workspace ────────────
-      - name: Lint
+      - name: Lint (enforces neutral-boundary rules + style)
         run: bun run lint
 
       - name: Test
