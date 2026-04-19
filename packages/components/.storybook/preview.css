@@ -23,9 +23,14 @@
 @import "@poeticui/tokens/tailwind-theme";
 @import "@poeticui/tokens/themes/neutral";
 @import "@poeticui/components/styles/components";
-/* Content primitives — CSS opt-in. Code-block dual-theme CSS vars + KaTeX fonts. */
-@import "@poeticui/content/styles/code-block";
-@import "@poeticui/content/styles/katex";
+/* Content primitives — CSS opt-in. Code-block dual-theme CSS vars + KaTeX
+   fonts. Imported via relative path (not "@poeticui/content/...") for the
+   same reason content-helpers.tsx uses relative imports: declaring
+   @poeticui/content as a devDep of @poeticui/components creates a build-
+   graph cycle (components → content → components). Relative paths
+   sidestep the cycle and resolve identically at build time. */
+@import "../../content/styles/code-block.css";
+@import "../../content/styles/katex.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
