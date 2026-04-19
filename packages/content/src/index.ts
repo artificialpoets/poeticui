@@ -21,6 +21,10 @@ export * from "./utils/storage-keys";
 // Code rendering
 export { CodeBlock, type CodeBlockProps } from "./code-block";
 export {
+  ClientCodeBlock,
+  type ClientCodeBlockProps,
+} from "./client-code-block";
+export {
   createHighlighter,
   getDefaultHighlighter,
   DEFAULT_LANGS,
