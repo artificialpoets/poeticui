@@ -1,9 +1,8 @@
 "use client";
 
+import { cx } from "@poeticui/components/lib";
 import { useEffect, useState } from "react";
 import type { BundledLanguage } from "shiki";
-
-import { cx } from "@poeticui/components/lib";
 
 import {
   DEFAULT_THEMES,
