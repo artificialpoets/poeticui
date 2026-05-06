@@ -10,3 +10,4 @@ export * from "./misc";
 export * from "./layout";
 export * from "./tables";
 export * from "./lib";
+export * from "./icons";

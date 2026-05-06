@@ -27,6 +27,7 @@
     "./misc": "./src/misc/index.ts",
     "./tables": "./src/tables/index.ts",
     "./lib": "./src/lib/index.ts",
+    "./icons": "./src/icons/index.ts",
     "./styles/tokens": "./src/styles/tokens.css",
     "./styles/components": "./src/styles/components.css",
     "./styles/themes/platform": "./src/styles/themes/platform.css",
@@ -45,7 +46,8 @@
   },
   "dependencies": {
     "@poeticui/tokens": "*",
-    "class-variance-authority": "^0.7.1"
+    "class-variance-authority": "^0.7.1",
+    "simple-icons": "^16.0.0"
   },
   "peerDependencies": {
     "react": "^19.0.0",
