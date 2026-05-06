@@ -48,6 +48,17 @@ export const SimpleIconsCatalogue: Story = {
   ),
 };
 
+/** Hand-curated single-colour brand SVGs for trademark-blocked brands. */
+export const CustomBrandsCatalogue: Story = {
+  render: () => (
+    <Catalogue
+      title="Custom curated brands"
+      names={SERVICE_ICON_NAMES.customBrands}
+      brandColor
+    />
+  ),
+};
+
 /** Trademark-blocked brands — Lucide fallbacks with brand tint. */
 export const FallbackCatalogue: Story = {
   render: () => (
