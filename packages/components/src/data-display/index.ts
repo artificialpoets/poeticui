@@ -4,6 +4,8 @@ export * from "./avatar";
 export * from "./card";
 export * from "./description-list";
 export * from "./divider";
+export * from "./fanout-map";
+export * from "./funnel";
 export * from "./heading";
 export * from "./image-with-fallback";
 export * from "./skeleton";
