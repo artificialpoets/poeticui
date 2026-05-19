@@ -3,10 +3,10 @@
 > A neutral, agent-friendly React design system. Tokens, components, and technical-content primitives. Open source under Apache-2.0.
 
 ```bash
-bun  add @artificialpoets/poeticui
-pnpm add @artificialpoets/poeticui
-npm  install @artificialpoets/poeticui
-yarn add @artificialpoets/poeticui
+bun  add poeticui
+pnpm add poeticui
+npm  install poeticui
+yarn add poeticui
 ```
 
 For technical-content surfaces (docs pages, API references, marketing landing pages) — opt-in, heavy peers (Shiki, KaTeX):
@@ -24,7 +24,7 @@ bun add @artificialpoets/components @artificialpoets/tokens
 ## Quick start
 
 ```tsx
-import { Button, Card, Heading, Text, Badge } from "@artificialpoets/poeticui";
+import { Button, Card, Heading, Text, Badge } from "poeticui";
 
 export default function HelloWorld() {
   return (
@@ -43,7 +43,7 @@ Wire the CSS once in your app entry — `globals.css`, `src/styles.css`, or equi
 ```css
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
-@import "@artificialpoets/poeticui/styles/tokens";
+@import "poeticui/styles/tokens";
 
 /* Optional: layer your brand by overriding the 6-slot theme contract */
 @layer base {
@@ -65,7 +65,7 @@ That's it. The library paints with a neutral theme by default; the six-slot over
 
 | Package | Purpose |
 |---|---|
-| [`@artificialpoets/poeticui`](./packages/poeticui) | One-install convenience layer — re-exports tokens + components. |
+| [`poeticui`](./packages/poeticui) | One-install convenience layer — re-exports tokens + components. |
 | [`@artificialpoets/tokens`](./packages/tokens) | Pure CSS. OKLCH palette, semantic role variables, Tailwind v4 theme mapping, neutral default theme. Zero JS deps. |
 | [`@artificialpoets/components`](./packages/components) | ~50 React primitives. Consume tokens exclusively. HeadlessUI v2 + CVA. Framework-agnostic (no `next/*` imports). |
 | [`@artificialpoets/content`](./packages/content) | Technical-content primitives: Shiki-powered `<CodeBlock>` (server-rendered), KaTeX `<BlockMath>`/`<InlineMath>`, `<PersistentTabs>`, `<PackageManagerTabs>`, `<LanguageTabs>`. Opt-in — consumers who don't install pay zero bytes. |

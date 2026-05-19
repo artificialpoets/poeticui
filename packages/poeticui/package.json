@@ -1,9 +1,21 @@
 {
-  "name": "@artificialpoets/poeticui",
+  "name": "poeticui",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "type": "module",
-  "description": "Poetic UI — one install for tokens + components. The single-package convenience layer over @artificialpoets/tokens and @artificialpoets/components.",
+  "description": "Poetic UI — a neutral, agent-friendly React design system. One install for tokens + components. Apache-2.0.",
+  "keywords": [
+    "design-system",
+    "react",
+    "tailwind",
+    "components",
+    "tokens",
+    "ui",
+    "headless-ui",
+    "oklch",
+    "themable",
+    "agent-friendly"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/artificialpoets/poeticui.git",

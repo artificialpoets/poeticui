@@ -116,7 +116,7 @@
       },
     },
     "packages/poeticui": {
-      "name": "@artificialpoets/poeticui",
+      "name": "poeticui",
       "version": "0.1.0",
       "dependencies": {
         "@artificialpoets/components": "^0.1.0",
@@ -146,8 +146,6 @@
     "@artificialpoets/components": ["@artificialpoets/components@workspace:packages/components"],
 
     "@artificialpoets/content": ["@artificialpoets/content@workspace:packages/content"],
-
-    "@artificialpoets/poeticui": ["@artificialpoets/poeticui@workspace:packages/poeticui"],
 
     "@artificialpoets/tokens": ["@artificialpoets/tokens@workspace:packages/tokens"],
 
@@ -1680,6 +1678,8 @@
     "pirates": ["pirates@4.0.7", "", {}, "sha512-TfySrs/5nm8fQJDcBDuUng3VOUKsd7S+zqvbOTiGXHfxX4wK31ard+hoNuvkicM/2YFzlpDgABOevKSsB4G/FA=="],
 
     "pkg-dir": ["pkg-dir@4.2.0", "", { "dependencies": { "find-up": "^4.0.0" } }, "sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ=="],
+
+    "poeticui": ["poeticui@workspace:packages/poeticui"],
 
     "polished": ["polished@4.3.1", "", { "dependencies": { "@babel/runtime": "^7.17.8" } }, "sha512-OBatVyC/N7SCW/FaDHrSd+vn0o5cS855TOmYi4OkdWUMSJCET/xip//ch8xGUvtr3i44X9LVyWwQlRMTN3pwSA=="],
 
