@@ -42,30 +42,30 @@ jobs:
       - name: Anti-hallucination conventions (CONTRIBUTING §9)
         run: |
           set -e
-          echo "→ Checking that throw new Error() in components uses the [@poeticui/components/...] prefix"
-          UNPREFIXED=$(grep -rEn 'throw new Error\(' packages/components/src --include='*.tsx' --include='*.ts' \
-            | grep -v '\[@poeticui/components/' \
-            || true)
+          echo "→ Checking that any file with throw new Error() also includes the [@poeticui/components/...] prefix"
+          UNPREFIXED=""
+          while IFS= read -r f; do
+            if ! grep -q "\[@poeticui/components/" "$f"; then
+              UNPREFIXED="$UNPREFIXED$f"$'\n'
+            fi
+          done < <(grep -rl "throw new Error(" packages/components/src --include='*.tsx' --include='*.ts' 2>/dev/null || true)
           if [ -n "$UNPREFIXED" ]; then
-            echo "FAIL: unprefixed throw new Error() — see CONTRIBUTING §9.3:"
+            echo "FAIL: files with throw new Error() but no [@poeticui/components/...] prefix — see CONTRIBUTING §9.3:"
             echo "$UNPREFIXED"
             exit 1
           fi
-          echo "→ Checking that primitives have a JSDoc @example block"
-          # Audit pass tracked in AP-503; once complete, switch to fail.
-          MISSING=$(bash -c '
-            for f in $(find packages/components/src -name "*.tsx" \
-                      ! -name "*.stories.tsx" \
-                      ! -path "*/__tests__/*"); do
-              if ! grep -q "@example" "$f"; then
-                echo "$f"
-              fi
-            done
-          ')
+          echo "OK: every throw new Error() lives in a file that contains the [@poeticui/components/...] prefix"
+
+          echo "→ Checking that primitives have a JSDoc @example block (warn-only until AP-503 sweep completes)"
+          MISSING=""
+          while IFS= read -r f; do
+            if ! grep -q "@example" "$f"; then
+              MISSING="$MISSING$f"$'\n'
+            fi
+          done < <(find packages/components/src -name "*.tsx" ! -name "*.stories.tsx" ! -path "*/__tests__/*" 2>/dev/null)
           if [ -n "$MISSING" ]; then
-            COUNT=$(echo "$MISSING" | wc -l | tr -d " ")
-            echo "WARN: $COUNT component file(s) missing @example block (tracked by AP-503):"
-            echo "$MISSING"
+            COUNT=$(echo -n "$MISSING" | grep -c '^')
+            echo "WARN: $COUNT component file(s) missing @example block (tracked by AP-503)"
           else
             echo "OK: every component has @example"
           fi
