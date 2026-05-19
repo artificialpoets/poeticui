@@ -1,0 +1,50 @@
+{
+  "name": "@artificialpoets/poeticui",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "type": "module",
+  "description": "Poetic UI — one install for tokens + components. The single-package convenience layer over @artificialpoets/tokens and @artificialpoets/components.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artificialpoets/poeticui.git",
+    "directory": "packages/poeticui"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "files": [
+    "src",
+    "styles"
+  ],
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "sideEffects": [
+    "./styles/*.css"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./core": "./src/core.ts",
+    "./data-display": "./src/data-display.ts",
+    "./forms": "./src/forms.ts",
+    "./feedback": "./src/feedback.ts",
+    "./layout": "./src/layout.ts",
+    "./misc": "./src/misc.ts",
+    "./navigation": "./src/navigation.ts",
+    "./tables": "./src/tables.ts",
+    "./icons": "./src/icons.ts",
+    "./lib": "./src/lib.ts",
+    "./styles/tokens": "./styles/tokens.css"
+  },
+  "dependencies": {
+    "@artificialpoets/components": "^0.1.0",
+    "@artificialpoets/tokens": "^0.1.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@headlessui/react": "^2.0.0",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^3.0.0"
+  }
+}

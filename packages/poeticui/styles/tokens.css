@@ -1,0 +1,6 @@
+/* @artificialpoets/poeticui — tokens entry.
+ * Pass-through to @artificialpoets/tokens so consumers have one CSS import
+ * to remember. Tokens carry zero JS — pure CSS, OKLCH palette, semantic
+ * variables, Tailwind v4 theme mapping, neutral default theme.
+ */
+@import "@artificialpoets/tokens";

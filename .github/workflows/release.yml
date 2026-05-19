@@ -76,7 +76,7 @@ jobs:
         run: |
           set -e
           PUBLISHED=""
-          for pkg in tokens components content; do
+          for pkg in tokens components content poeticui; do
             VERSION=$(node -p "require('./packages/$pkg/package.json').version")
             STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://registry.npmjs.org/@artificialpoets/$pkg/$VERSION")
             if [ "$STATUS" = "404" ]; then
