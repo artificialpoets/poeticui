@@ -1,15 +1,13 @@
 name: Release
 
-# Publishes `@artificialpoets/*` to public npm (https://registry.npmjs.org) and
-# manages versioning via Changesets. On push to `main`:
+# Publishes `@artificialpoets/*` to public npm (https://registry.npmjs.org).
+# Uses Changesets to open Version Packages PRs (for non-initial releases).
+# Falls back to explicit `npm publish` per package, because Changesets' built-in
+# publish has been observed to silently no-op in some bun + npm interop
+# scenarios (logs "success" without producing any actual npm publish output).
 #
-#   - If there are pending `.changeset/*.md` entries → opens or updates a
-#     "Version Packages" PR that bumps versions + writes CHANGELOG.md.
-#   - If there are no pending changesets AND local versions are ahead of
-#     the registry → publishes them.
-#
-# Authentication: NPM_TOKEN repository secret (npm Automation token, scoped
-# to @poeticui:write). Added via GitHub UI → Settings → Secrets → Actions.
+# Authentication: NPM_TOKEN repository secret (Automation token, or Granular
+# Access Token with @artificialpoets scope + Bypass 2FA enabled).
 
 on:
   push:
@@ -39,6 +37,13 @@ jobs:
         with:
           bun-version: 1.3.11
 
+      - name: Set up Node + npm
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+          scope: "@artificialpoets"
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
@@ -48,14 +53,45 @@ jobs:
       - name: Test
         run: bun run test
 
-      - name: Create Version Packages PR or publish to npm
+      - name: Configure npm auth
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          echo "Authenticated as: $(npm whoami)"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Open Version Packages PR (Changesets) — only when changesets exist
         uses: changesets/action@v1
         with:
           version: bun run version
-          publish: bun run release
+          # No `publish:` key here — explicit npm publish step below handles it.
           commit: "chore(release): version packages"
           title: "chore(release): version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish unpublished packages explicitly via npm
+        run: |
+          set -e
+          PUBLISHED=""
+          for pkg in tokens components content; do
+            VERSION=$(node -p "require('./packages/$pkg/package.json').version")
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://registry.npmjs.org/@artificialpoets/$pkg/$VERSION")
+            if [ "$STATUS" = "404" ]; then
+              echo "→ Publishing @artificialpoets/$pkg@$VERSION (registry HTTP $STATUS — not yet published)"
+              (cd packages/$pkg && npm publish --access=public)
+              PUBLISHED="$PUBLISHED @artificialpoets/$pkg@$VERSION"
+            else
+              echo "→ Skip @artificialpoets/$pkg@$VERSION (registry HTTP $STATUS — already published)"
+            fi
+          done
+          if [ -n "$PUBLISHED" ]; then
+            echo "Published:$PUBLISHED"
+          else
+            echo "No new packages to publish."
+          fi
+        env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
