@@ -8,7 +8,7 @@ import * as misc from "../misc";
 import * as navigation from "../navigation";
 import * as tables from "../tables";
 
-describe("@poeticui/components barrel exports", () => {
+describe("@artificialpoets/components barrel exports", () => {
   test("core exports", () => {
     expect(core.Button).toBeDefined();
     expect(core.TouchTarget).toBeDefined();

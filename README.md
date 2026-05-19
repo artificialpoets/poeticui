@@ -3,25 +3,25 @@
 > A neutral, agent-friendly React design system. Tokens, components, and technical-content primitives. Open source under Apache-2.0.
 
 ```bash
-bun  add @poeticui/components @poeticui/tokens
-pnpm add @poeticui/components @poeticui/tokens
-npm  install @poeticui/components @poeticui/tokens
-yarn add @poeticui/components @poeticui/tokens
+bun  add @artificialpoets/components @artificialpoets/tokens
+pnpm add @artificialpoets/components @artificialpoets/tokens
+npm  install @artificialpoets/components @artificialpoets/tokens
+yarn add @artificialpoets/components @artificialpoets/tokens
 ```
 
 For technical-content surfaces (docs pages, API references, marketing landing pages):
 
 ```bash
-bun add @poeticui/content
+bun add @artificialpoets/content
 ```
 
 ## Quick start
 
 ```tsx
-import "@poeticui/tokens"; // once in your app entry CSS via @import
+import "@artificialpoets/tokens"; // once in your app entry CSS via @import
 
-import { Button } from "@poeticui/components/core";
-import { Card, Heading, Text, Badge } from "@poeticui/components/data-display";
+import { Button } from "@artificialpoets/components/core";
+import { Card, Heading, Text, Badge } from "@artificialpoets/components/data-display";
 
 export default function HelloWorld() {
   return (
@@ -40,7 +40,7 @@ Wire the CSS once in your app entry — `globals.css`, `src/styles.css`, or equi
 ```css
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
-@import "@poeticui/tokens";
+@import "@artificialpoets/tokens";
 
 /* Optional: layer your brand by overriding the 6-slot theme contract */
 @layer base {
@@ -62,9 +62,9 @@ That's it. The library paints with a neutral theme by default; the six-slot over
 
 | Package | Purpose |
 |---|---|
-| [`@poeticui/tokens`](./packages/tokens) | Pure CSS. OKLCH palette, semantic role variables, Tailwind v4 theme mapping, neutral default theme. Zero JS deps. |
-| [`@poeticui/components`](./packages/components) | ~50 React primitives. Consume tokens exclusively. HeadlessUI v2 + CVA. Framework-agnostic (no `next/*` imports). |
-| [`@poeticui/content`](./packages/content) | Technical-content primitives: Shiki-powered `<CodeBlock>` (server-rendered), KaTeX `<BlockMath>`/`<InlineMath>`, `<PersistentTabs>`, `<PackageManagerTabs>`, `<LanguageTabs>`. Opt-in — consumers who don't install pay zero bytes. |
+| [`@artificialpoets/tokens`](./packages/tokens) | Pure CSS. OKLCH palette, semantic role variables, Tailwind v4 theme mapping, neutral default theme. Zero JS deps. |
+| [`@artificialpoets/components`](./packages/components) | ~50 React primitives. Consume tokens exclusively. HeadlessUI v2 + CVA. Framework-agnostic (no `next/*` imports). |
+| [`@artificialpoets/content`](./packages/content) | Technical-content primitives: Shiki-powered `<CodeBlock>` (server-rendered), KaTeX `<BlockMath>`/`<InlineMath>`, `<PersistentTabs>`, `<PackageManagerTabs>`, `<LanguageTabs>`. Opt-in — consumers who don't install pay zero bytes. |
 
 **Arrows only point downward:** `consumers → content → components → tokens`. The neutral-boundary contract is enforced by CI (`.github/workflows/ci.yml`).
 
@@ -95,24 +95,24 @@ Seven non-negotiable rules — full RFC in [`packages/components/docs/RFC-ARCHIT
 Built on the lessons of shipping a design system across four production dashboards. The differentiators vs other React UI libraries:
 
 - **Real package, not copy-paste.** Versioned npm releases — one bug fix propagates to every consumer. No re-running a CLI per repo.
-- **`@poeticui/content`** — server-rendered `<CodeBlock>`, package-manager / language tabs with cross-tab preference sync, KaTeX math. No equivalent in shadcn or Mantine.
+- **`@artificialpoets/content`** — server-rendered `<CodeBlock>`, package-manager / language tabs with cross-tab preference sync, KaTeX math. No equivalent in shadcn or Mantine.
 - **Theme as a contract** — six CSS variables rebrand the whole library. Light and dark are first-class, not a `dark:` afterthought.
-- **Built for agents.** `data-component` attributes on every primitive. JSDoc `@example` blocks (the canonical examples agents copy). Stable error messages with `[@poeticui/components/<category>/<name>]` prefix. Forthcoming: a machine-readable component manifest (`registry.json`), `llms.txt`, MCP server, JSON token export.
-- **CI-enforced framework-agnostic.** No `next/*` imports allowed in `@poeticui/components`. Tested in Next.js, Vite, Astro, Remix, plain SPAs.
+- **Built for agents.** `data-component` attributes on every primitive. JSDoc `@example` blocks (the canonical examples agents copy). Stable error messages with `[@artificialpoets/components/<category>/<name>]` prefix. Forthcoming: a machine-readable component manifest (`registry.json`), `llms.txt`, MCP server, JSON token export.
+- **CI-enforced framework-agnostic.** No `next/*` imports allowed in `@artificialpoets/components`. Tested in Next.js, Vite, Astro, Remix, plain SPAs.
 
 ## Architecture
 
 ```
 your-app
-   │ imports @poeticui/components, @poeticui/tokens, optionally @poeticui/content
+   │ imports @artificialpoets/components, @artificialpoets/tokens, optionally @artificialpoets/content
    ▼
-@poeticui/content       (opt-in: Shiki + KaTeX + tab primitives)
-   │ depends on @poeticui/components + @poeticui/tokens
+@artificialpoets/content       (opt-in: Shiki + KaTeX + tab primitives)
+   │ depends on @artificialpoets/components + @artificialpoets/tokens
    ▼
-@poeticui/components    (React UI primitives)
-   │ depends on @poeticui/tokens
+@artificialpoets/components    (React UI primitives)
+   │ depends on @artificialpoets/tokens
    ▼
-@poeticui/tokens        (pure CSS, zero deps)
+@artificialpoets/tokens        (pure CSS, zero deps)
 ```
 
 ## Develop

@@ -1,10 +1,10 @@
 /*
- * @poeticui/content — KaTeX stylesheet (opt-in).
+ * @artificialpoets/content — KaTeX stylesheet (opt-in).
  *
  * Import this once in your app entry (or any module that runs early) to
  * load KaTeX's visual styling:
  *
- *     import "@poeticui/content/styles/katex";
+ *     import "@artificialpoets/content/styles/katex";
  *
  * Without this import, <BlockMath> / <InlineMath> render their KaTeX
  * output structurally — the math is visible but unstyled (KaTeX falls

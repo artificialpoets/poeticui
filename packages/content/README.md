@@ -1,4 +1,4 @@
-# @poeticui/content
+# @artificialpoets/content
 
 **Primitives for rendering technical content — syntax-highlighted code, math equations, persistent multi-variant tabs.**
 
@@ -11,15 +11,15 @@ Part of the [Poetic UI](https://github.com/artificial-poets/monorepo/tree/main/p
 ## Install
 
 ```bash
-bun  add @poeticui/content
-pnpm add @poeticui/content
-npm  install @poeticui/content
-yarn add @poeticui/content
+bun  add @artificialpoets/content
+pnpm add @artificialpoets/content
+npm  install @artificialpoets/content
+yarn add @artificialpoets/content
 ```
 
 Peer dependencies: `react@^19`, `react-dom@^19`.
 
-Runtime deps pulled in automatically: `shiki`, `katex`, `react-katex`, plus the two sibling workspace packages `@poeticui/components` and `@poeticui/tokens`.
+Runtime deps pulled in automatically: `shiki`, `katex`, `react-katex`, plus the two sibling workspace packages `@artificialpoets/components` and `@artificialpoets/tokens`.
 
 ## Quick start
 
@@ -32,11 +32,11 @@ import {
   LanguageTabs,
   PackageManagerTabs,
   PersistentTabs,
-} from "@poeticui/content";
+} from "@artificialpoets/content";
 
 // Opt-in CSS — import once in your app entry:
-import "@poeticui/content/styles/code-block";
-import "@poeticui/content/styles/katex";
+import "@artificialpoets/content/styles/code-block";
+import "@artificialpoets/content/styles/katex";
 
 export default function QuickStart() {
   return (
@@ -90,7 +90,7 @@ export default function QuickStart() {
 Need more grammars? Build your own highlighter and pass it in:
 
 ```tsx
-import { CodeBlock, createHighlighter } from "@poeticui/content";
+import { CodeBlock, createHighlighter } from "@artificialpoets/content";
 
 const highlighter = await createHighlighter({
   langs: ["ts", "bash", "php", "ruby", "rust"],
@@ -109,11 +109,11 @@ Client-rendered via `react-katex`. Two sizes (`default`, `compact`) via CVA:
 <InlineMath math="e^{i\pi} + 1 = 0" size="compact" />
 ```
 
-**CSS is opt-in.** `import "@poeticui/content/styles/katex"` once in your app entry to pull in KaTeX's fonts and spacing. Without it, math renders structurally but looks plain. The bundled CSS also adds `color: currentColor` so equations inherit your theme's text color automatically.
+**CSS is opt-in.** `import "@artificialpoets/content/styles/katex"` once in your app entry to pull in KaTeX's fonts and spacing. Without it, math renders structurally but looks plain. The bundled CSS also adds `color: currentColor` so equations inherit your theme's text color automatically.
 
 ### `<PersistentTabs>` — generic tab strip with preference sync
 
-Built on `<SegmentedTabs>` from `@poeticui/components/navigation` plus `usePref()`. Every `<PersistentTabs>` instance sharing the same `storageKey` stays in lockstep on the page (same-tab) and across browser tabs (via the `storage` event).
+Built on `<SegmentedTabs>` from `@artificialpoets/components/navigation` plus `usePref()`. Every `<PersistentTabs>` instance sharing the same `storageKey` stays in lockstep on the page (same-tab) and across browser tabs (via the `storage` event).
 
 ```tsx
 <PersistentTabs
@@ -174,7 +174,7 @@ The package is designed so consumers can precisely pick what ships to the browse
 
 ### Layer 1 — Package
 
-**Don't install `@poeticui/content` and you pay zero bytes.** Most line-of-business dashboards and admin UIs fall here. This is the default. Only reach for the package when a concrete feature needs a primitive.
+**Don't install `@artificialpoets/content` and you pay zero bytes.** Most line-of-business dashboards and admin UIs fall here. This is the default. Only reach for the package when a concrete feature needs a primitive.
 
 ### Layer 2 — Import (subpath exports)
 
@@ -182,27 +182,27 @@ Per-component subpaths let you bypass the barrel for zero-risk tree-shaking — 
 
 ```tsx
 // Only pulls CodeBlock + Shiki. Nothing else from the package loads.
-import { CodeBlock } from "@poeticui/content/code-block";
+import { CodeBlock } from "@artificialpoets/content/code-block";
 
 // Only pulls Math + KaTeX.
-import { BlockMath } from "@poeticui/content/math";
+import { BlockMath } from "@artificialpoets/content/math";
 
 // Only pulls PersistentTabs — no CodeBlock, no Math.
-import { PersistentTabs } from "@poeticui/content/persistent-tabs";
+import { PersistentTabs } from "@artificialpoets/content/persistent-tabs";
 ```
 
 All subpaths:
 
-- `@poeticui/content` — barrel (everything)
-- `@poeticui/content/code-block`
-- `@poeticui/content/math`
-- `@poeticui/content/persistent-tabs`
-- `@poeticui/content/package-manager-tabs`
-- `@poeticui/content/language-tabs`
-- `@poeticui/content/pref-store`
-- `@poeticui/content/storage-keys`
-- `@poeticui/content/styles/code-block` — CSS
-- `@poeticui/content/styles/katex` — CSS
+- `@artificialpoets/content` — barrel (everything)
+- `@artificialpoets/content/code-block`
+- `@artificialpoets/content/math`
+- `@artificialpoets/content/persistent-tabs`
+- `@artificialpoets/content/package-manager-tabs`
+- `@artificialpoets/content/language-tabs`
+- `@artificialpoets/content/pref-store`
+- `@artificialpoets/content/storage-keys`
+- `@artificialpoets/content/styles/code-block` — CSS
+- `@artificialpoets/content/styles/katex` — CSS
 
 ### Layer 3 — Route-level (Next App Router / equivalent)
 
@@ -213,7 +213,7 @@ In a framework that code-splits per route, any primitive only loads on the route
 Defer the heaviest primitives (Shiki's WASM is ~500KB with default grammars) to first use:
 
 ```tsx
-const { CodeBlock } = await import("@poeticui/content/code-block");
+const { CodeBlock } = await import("@artificialpoets/content/code-block");
 ```
 
 Or with React's `<Suspense>`:
@@ -222,7 +222,7 @@ Or with React's `<Suspense>`:
 import { lazy } from "react";
 
 const CodeBlock = lazy(() =>
-  import("@poeticui/content/code-block").then((m) => ({ default: m.CodeBlock })),
+  import("@artificialpoets/content/code-block").then((m) => ({ default: m.CodeBlock })),
 );
 ```
 
@@ -244,7 +244,7 @@ Practical impact: **Shiki never reaches the browser** for the tab components. Th
 
 ## Design tokens & theming
 
-Same rule as `@poeticui/components`: tokens-only. `bg-card` instead of `bg-white`, `text-foreground` instead of `text-zinc-900`. Every primitive flips with the `.dark` ancestor class for free, and picks up your brand's primary/secondary colors if you've layered a theme overlay on top of `@poeticui/tokens`.
+Same rule as `@artificialpoets/components`: tokens-only. `bg-card` instead of `bg-white`, `text-foreground` instead of `text-zinc-900`. Every primitive flips with the `.dark` ancestor class for free, and picks up your brand's primary/secondary colors if you've layered a theme overlay on top of `@artificialpoets/tokens`.
 
 ---
 

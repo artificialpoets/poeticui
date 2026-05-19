@@ -12,9 +12,9 @@ import "./preview.css";
  * Storybook preview — brand-agnostic neutral theme.
  *
  * Brand overlays (`@ap/brand/theme/*`) are deliberately NOT imported
- * here — the library Storybook is brand-agnostic so `@poeticui/components`
+ * here — the library Storybook is brand-agnostic so `@artificialpoets/components`
  * stays open-source-publishable. Consumers layer their own theme on top
- * of `@poeticui/tokens` in their app (see `packages/brand/theme/*` for
+ * of `@artificialpoets/tokens` in their app (see `packages/brand/theme/*` for
  * the AP-specific overrides).
  *
  * The `withThemeByClassName` decorator toggles the `.dark` class so the

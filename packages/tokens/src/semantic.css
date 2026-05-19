@@ -1,5 +1,5 @@
 /* Poetic UI Semantic Tokens — maps palette colors to design system roles.
-   Requires @poeticui/tokens/palette (or @poeticui/tokens) to be imported first.
+   Requires @artificialpoets/tokens/palette (or @artificialpoets/tokens) to be imported first.
 
    THEME CONTRACT
    ==============
@@ -28,10 +28,10 @@
    Components never write dark:<palette> pairs — they reference the token
    and let the mode switch happen automatically.
 
-   Usage (standalone): @import '@poeticui/tokens/palette'; @import '@poeticui/tokens/semantic';
+   Usage (standalone): @import '@artificialpoets/tokens/palette'; @import '@artificialpoets/tokens/semantic';
      -> --primary, --background, etc. available as CSS custom properties
 
-   Usage (Tailwind v4): import via @poeticui/tokens barrel — do not import this file directly. */
+   Usage (Tailwind v4): import via @artificialpoets/tokens barrel — do not import this file directly. */
 
 @layer base {
   :root {

@@ -1,5 +1,5 @@
 {
-  "name": "@poeticui/components",
+  "name": "@artificialpoets/components",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "type": "module",
@@ -40,14 +40,14 @@
   },
   "scripts": {
     "lint": "eslint src/",
-    "build": "echo '@poeticui/components: source-only package, no build step'",
+    "build": "echo '@artificialpoets/components: source-only package, no build step'",
     "test": "jest",
     "test:watch": "jest --watch",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build -o storybook-static"
   },
   "dependencies": {
-    "@poeticui/tokens": "*",
+    "@artificialpoets/tokens": "*",
     "class-variance-authority": "^0.7.1",
     "simple-icons": "^16.0.0"
   },

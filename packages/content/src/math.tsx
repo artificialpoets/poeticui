@@ -1,6 +1,6 @@
 "use client";
 
-import { cx } from "@poeticui/components/lib";
+import { cx } from "@artificialpoets/components/lib";
 import { cva, type VariantProps } from "class-variance-authority";
 import {
   BlockMath as ReactKatexBlock,
@@ -47,7 +47,7 @@ interface BaseMathProps extends MathVariantProps {
  * math. If you need server-rendered math (e.g. for SEO), swap this for
  * a pre-rendered server call to `katex.renderToString(...)`.
  *
- * **CSS opt-in:** requires `import "@poeticui/content/styles/katex"` in
+ * **CSS opt-in:** requires `import "@artificialpoets/content/styles/katex"` in
  * your app entry. Without it, math renders structurally but without
  * KaTeX's font + spacing.
  */

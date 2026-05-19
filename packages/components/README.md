@@ -1,12 +1,12 @@
-# @poeticui/components
+# @artificialpoets/components
 
 > ~50 neutral React UI primitives. Tokens-only styling. HeadlessUI v2. CVA variants. Framework-agnostic.
 
 ```bash
-bun  add @poeticui/components @poeticui/tokens
-pnpm add @poeticui/components @poeticui/tokens
-npm  install @poeticui/components @poeticui/tokens
-yarn add @poeticui/components @poeticui/tokens
+bun  add @artificialpoets/components @artificialpoets/tokens
+pnpm add @artificialpoets/components @artificialpoets/tokens
+npm  install @artificialpoets/components @artificialpoets/tokens
+yarn add @artificialpoets/components @artificialpoets/tokens
 ```
 
 Peer dependencies you also need: `react@^19`, `react-dom@^19`, `@headlessui/react@^2`, `clsx@^2`, `tailwind-merge@^3`, `motion@^12`, `lucide-react@^1`, `dayjs@^1.11`. Next.js is currently a peer too (DES-49 will decouple `Link` + `Avatar` from `next/*`).
@@ -14,15 +14,15 @@ Peer dependencies you also need: `react@^19`, `react-dom@^19`, `@headlessui/reac
 ## Quick start
 
 ```tsx
-import { Button } from "@poeticui/components/core";
-import { Card, Heading, Text, Badge } from "@poeticui/components/data-display";
+import { Button } from "@artificialpoets/components/core";
+import { Card, Heading, Text, Badge } from "@artificialpoets/components/data-display";
 
 export default function Example() {
   return (
     <Card>
       <Badge color="green">v0.1.0</Badge>
       <Heading as="h2">Welcome</Heading>
-      <Text>Built with @poeticui/components.</Text>
+      <Text>Built with @artificialpoets/components.</Text>
       <Button color="dark/zinc">Get started</Button>
     </Card>
   );
@@ -34,10 +34,10 @@ Wire the CSS once in your app entry — your `globals.css` or equivalent:
 ```css
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
-@import "@poeticui/tokens";
+@import "@artificialpoets/tokens";
 ```
 
-That's it. Components paint with the neutral theme by default. To rebrand, layer a theme overlay defining the 6 brand slots — see [`@poeticui/tokens`](../tokens) for the contract.
+That's it. Components paint with the neutral theme by default. To rebrand, layer a theme overlay defining the 6 brand slots — see [`@artificialpoets/tokens`](../tokens) for the contract.
 
 ## Component categories
 
@@ -45,17 +45,17 @@ Each category is a separate subpath export so bundlers tree-shake unused code, a
 
 | Subpath | Components |
 |---|---|
-| `@poeticui/components/core` | Button, Link, TouchTarget |
-| `@poeticui/components/data-display` | Avatar, Badge, BadgeButton, Card, Code, DescriptionList family, Divider, Heading, ImageWithFallback, Skeleton, Stat, Strong, Subheading, Table family, Text, TextLink |
-| `@poeticui/components/forms` | Checkbox, Combobox, Date-range-picker, Fieldset family (Field, Label, Description, ErrorMessage), Input, Listbox, Radio, Select, Switch family, Textarea |
-| `@poeticui/components/feedback` | Alert, Callout, Dialog family, EmptyState, Hint |
-| `@poeticui/components/layout` | DrawerShell, PageHeader, SectionHeader, SidebarLayout, StackedLayout |
-| `@poeticui/components/navigation` | Breadcrumbs, Navbar family, Pagination, SegmentedTabs, Sidebar family, Tabs |
-| `@poeticui/components/tables` | DataTable family, FilteredTable, TablePaginationFooter, useDataTableState, useFilteredTable |
-| `@poeticui/components/misc` | Dropdown family, Hint, Popover |
-| `@poeticui/components/icons` | ServiceIcon |
+| `@artificialpoets/components/core` | Button, Link, TouchTarget |
+| `@artificialpoets/components/data-display` | Avatar, Badge, BadgeButton, Card, Code, DescriptionList family, Divider, Heading, ImageWithFallback, Skeleton, Stat, Strong, Subheading, Table family, Text, TextLink |
+| `@artificialpoets/components/forms` | Checkbox, Combobox, Date-range-picker, Fieldset family (Field, Label, Description, ErrorMessage), Input, Listbox, Radio, Select, Switch family, Textarea |
+| `@artificialpoets/components/feedback` | Alert, Callout, Dialog family, EmptyState, Hint |
+| `@artificialpoets/components/layout` | DrawerShell, PageHeader, SectionHeader, SidebarLayout, StackedLayout |
+| `@artificialpoets/components/navigation` | Breadcrumbs, Navbar family, Pagination, SegmentedTabs, Sidebar family, Tabs |
+| `@artificialpoets/components/tables` | DataTable family, FilteredTable, TablePaginationFooter, useDataTableState, useFilteredTable |
+| `@artificialpoets/components/misc` | Dropdown family, Hint, Popover |
+| `@artificialpoets/components/icons` | ServiceIcon |
 
-The full root barrel re-exports everything: `import { Button } from "@poeticui/components"` works too — pick whichever import style you prefer.
+The full root barrel re-exports everything: `import { Button } from "@artificialpoets/components"` works too — pick whichever import style you prefer.
 
 ## Live preview — Storybook
 
@@ -99,7 +99,7 @@ Six CSS variables turn the neutral library into your brand:
 }
 ```
 
-Full theming guide in [`@poeticui/tokens`](../tokens).
+Full theming guide in [`@artificialpoets/tokens`](../tokens).
 
 ## Contributing
 

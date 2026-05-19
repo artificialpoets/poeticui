@@ -1,7 +1,7 @@
 "use client";
 
-import { cx } from "@poeticui/components/lib";
-import { SegmentedTabs } from "@poeticui/components/navigation";
+import { cx } from "@artificialpoets/components/lib";
+import { SegmentedTabs } from "@artificialpoets/components/navigation";
 import type { ReactNode } from "react";
 
 import { usePref } from "./pref-store";
@@ -41,7 +41,7 @@ export interface PersistentTabsProps<TValue extends string = string> {
  * localStorage and synced across every instance sharing the same
  * `storageKey`.
  *
- * Built on `<SegmentedTabs>` from `@poeticui/components/navigation` plus
+ * Built on `<SegmentedTabs>` from `@artificialpoets/components/navigation` plus
  * `usePref()` from `./pref-store`. Use this when you want:
  *
  *   - **Cross-instance sync**: two `<PersistentTabs storageKey="x">` on

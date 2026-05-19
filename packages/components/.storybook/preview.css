@@ -8,25 +8,25 @@
  *
  * Layering (top → bottom = earlier → later cascade):
  *   1. Tailwind v4 base (utilities + base layer)
- *   2. @poeticui/tokens palette         — 26-color OKLCH palette
- *   3. @poeticui/tokens semantic        — :root + .dark maps
- *   4. @poeticui/tokens typography      — h1–h4 base rules
- *   5. @poeticui/tokens tailwind-theme  — maps CSS vars → Tailwind utilities
- *   6. @poeticui/tokens themes/neutral  — shadcn-compatible default theme
- *   7. @poeticui/components/styles/components — generic component classes
+ *   2. @artificialpoets/tokens palette         — 26-color OKLCH palette
+ *   3. @artificialpoets/tokens semantic        — :root + .dark maps
+ *   4. @artificialpoets/tokens typography      — h1–h4 base rules
+ *   5. @artificialpoets/tokens tailwind-theme  — maps CSS vars → Tailwind utilities
+ *   6. @artificialpoets/tokens themes/neutral  — shadcn-compatible default theme
+ *   7. @artificialpoets/components/styles/components — generic component classes
  */
 
 @import "tailwindcss";
-@import "@poeticui/tokens/palette";
-@import "@poeticui/tokens/semantic";
-@import "@poeticui/tokens/typography";
-@import "@poeticui/tokens/tailwind-theme";
-@import "@poeticui/tokens/themes/neutral";
-@import "@poeticui/components/styles/components";
+@import "@artificialpoets/tokens/palette";
+@import "@artificialpoets/tokens/semantic";
+@import "@artificialpoets/tokens/typography";
+@import "@artificialpoets/tokens/tailwind-theme";
+@import "@artificialpoets/tokens/themes/neutral";
+@import "@artificialpoets/components/styles/components";
 /* Content primitives — CSS opt-in. Code-block dual-theme CSS vars + KaTeX
-   fonts. Imported via relative path (not "@poeticui/content/...") for the
+   fonts. Imported via relative path (not "@artificialpoets/content/...") for the
    same reason content-helpers.tsx uses relative imports: declaring
-   @poeticui/content as a devDep of @poeticui/components creates a build-
+   @artificialpoets/content as a devDep of @artificialpoets/components creates a build-
    graph cycle (components → content → components). Relative paths
    sidestep the cycle and resolve identically at build time. */
 @import "../../content/styles/code-block.css";

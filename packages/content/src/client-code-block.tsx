@@ -1,6 +1,6 @@
 "use client";
 
-import { cx } from "@poeticui/components/lib";
+import { cx } from "@artificialpoets/components/lib";
 import { useEffect, useState } from "react";
 import type { BundledLanguage } from "shiki";
 
@@ -45,7 +45,7 @@ export interface ClientCodeBlockProps {
  *
  * Companion styles (required for dark-mode flip):
  *
- *     import "@poeticui/content/styles/code-block";
+ *     import "@artificialpoets/content/styles/code-block";
  *
  * ```tsx
  * <ClientCodeBlock code={JSON.stringify(data, null, 2)} lang="json" />

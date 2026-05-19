@@ -1,5 +1,5 @@
 /**
- * Canonical localStorage keys used by @poeticui/content's persistent
+ * Canonical localStorage keys used by @artificialpoets/content's persistent
  * components. Exported so consumers can read/write them directly (e.g. to
  * set a default in server-rendered HTML, or to mirror the preference into
  * an app-specific analytics event).

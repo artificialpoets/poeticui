@@ -40,7 +40,7 @@ module.exports = {
       },
     ],
     // ─── Neutral-boundary enforcement (RFC Step 7 / Principle P3) ──────
-    // @poeticui/components is the public-ready neutral primitives package.
+    // @artificialpoets/components is the public-ready neutral primitives package.
     // It must never depend on AP-specific code, Next.js, or app paths.
     // If a component truly needs something brand-flavored, factor it out
     // and put the brand-aware wrapper in @ap/brand — or, for generic
@@ -54,17 +54,17 @@ module.exports = {
           {
             group: ['@ap/brand', '@ap/brand/*'],
             message:
-              '@poeticui/components is neutral — @ap/brand must never be imported here. Move the dependency upward to @ap/brand itself, or find a neutral abstraction.',
+              '@artificialpoets/components is neutral — @ap/brand must never be imported here. Move the dependency upward to @ap/brand itself, or find a neutral abstraction.',
           },
           {
             group: ['next', 'next/*'],
             message:
-              '@poeticui/components is framework-agnostic — no next/* imports. Factor into a Next-specific wrapper in the app or in @ap/brand. See DES-30 (Tabs → QueryTabs) for the template.',
+              '@artificialpoets/components is framework-agnostic — no next/* imports. Factor into a Next-specific wrapper in the app or in @ap/brand. See DES-30 (Tabs → QueryTabs) for the template.',
           },
           {
             group: ['@/*', '@ap/dashboard/*', '@ap/intranet/*', '@ap/poehost/*'],
             message:
-              '@poeticui/components must not reach into app code. Arrows only point downward: apps/* → @ap/brand → @poeticui/components → @poeticui/tokens.',
+              '@artificialpoets/components must not reach into app code. Arrows only point downward: apps/* → @ap/brand → @artificialpoets/components → @artificialpoets/tokens.',
           },
         ],
       },

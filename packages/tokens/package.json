@@ -1,5 +1,5 @@
 {
-  "name": "@poeticui/tokens",
+  "name": "@artificialpoets/tokens",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "type": "module",
@@ -25,6 +25,6 @@
     "./themes/neutral":   "./src/themes/neutral.css"
   },
   "scripts": {
-    "build": "echo '@poeticui/tokens: source-only package, no build step'"
+    "build": "echo '@artificialpoets/tokens: source-only package, no build step'"
   }
 }

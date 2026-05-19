@@ -1,4 +1,4 @@
-/* .type-h1 through .type-h4 now live in @poeticui/tokens/typography */
+/* .type-h1 through .type-h4 now live in @artificialpoets/tokens/typography */
 
 /* Tailwind v4: gives `@apply` below access to utility classes without
    re-emitting the Tailwind base. Needed when this file is compiled in

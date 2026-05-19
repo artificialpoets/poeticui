@@ -1,11 +1,11 @@
 /* Neutral — Poetic UI's default theme.
 
    Zinc-based, shadcn-compatible. This is what a consumer sees out of
-   the box if they `@import '@poeticui/tokens'` and don't layer a brand
+   the box if they `@import '@artificialpoets/tokens'` and don't layer a brand
    overlay on top. Looks clean, professional, and brand-agnostic.
 
    To bring your own brand:
-     1. Keep the @poeticui/tokens import.
+     1. Keep the @artificialpoets/tokens import.
      2. Add a second CSS file after it that overrides the 6 required slots:
           --primary, --primary-foreground, --ring,
           --sidebar-primary, --sidebar-primary-foreground, --sidebar-ring

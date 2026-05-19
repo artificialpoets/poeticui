@@ -1,12 +1,12 @@
-# @poeticui/tokens
+# @artificialpoets/tokens
 
 > Pure-CSS design tokens. OKLCH palette, semantic roles, Tailwind v4 theme mapping, neutral default theme. Zero JS dependencies.
 
 ```bash
-bun  add @poeticui/tokens
-pnpm add @poeticui/tokens
-npm  install @poeticui/tokens
-yarn add @poeticui/tokens
+bun  add @artificialpoets/tokens
+pnpm add @artificialpoets/tokens
+npm  install @artificialpoets/tokens
+yarn add @artificialpoets/tokens
 ```
 
 ## What's inside
@@ -24,7 +24,7 @@ Your app entry CSS (e.g. `globals.css`):
 ```css
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
-@import "@poeticui/tokens";
+@import "@artificialpoets/tokens";
 ```
 
 That's the whole install. Tokens are now available as Tailwind utility classes and as raw CSS variables (`var(--primary)`).
@@ -62,12 +62,12 @@ Import only the layers you need:
 
 | Subpath | What it is |
 |---|---|
-| `@poeticui/tokens` | Barrel — imports palette + semantic + typography + tailwind-theme in correct order |
-| `@poeticui/tokens/palette` | Just the OKLCH palette `--color-*` |
-| `@poeticui/tokens/semantic` | Just the semantic role tokens (`--primary`, `--foreground`, etc.) |
-| `@poeticui/tokens/typography` | Just the heading base styles |
-| `@poeticui/tokens/tailwind-theme` | Just the Tailwind v4 `@theme inline { }` mapping |
-| `@poeticui/tokens/themes/neutral` | The default neutral theme (zinc-based) |
+| `@artificialpoets/tokens` | Barrel — imports palette + semantic + typography + tailwind-theme in correct order |
+| `@artificialpoets/tokens/palette` | Just the OKLCH palette `--color-*` |
+| `@artificialpoets/tokens/semantic` | Just the semantic role tokens (`--primary`, `--foreground`, etc.) |
+| `@artificialpoets/tokens/typography` | Just the heading base styles |
+| `@artificialpoets/tokens/tailwind-theme` | Just the Tailwind v4 `@theme inline { }` mapping |
+| `@artificialpoets/tokens/themes/neutral` | The default neutral theme (zinc-based) |
 
 ## Token categories
 
@@ -115,7 +115,7 @@ Tokens are pure CSS. You can consume them without Tailwind via the CSS variables
 }
 ```
 
-Or via `@import "@poeticui/tokens/semantic"` if you only want the variables and not the Tailwind utility registration.
+Or via `@import "@artificialpoets/tokens/semantic"` if you only want the variables and not the Tailwind utility registration.
 
 ## License
 

@@ -48,7 +48,7 @@ const DEFAULT_PAGE_SIZE_OPTIONS = [25, 50, 100] as const;
  * DataTable — orchestrator for a sortable, filterable, paginated table.
  *
  * Thin shell around composable sub-components. All are individually exported
- * from `@poeticui/components/tables` for hand-assembly:
+ * from `@artificialpoets/components/tables` for hand-assembly:
  *
  * - `useDataTableState` — state + derived data hook
  * - `DataTableFilterChips` — active filter indicators

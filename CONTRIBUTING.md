@@ -32,7 +32,7 @@ git push -u origin feat/<name>
 
 ## Editing from the Artificial Poets monorepo
 
-This repo is also mounted as a **git submodule** inside the monorepo at `vendor/poeticui/`. Most of the time you'll edit `@poeticui/*` source from *inside* the monorepo so the dashboard hot-reloads. The commit flow has a gotcha:
+This repo is also mounted as a **git submodule** inside the monorepo at `vendor/poeticui/`. Most of the time you'll edit `@artificialpoets/*` source from *inside* the monorepo so the dashboard hot-reloads. The commit flow has a gotcha:
 
 1. `cd vendor/poeticui` to drop into the submodule.
 2. `git checkout -b feat/<name>`, make edits, `bun run lint && bun run test`, add a changeset, commit, push.
@@ -69,14 +69,14 @@ Packages are versioned **independently** (`tokens@0.1.1` and `components@0.2.0` 
 
 All six rules are checked by `.github/workflows/ci.yml`. A violation fails CI:
 
-1. `@poeticui/components` never imports `@ap/brand`.
-2. `@poeticui/components` never imports `next/*`.
-3. `@poeticui/components/package.json` has no `@ap/brand` dep.
-4. `@poeticui/tokens` has no `@ap/*` references.
-5. `@poeticui/content` has no `@ap/*` references.
-6. `@poeticui/content` never imports `next/*`.
+1. `@artificialpoets/components` never imports `@ap/brand`.
+2. `@artificialpoets/components` never imports `next/*`.
+3. `@artificialpoets/components/package.json` has no `@ap/brand` dep.
+4. `@artificialpoets/tokens` has no `@ap/*` references.
+5. `@artificialpoets/content` has no `@ap/*` references.
+6. `@artificialpoets/content` never imports `next/*`.
 
-If you need a piece of Next.js integration (e.g. `next/link`), write a thin wrapper in the **consumer** app — not in `@poeticui/components`. Example: `SegmentedTabs` (neutral) + `QueryTabs` (Next-aware wrapper in `apps/dashboard`).
+If you need a piece of Next.js integration (e.g. `next/link`), write a thin wrapper in the **consumer** app — not in `@artificialpoets/components`. Example: `SegmentedTabs` (neutral) + `QueryTabs` (Next-aware wrapper in `apps/dashboard`).
 
 ## File structure conventions
 

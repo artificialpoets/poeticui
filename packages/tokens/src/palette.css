@@ -1,10 +1,10 @@
 /* AP Color Palette — 26 custom colors, OKLCH color space.
    Consuming app must import 'tailwindcss' BEFORE this file.
 
-   Usage (standalone): @import '@poeticui/tokens/palette';
+   Usage (standalone): @import '@artificialpoets/tokens/palette';
      -> --color-orange-500 etc. available as CSS custom properties
 
-   Usage (Tailwind v4): import via @poeticui/tokens barrel in your app's CSS entry point.
+   Usage (Tailwind v4): import via @artificialpoets/tokens barrel in your app's CSS entry point.
      -> @theme block below registers colors as Tailwind design tokens. */
 
 @theme {

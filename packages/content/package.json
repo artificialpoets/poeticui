@@ -1,5 +1,5 @@
 {
-  "name": "@poeticui/content",
+  "name": "@artificialpoets/content",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "type": "module",
@@ -38,13 +38,13 @@
   },
   "scripts": {
     "lint": "eslint src/",
-    "build": "echo '@poeticui/content: source-only package, no build step'",
+    "build": "echo '@artificialpoets/content: source-only package, no build step'",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@poeticui/components": "*",
-    "@poeticui/tokens": "*",
+    "@artificialpoets/components": "*",
+    "@artificialpoets/tokens": "*",
     "@types/katex": "^0.16.8",
     "class-variance-authority": "^0.7.1",
     "katex": "^0.16.45",

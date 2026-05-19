@@ -64,7 +64,7 @@ export interface EmptyStateProps
  * EmptyState — general-purpose "no data" placeholder.
  *
  * Use when a list, section, or page has no content to show. For table-
- * specific empty rows, prefer `<DataTableEmptyState>` in `@poeticui/
+ * specific empty rows, prefer `<DataTableEmptyState>` in `@artificialpoets/
  * components/tables` which spans the table cell correctly.
  *
  * ```tsx

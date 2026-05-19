@@ -39,14 +39,14 @@ export function Alert(
   return <Dialog variant={alertVariant} {...props} />;
 }
 
-/** @deprecated Use `DialogTitle` from `@poeticui/components/feedback`. */
+/** @deprecated Use `DialogTitle` from `@artificialpoets/components/feedback`. */
 export const AlertTitle = DialogTitle;
 
-/** @deprecated Use `DialogDescription` from `@poeticui/components/feedback`. */
+/** @deprecated Use `DialogDescription` from `@artificialpoets/components/feedback`. */
 export const AlertDescription = DialogDescription;
 
-/** @deprecated Use `DialogBody` from `@poeticui/components/feedback`. */
+/** @deprecated Use `DialogBody` from `@artificialpoets/components/feedback`. */
 export const AlertBody = DialogBody;
 
-/** @deprecated Use `DialogActions` from `@poeticui/components/feedback`. */
+/** @deprecated Use `DialogActions` from `@artificialpoets/components/feedback`. */
 export const AlertActions = DialogActions;

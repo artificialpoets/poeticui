@@ -1,4 +1,4 @@
-# Contributing to @poeticui/components (Poetic UI)
+# Contributing to @artificialpoets/components (Poetic UI)
 
 This document is the written spec for **how we build components in Poetic UI**. Read it before adding or modifying anything in `packages/components/src/`. Reviewers will reference it; new contributors should come out of a single read knowing enough to ship a PR that looks like the rest of the library.
 
@@ -49,7 +49,7 @@ Use slot composition when the component has **more than one child slot** whose o
 
 ### How to design the sub-component API
 
-1. **Every sub-component is its own named export.** No object-as-namespace tricks (`Dialog.Title`); just top-level named exports. The import surface becomes `import { Dialog, DialogTitle, DialogBody } from "@poeticui/components/feedback"`.
+1. **Every sub-component is its own named export.** No object-as-namespace tricks (`Dialog.Title`); just top-level named exports. The import surface becomes `import { Dialog, DialogTitle, DialogBody } from "@artificialpoets/components/feedback"`.
 2. **Styling between siblings uses `data-slot` selectors.** Each sub-component sets `data-slot="label"` / `"control"` / `"description"` / `"icon"` on its root element. The parent targets them with Tailwind attribute selectors:
    ```css
    "[&>[data-slot=label]+[data-slot=control]]:mt-3"
@@ -199,7 +199,7 @@ Reference: `packages/components/src/core/button.tsx`.
 
 ## 3. Semantic token usage
 
-Raw Tailwind color utilities (`text-gray-500`, `bg-white`, `border-red-200`, `text-neutral-950 dark:text-white`) are **banned** in `@poeticui/components` source. The dashboard ESLint rule enforces the same ban there (see DES-17). You must reach for the semantic token that expresses the role.
+Raw Tailwind color utilities (`text-gray-500`, `bg-white`, `border-red-200`, `text-neutral-950 dark:text-white`) are **banned** in `@artificialpoets/components` source. The dashboard ESLint rule enforces the same ban there (see DES-17). You must reach for the semantic token that expresses the role.
 
 ### The token map
 
@@ -226,7 +226,7 @@ Charts, Kanban-stage color maps, user-picked badge colors — these reference th
 
 ### White text on colored backgrounds
 
-Never write `text-white` in `@poeticui/components`. If the text paints on a brand or status background, pair the background with its matching foreground token:
+Never write `text-white` in `@artificialpoets/components`. If the text paints on a brand or status background, pair the background with its matching foreground token:
 
 ```tsx
 // ❌ Don't
@@ -255,7 +255,7 @@ We use `@headlessui/react` (v2.2+) for accessibility-heavy primitives — Menu, 
 
 ### Conventions
 
-1. **Re-export the primitive family under our names.** Consumers import from `@poeticui/components`, not `@headlessui/react`:
+1. **Re-export the primitive family under our names.** Consumers import from `@artificialpoets/components`, not `@headlessui/react`:
 
    ```tsx
    export function Popover(props: Headless.PopoverProps) {
@@ -348,7 +348,7 @@ The generic `T` flows consumer prop types through so `<DropdownButton as={Link} 
 
 ## 6. Testing conventions
 
-We use Jest + `@testing-library/react` (no `@testing-library/user-event` in `@poeticui/components` — use `fireEvent`). Tests live in `packages/components/src/__tests__/{directory}/{component}.test.tsx`, mirroring the source tree.
+We use Jest + `@testing-library/react` (no `@testing-library/user-event` in `@artificialpoets/components` — use `fireEvent`). Tests live in `packages/components/src/__tests__/{directory}/{component}.test.tsx`, mirroring the source tree.
 
 ### Required coverage per component
 
@@ -432,7 +432,7 @@ export * from './data-display';
 // ...
 ```
 
-The `package.json` subpath exports (`@poeticui/components/forms`, `@poeticui/components/tables`) map directly to the category `index.ts`:
+The `package.json` subpath exports (`@artificialpoets/components/forms`, `@artificialpoets/components/tables`) map directly to the category `index.ts`:
 
 ```json
 {
@@ -674,7 +674,7 @@ export function DialogActions(props) { ... }
 Any `throw new Error(...)` (or `console.warn`/`console.error` for dev guards) inside a component uses this format:
 
 ```
-[@poeticui/components/<category>/<name>] <description>
+[@artificialpoets/components/<category>/<name>] <description>
 ```
 
 ```tsx
@@ -683,7 +683,7 @@ throw new Error("Invalid children");
 
 // Good — single grep finds it
 throw new Error(
-  `[@poeticui/components/navigation/segmented-tabs] expected children to be SegmentedTabsItem; got ${typeof child}`,
+  `[@artificialpoets/components/navigation/segmented-tabs] expected children to be SegmentedTabsItem; got ${typeof child}`,
 );
 ```
 
@@ -694,7 +694,7 @@ When prop A makes prop B unused (e.g. `Button`'s `color` is only honored when `v
 ```tsx
 if (process.env.NODE_ENV !== "production" && variant !== "solid" && color) {
   console.warn(
-    `[@poeticui/components/core/button] \`color\` is only applied when \`variant="solid"\`; got variant=${variant}`,
+    `[@artificialpoets/components/core/button] \`color\` is only applied when \`variant="solid"\`; got variant=${variant}`,
   );
 }
 ```
@@ -705,7 +705,7 @@ Every primitive is exported through:
 1. Its category's `index.ts` (e.g. `core/index.ts` → `Button`)
 2. The root `src/index.ts` barrel
 
-There is no third path — no deep imports that compete (`@poeticui/components/core/button` versus `@poeticui/components/core` versus `@poeticui/components`). Agents and the MCP server return one stable import for each component; aliases dilute that.
+There is no third path — no deep imports that compete (`@artificialpoets/components/core/button` versus `@artificialpoets/components/core` versus `@artificialpoets/components`). Agents and the MCP server return one stable import for each component; aliases dilute that.
 
 ### 9.6. `as` polymorphism stays rare
 
@@ -719,7 +719,7 @@ Reviewers verify each item before merging a new primitive:
 
 - [ ] Root element has `data-component="<kebab-name>"`
 - [ ] Every export has a JSDoc block with one `@example`
-- [ ] Errors use the `[@poeticui/components/...]` prefix
+- [ ] Errors use the `[@artificialpoets/components/...]` prefix
 - [ ] Ambiguous prop combinations have dev warnings
 - [ ] Component is exported from category `index.ts` and root barrel
 - [ ] No new `as` prop usage without RFC discussion
@@ -727,7 +727,7 @@ Reviewers verify each item before merging a new primitive:
 CI fails (via `.github/workflows/ci.yml` greps) when:
 - A `.tsx` file under `src/` has an `export function` / `export const` declaration without a preceding `@example` JSDoc tag
 - A primitive's root element omits `data-component`
-- A `throw new Error(` inside `src/` lacks the `[@poeticui/components/` prefix
+- A `throw new Error(` inside `src/` lacks the `[@artificialpoets/components/` prefix
 
 ---
 
@@ -758,7 +758,7 @@ Category intros live at `.storybook/*.mdx`. `Welcome.mdx` is the landing page, `
 ## See also
 
 - `docs/RFC-ARCHITECTURE.md` — the neutral-primitives / branded-overlay split that shapes the library's future package structure.
-- `src/styles/tokens.css` — the full token map (re-exported from `@poeticui/tokens`).
+- `src/styles/tokens.css` — the full token map (re-exported from `@artificialpoets/tokens`).
 - `apps/dashboard/eslint.config.mjs` — the raw-color ban rule, for reference.
 - **Storybook** — `bun run storybook` from the monorepo root → `http://localhost:6006`. Full component catalog, live previews, theme switcher, a11y notes.
-- **`@poeticui/content`** (`packages/content/`) — the sibling package for **technical-content primitives** (syntax-highlighted `<CodeBlock>`, `<BlockMath>`/`<InlineMath>`, `<PackageManagerTabs>`, `<LanguageTabs>`). Reach for it in docs/examples/marketing pages or any app surface that needs cross-instance preference sync. Opt-in — consumers who don't install pay zero bytes. See `packages/content/README.md`.
+- **`@artificialpoets/content`** (`packages/content/`) — the sibling package for **technical-content primitives** (syntax-highlighted `<CodeBlock>`, `<BlockMath>`/`<InlineMath>`, `<PackageManagerTabs>`, `<LanguageTabs>`). Reach for it in docs/examples/marketing pages or any app surface that needs cross-instance preference sync. Opt-in — consumers who don't install pay zero bytes. See `packages/content/README.md`.

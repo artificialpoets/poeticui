@@ -85,7 +85,7 @@ export const buttonVariants = cva(
  * variant: `--btn-bg`, `--btn-border`, `--btn-hover-overlay`, `--btn-icon`.
  *
  * NOTE: these still contain raw-color utility classes. Migrating each to
- * semantic tokens is tracked in DES-22 (Scrub raw color utilities from @poeticui/components)
+ * semantic tokens is tracked in DES-22 (Scrub raw color utilities from @artificialpoets/components)
  * and is intentionally out of scope for the CVA migration itself.
  */
 const buttonColors = {
@@ -289,7 +289,7 @@ export const Button = forwardRef(function Button(
     color
   ) {
     console.warn(
-      `[@poeticui/components/core/button] \`color\` is only applied when \`variant="solid"\`; got variant="${resolvedVariant}". The color="${color}" prop will be ignored.`,
+      `[@artificialpoets/components/core/button] \`color\` is only applied when \`variant="solid"\`; got variant="${resolvedVariant}". The color="${color}" prop will be ignored.`,
     );
   }
 

@@ -1,6 +1,6 @@
 name: Release
 
-# Publishes `@poeticui/*` to public npm (https://registry.npmjs.org) and
+# Publishes `@artificialpoets/*` to public npm (https://registry.npmjs.org) and
 # manages versioning via Changesets. On push to `main`:
 #
 #   - If there are pending `.changeset/*.md` entries → opens or updates a

@@ -1,5 +1,5 @@
 /* Poetic UI Typography — heading element resets.
-   Requires @poeticui/tokens/semantic (or @poeticui/tokens) for heading scale variables.
+   Requires @artificialpoets/tokens/semantic (or @artificialpoets/tokens) for heading scale variables.
 
    Principle P1 / P7 (see packages/components/CONTRIBUTING.md + RFC-ARCHITECTURE.md):
    heading styles live on the HTML elements via @layer base. No utility-class
@@ -8,7 +8,7 @@
    the visual weight.
 
    Usage (standalone): import after semantic.css
-   Usage (Tailwind v4): import via @poeticui/tokens barrel */
+   Usage (Tailwind v4): import via @artificialpoets/tokens barrel */
 
 @layer base {
   h1 {

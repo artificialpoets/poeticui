@@ -12,7 +12,7 @@ import { Popover, PopoverButton, PopoverPanel } from "../misc/popover";
  * Standalone primitive lifted out of `DataTable`. Consumers can place it
  * anywhere a columnar filter affordance is wanted (e.g. alongside a
  * `DataTableColumnHeader` inside a `<DataTable>`, or in a custom table
- * built from `@poeticui/components` Table primitives).
+ * built from `@artificialpoets/components` Table primitives).
  *
  * ```tsx
  * const [value, setValue] = useState("");

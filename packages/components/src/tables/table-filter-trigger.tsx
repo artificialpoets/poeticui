@@ -14,7 +14,7 @@ import { DropdownButton } from "../misc/dropdown";
  *   - transparent outline (focus ring on focus)
  *   - automatic trailing `ChevronDown`
  *
- * Pair with `<Dropdown>` and `<DropdownMenu>` from `@poeticui/components/misc`:
+ * Pair with `<Dropdown>` and `<DropdownMenu>` from `@artificialpoets/components/misc`:
  *
  * ```tsx
  * <Dropdown>

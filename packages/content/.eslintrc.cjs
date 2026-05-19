@@ -1,13 +1,13 @@
 /**
- * @poeticui/content — ESLint config.
+ * @artificialpoets/content — ESLint config.
  *
- * Same neutral-boundary rules as @poeticui/components:
+ * Same neutral-boundary rules as @artificialpoets/components:
  * - no next/* imports (framework-agnostic)
  * - no @ap/brand imports (no brand coupling)
  * - no @/* or @ap/dashboard/* imports (no app coupling)
  *
- * This package depends on @poeticui/components + @poeticui/tokens; those
- * ARE allowed, since @poeticui/content sits downstream in the layer graph:
+ * This package depends on @artificialpoets/components + @artificialpoets/tokens; those
+ * ARE allowed, since @artificialpoets/content sits downstream in the layer graph:
  *
  *   tokens → components → content → consumers (apps or @ap/brand)
  */
@@ -59,17 +59,17 @@ module.exports = {
           {
             group: ['@ap/brand', '@ap/brand/*'],
             message:
-              '@poeticui/content is neutral — @ap/brand must never be imported here.',
+              '@artificialpoets/content is neutral — @ap/brand must never be imported here.',
           },
           {
             group: ['next', 'next/*'],
             message:
-              '@poeticui/content is framework-agnostic — no next/* imports. Works in Next App Router, Remix, Astro, plain SPAs.',
+              '@artificialpoets/content is framework-agnostic — no next/* imports. Works in Next App Router, Remix, Astro, plain SPAs.',
           },
           {
             group: ['@/*', '@ap/dashboard/*', '@ap/intranet/*', '@ap/poehost/*'],
             message:
-              '@poeticui/content must not reach into app code. Arrows only point downward.',
+              '@artificialpoets/content must not reach into app code. Arrows only point downward.',
           },
         ],
       },

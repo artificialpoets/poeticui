@@ -14,7 +14,7 @@ import { cx } from "../lib";
  * DataTableColumnHeader — one `<th>` with optional sort + filter affordances.
  *
  * Standalone primitive lifted out of `DataTable`. Consumers can use it in any
- * table built from `@poeticui/components` Table primitives when they need the standard sort
+ * table built from `@artificialpoets/components` Table primitives when they need the standard sort
  * button + filter popover behavior without adopting the full `DataTable`
  * orchestrator.
  *

@@ -14,7 +14,7 @@ import { cx } from "../lib";
  *
  * NOTE: most color presets still reference raw Tailwind palettes
  * (`bg-red-500/15`, `text-red-700`, etc.). Migrating each to semantic tokens
- * is tracked in DES-22 (Scrub raw color utilities from @poeticui/components) and is
+ * is tracked in DES-22 (Scrub raw color utilities from @artificialpoets/components) and is
  * intentionally out of scope for the CVA migration itself.
  */
 export const badgeVariants = cva(

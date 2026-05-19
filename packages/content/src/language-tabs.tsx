@@ -43,7 +43,7 @@ export function Example(props: ExampleProps): ReactNode {
 
 // Attach a nominal brand so we can identify `<Example>` children at
 // runtime even if JSX wrapping or minifiers mangle the function identity.
-const EXAMPLE_BRAND = Symbol.for("@poeticui/content/Example");
+const EXAMPLE_BRAND = Symbol.for("@artificialpoets/content/Example");
 (Example as unknown as { $$brand?: symbol }).$$brand = EXAMPLE_BRAND;
 
 // ── <LanguageTabs> ─────────────────────────────────────────────────────
@@ -141,7 +141,7 @@ function extractExamples(children: ReactNode): ExtractedExample[] {
       if (process.env.NODE_ENV !== "production") {
         // eslint-disable-next-line no-console
         console.warn(
-          `[@poeticui/content] <Example lang="${props.lang}"> expects a string child (the code sample), got ${typeof props.children}. Skipping.`,
+          `[@artificialpoets/content] <Example lang="${props.lang}"> expects a string child (the code sample), got ${typeof props.children}. Skipping.`,
         );
       }
       return;

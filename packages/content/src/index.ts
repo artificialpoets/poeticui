@@ -1,15 +1,15 @@
 /**
- * @poeticui/content — primitives for rendering technical content.
+ * @artificialpoets/content — primitives for rendering technical content.
  *
  * This barrel re-exports every primitive. Consumers can also import from
  * subpaths for zero-risk tree-shaking:
  *
- *   import { CodeBlock } from "@poeticui/content/code-block";
- *   import { BlockMath } from "@poeticui/content/math";
- *   import { PersistentTabs } from "@poeticui/content/persistent-tabs";
- *   import { PackageManagerTabs } from "@poeticui/content/package-manager-tabs";
- *   import { LanguageTabs, Example } from "@poeticui/content/language-tabs";
- *   import { usePref, setPref, getPref } from "@poeticui/content/pref-store";
+ *   import { CodeBlock } from "@artificialpoets/content/code-block";
+ *   import { BlockMath } from "@artificialpoets/content/math";
+ *   import { PersistentTabs } from "@artificialpoets/content/persistent-tabs";
+ *   import { PackageManagerTabs } from "@artificialpoets/content/package-manager-tabs";
+ *   import { LanguageTabs, Example } from "@artificialpoets/content/language-tabs";
+ *   import { usePref, setPref, getPref } from "@artificialpoets/content/pref-store";
  *
  * See the package README for the four layers of bundle control.
  */

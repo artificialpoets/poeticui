@@ -1,5 +1,5 @@
 /**
- * Storybook-only sync wrappers for `@poeticui/content`.
+ * Storybook-only sync wrappers for `@artificialpoets/content`.
  *
  * The library's public API exposes `<CodeBlock>`, `<PackageManagerTabs>`,
  * and `<LanguageTabs>` as **async Server Components** — they pre-render
@@ -17,10 +17,10 @@
  * APIs.
  */
 
-// Relative imports into the sibling @poeticui/content workspace package.
-// We deliberately do NOT import via the "@poeticui/content" package name
-// because that would require declaring @poeticui/content as a devDep of
-// @poeticui/components — which creates a build-graph cycle
+// Relative imports into the sibling @artificialpoets/content workspace package.
+// We deliberately do NOT import via the "@artificialpoets/content" package name
+// because that would require declaring @artificialpoets/content as a devDep of
+// @artificialpoets/components — which creates a build-graph cycle
 // (components → content → components). Relative paths sidestep the cycle
 // and work identically at runtime (Bun resolves either way).
 import {

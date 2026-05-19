@@ -9,8 +9,8 @@
 
 | Step | Issue | Status |
 |------|-------|--------|
-| 1. Rename `@ap/tokens` → `@poeticui/tokens` | DES-39 | ✅ Done (`c05f8bad`) |
-| 2. Rename `@ap/ui` → `@poeticui/components` + dir rename | DES-40 | ✅ Done (`9190b36f`) |
+| 1. Rename `@ap/tokens` → `@artificialpoets/tokens` | DES-39 | ✅ Done (`c05f8bad`) |
+| 2. Rename `@ap/ui` → `@artificialpoets/components` + dir rename | DES-40 | ✅ Done (`9190b36f`) |
 | 3. Extract `@ap/brand` | DES-43 | ✅ Done (`6c4ddb2c`) |
 | 4. Add `--info` + formalize theme contract | DES-42 | ✅ Done (`0dbb658f`) |
 | 5. Typography cleanup | DES-41 | ✅ Done (`813bdb99`) |
@@ -30,10 +30,10 @@ Phase 1 (DES-16 → DES-33) built the foundation: semantic tokens, CVA pattern, 
 
 This RFC proposes the end state and the path to get there. Four big moves:
 
-1. **Rename and split packages** — `@ap/tokens` → `@poeticui/tokens`, `@ap/ui` → `@poeticui/components`, plus a new `@ap/brand` that carries every AP-specific piece (AppShell, brand badge, account menu, org switcher).
+1. **Rename and split packages** — `@ap/tokens` → `@artificialpoets/tokens`, `@ap/ui` → `@artificialpoets/components`, plus a new `@ap/brand` that carries every AP-specific piece (AppShell, brand badge, account menu, org switcher).
 2. **Codify design principles** — HTML-first semantics, no utility classes that duplicate HTML meaning (kill `.type-h1`), primary/secondary/semantic-role vocabulary, full light + dark support as a first-class contract.
 3. **Replace `/design-system` with Storybook** — the bespoke showcase page disappears; Storybook becomes the single source of truth for component documentation, variant matrices, a11y notes, and eventually the public docs surface.
-4. **Formalize the customization model** — anyone (AP, PoeHost, a future open-source consumer) layers their brand on top of `@poeticui/components` by shipping a thin theme + overlay package. `@ap/brand` is the reference implementation.
+4. **Formalize the customization model** — anyone (AP, PoeHost, a future open-source consumer) layers their brand on top of `@artificialpoets/components` by shipping a thin theme + overlay package. `@ap/brand` is the reference implementation.
 
 The goal is to end Phase 2 with **Poetic UI usable standalone** (neutral defaults, clean primary/secondary customization, Storybook docs) while AP keeps its unique chrome through `@ap/brand`.
 
@@ -50,7 +50,7 @@ A component expresses its role through the HTML element it renders, not through 
 - ✅ `<h1>` with a base-layer style. Any page that writes `<h1>` gets the intended visual automatically.
 - ❌ `<div className="type-h1">`. Duplicates HTML semantics in a CSS class; readers and screen readers disagree.
 
-**Concrete rule:** we remove `.type-h1` / `.type-h2` / `.type-h3` / `.type-h4` from `@poeticui/tokens`. The `@layer base` rules on the HTML elements stay. If a page needs heading-sized text on a non-heading element (rare), it uses the token directly: `style={{ fontSize: 'var(--heading-1-size)' }}`.
+**Concrete rule:** we remove `.type-h1` / `.type-h2` / `.type-h3` / `.type-h4` from `@artificialpoets/tokens`. The `@layer base` rules on the HTML elements stay. If a page needs heading-sized text on a non-heading element (rare), it uses the token directly: `style={{ fontSize: 'var(--heading-1-size)' }}`.
 
 ### P2. Semantic tokens over palette tokens
 
@@ -60,7 +60,7 @@ This is already enforced via the ESLint rule (DES-17). The RFC codifies it as a 
 
 ### P3. Neutral by default, customizable per brand
 
-`@poeticui/components` ships with a neutral theme that looks good out of the box. Any brand — AP, a consumer, an external user — supplies a theme overlay that overrides primary/secondary and optionally any semantic role. No forks, no CSS!important, no monkey-patching.
+`@artificialpoets/components` ships with a neutral theme that looks good out of the box. Any brand — AP, a consumer, an external user — supplies a theme overlay that overrides primary/secondary and optionally any semantic role. No forks, no CSS!important, no monkey-patching.
 
 ### P4. Full light + dark as a contract
 
@@ -138,7 +138,7 @@ packages/
     └── docs/RFC-ARCHITECTURE.md    ← this file
 ```
 
-**Dashboard consumes both directly.** `apps/dashboard/` imports from `@poeticui/components/layout` for neutral primitives (`SidebarLayout`, `StackedLayout`, `PageHeader`) and from `@ap/brand/layout` for brand-flavored ones (`AppShell`, `SidebarBrandBadge`, `AccountDropdownMenu`). The former `/design-system` showcase page has been deleted (DES-46); Storybook (`bun run storybook`) is the single source of truth for component previewing and documentation.
+**Dashboard consumes both directly.** `apps/dashboard/` imports from `@artificialpoets/components/layout` for neutral primitives (`SidebarLayout`, `StackedLayout`, `PageHeader`) and from `@ap/brand/layout` for brand-flavored ones (`AppShell`, `SidebarBrandBadge`, `AccountDropdownMenu`). The former `/design-system` showcase page has been deleted (DES-46); Storybook (`bun run storybook`) is the single source of truth for component previewing and documentation.
 
 ---
 
@@ -148,7 +148,7 @@ packages/
 
 ```
 packages/
-├── tokens/                 @poeticui/tokens        (was @ap/tokens — renamed)
+├── tokens/                 @artificialpoets/tokens        (was @ap/tokens — renamed)
 │   └── src/
 │       ├── palette.css
 │       ├── semantic.css    light + dark for every role
@@ -159,7 +159,7 @@ packages/
 │           └── neutral.css  ← NEW: zinc/slate-based default (shadcn-style)
 │                              Replaces platform.css as the library's default
 │
-├── components/             @poeticui/components    (was @ap/ui — renamed; scoped to match)
+├── components/             @artificialpoets/components    (was @ap/ui — renamed; scoped to match)
 │   ├── src/
 │   │   ├── core/                     Button, Link
 │   │   ├── data-display/             Avatar, Badge, Card, Skeleton, Stat, Table, ImageWithFallback
@@ -172,13 +172,13 @@ packages/
 │   │   └── tables/                   DataTable family + TablePaginationFooter
 │   ├── .storybook/                   ← NEW: replaces /design-system page
 │   │   ├── main.ts
-│   │   ├── preview.tsx               loads @poeticui/tokens + neutral theme
+│   │   ├── preview.tsx               loads @artificialpoets/tokens + neutral theme
 │   │   └── themes.ts                 neutral / AP-platform / AP-poehost toggle
 │   ├── CONTRIBUTING.md
 │   ├── docs/RFC-ARCHITECTURE.md
 │   └── (**/*.stories.tsx alongside each component)
 │
-├── content/                @poeticui/content       (NEW package — technical-content primitives, DES-57..63)
+├── content/                @artificialpoets/content       (NEW package — technical-content primitives, DES-57..63)
 │   ├── src/
 │   │   ├── code-block.tsx            Shiki-powered, async Server Component, dual-theme CSS vars
 │   │   ├── math.tsx                  KaTeX BlockMath + InlineMath (client, opt-in CSS)
@@ -211,40 +211,40 @@ packages/
 
 ### What each package is
 
-**`@poeticui/tokens`** — the design language. Pure CSS. Zero runtime deps. Ships a neutral default theme (zinc-ish, shadcn-compatible) so any consumer gets a look that works without bringing their own theme. Customization is a theme overlay — a small CSS file that overrides the required brand slots.
+**`@artificialpoets/tokens`** — the design language. Pure CSS. Zero runtime deps. Ships a neutral default theme (zinc-ish, shadcn-compatible) so any consumer gets a look that works without bringing their own theme. Customization is a theme overlay — a small CSS file that overrides the required brand slots.
 
-**`@poeticui/components`** — ~50 React components. Consume tokens exclusively. Zero brand assumptions. Zero framework lock-in beyond React + HeadlessUI. This is what eventually publishes publicly on npm. Includes Storybook as the authoring + docs surface.
+**`@artificialpoets/components`** — ~50 React components. Consume tokens exclusively. Zero brand assumptions. Zero framework lock-in beyond React + HeadlessUI. This is what eventually publishes publicly on npm. Includes Storybook as the authoring + docs surface.
 
-**`@poeticui/content`** — React primitives for **technical content**: syntax-highlighted code, math equations, package-manager / language tab strips with cross-instance preference sync. Neutral (no brand coupling), framework-agnostic (no `next/*` imports), bundle-disciplined (`sideEffects: false`, per-component subpath exports). **Opt-in** — consumers who don't install pay zero bytes. Hard runtime deps: `shiki`, `katex`, `react-katex`. Designed for docs pages, API references, marketing/landing pages, in-app contextual help. Depends on `@poeticui/components` + `@poeticui/tokens`.
+**`@artificialpoets/content`** — React primitives for **technical content**: syntax-highlighted code, math equations, package-manager / language tab strips with cross-instance preference sync. Neutral (no brand coupling), framework-agnostic (no `next/*` imports), bundle-disciplined (`sideEffects: false`, per-component subpath exports). **Opt-in** — consumers who don't install pay zero bytes. Hard runtime deps: `shiki`, `katex`, `react-katex`. Designed for docs pages, API references, marketing/landing pages, in-app contextual help. Depends on `@artificialpoets/components` + `@artificialpoets/tokens`.
 
-**`@ap/brand`** — AP-specific product chrome + theme overlays. Private. Depends on `@poeticui/components` + `@poeticui/tokens`. Contains `AppShell`, `AccountDropdownMenu`, `SidebarBrandBadge`, `SidebarUserChip`, `NavbarAvatarDropdown`, plus the 4 AP theme files.
+**`@ap/brand`** — AP-specific product chrome + theme overlays. Private. Depends on `@artificialpoets/components` + `@artificialpoets/tokens`. Contains `AppShell`, `AccountDropdownMenu`, `SidebarBrandBadge`, `SidebarUserChip`, `NavbarAvatarDropdown`, plus the 4 AP theme files.
 
 #### When to reach for Content vs. Components
 
-- **`@poeticui/components`** is the default for any interactive UI primitive — Button, Dialog, Dropdown, Table, Fieldset, Sidebar, Tabs. Every dashboard page needs these.
-- **`@poeticui/content`** is for **authoring surfaces** that display technical information to humans — docs pages, API references, onboarding walkthroughs, marketing landing pages, in-app help drawers showing webhook payloads. Most dashboards don't need it; marketing/docs sites do. Install only when a concrete feature reaches for `<CodeBlock>`, `<BlockMath>`, or `<PackageManagerTabs>`.
+- **`@artificialpoets/components`** is the default for any interactive UI primitive — Button, Dialog, Dropdown, Table, Fieldset, Sidebar, Tabs. Every dashboard page needs these.
+- **`@artificialpoets/content`** is for **authoring surfaces** that display technical information to humans — docs pages, API references, onboarding walkthroughs, marketing landing pages, in-app help drawers showing webhook payloads. Most dashboards don't need it; marketing/docs sites do. Install only when a concrete feature reaches for `<CodeBlock>`, `<BlockMath>`, or `<PackageManagerTabs>`.
 
 ### Dependency arrows
 
 ```
 apps/dashboard
       │ imports @ap/brand (AppShell, SidebarBrandBadge, theme CSS)
-      │ imports @poeticui/components (Button, DataTable, Fieldset, …)
-      │ imports @poeticui/content (optional — CodeBlock, Math, tab strips)
-      │ imports @poeticui/tokens (CSS)
+      │ imports @artificialpoets/components (Button, DataTable, Fieldset, …)
+      │ imports @artificialpoets/content (optional — CodeBlock, Math, tab strips)
+      │ imports @artificialpoets/tokens (CSS)
       ▼
 @ap/brand
-      │ imports @poeticui/components
-      │ imports @poeticui/tokens
+      │ imports @artificialpoets/components
+      │ imports @artificialpoets/tokens
       ▼
-@poeticui/content
-      │ imports @poeticui/components
-      │ imports @poeticui/tokens
+@artificialpoets/content
+      │ imports @artificialpoets/components
+      │ imports @artificialpoets/tokens
       ▼
-@poeticui/components
-      │ imports @poeticui/tokens
+@artificialpoets/components
+      │ imports @artificialpoets/tokens
       ▼
-@poeticui/tokens
+@artificialpoets/tokens
       (pure CSS, zero deps)
 ```
 
@@ -305,7 +305,7 @@ In both `:root` and `.dark`:
 --sidebar-ring
 ```
 
-That's 6 slots (unchanged from Phase 1). Everything else inherits from `@poeticui/tokens/semantic` defaults.
+That's 6 slots (unchanged from Phase 1). Everything else inherits from `@artificialpoets/tokens/semantic` defaults.
 
 ### Optional overrides
 
@@ -313,7 +313,7 @@ A theme MAY additionally define `--secondary` (+ its foreground) if the brand ha
 
 ### Dark mode is not optional
 
-Every theme overlay declares its tokens in **both** `:root` and `.dark`. Components never write `dark:` prefixes against palette colors — they use tokens, and the tokens handle the mode switch. Reference: `@poeticui/tokens/themes/neutral.css` will be the template.
+Every theme overlay declares its tokens in **both** `:root` and `.dark`. Components never write `dark:` prefixes against palette colors — they use tokens, and the tokens handle the mode switch. Reference: `@artificialpoets/tokens/themes/neutral.css` will be the template.
 
 ### Example — AP platform theme (post-split)
 
@@ -370,7 +370,7 @@ Every theme overlay declares its tokens in **both** `:root` and `.dark`. Compone
 }
 ```
 
-A 20-line file makes the entire `@poeticui/components` library render in Acme's brand.
+A 20-line file makes the entire `@artificialpoets/components` library render in Acme's brand.
 
 ---
 
@@ -434,7 +434,7 @@ Grep for `.type-h[1-4]` usage across the monorepo. Replace with the correspondin
 
 ### Scope in Phase 2
 
-1. **Add Storybook to `@poeticui/components`** — colocated stories, `@storybook/react-vite` runner, `bun run storybook` dev command.
+1. **Add Storybook to `@artificialpoets/components`** — colocated stories, `@storybook/react-vite` runner, `bun run storybook` dev command.
 2. **Port every existing `/design-system` page to a story file** — `src/core/button.stories.tsx`, `src/forms/fieldset.stories.tsx`, etc. Naming convention: `component.stories.tsx` next to `component.tsx`.
 3. **Theme switcher in the toolbar** — lets reviewers toggle between neutral / AP-platform / AP-poehost / AP-intranet to spot-check themability.
 4. **Delete `/design-system` page** — the entire `apps/dashboard/app/design-system/` directory goes away. `design-system-header.tsx`, `design-system-nav.ts`, `buttons/`, `charts/`, `forms/`, `stats/`, `tables/`, `text/`, `global-defaults/` — all removed.
@@ -490,7 +490,7 @@ export const VariantMatrix: Story = {
 | Manual nav building | Auto-discovered via Storybook's glob |
 | No theme toggle | Theme switcher in the toolbar |
 | No a11y output | `@storybook/addon-a11y` runs axe on every story |
-| Locked to AP dashboard | Ships wherever `@poeticui/components` ships |
+| Locked to AP dashboard | Ships wherever `@artificialpoets/components` ships |
 | No public URL | Future: `poeticui.com/components` |
 
 ---
@@ -499,24 +499,24 @@ export const VariantMatrix: Story = {
 
 Phase 2 is a bounded project — estimated **4–6 engineering days**. Landed in a dedicated branch, merged in a single PR, reverted as a unit if anything regresses.
 
-### Step 1 — Rename `@ap/tokens` → `@poeticui/tokens`
+### Step 1 — Rename `@ap/tokens` → `@artificialpoets/tokens`
 
-- Create `packages/tokens/package.json` with `"name": "@poeticui/tokens"` (was `@ap/tokens`).
+- Create `packages/tokens/package.json` with `"name": "@artificialpoets/tokens"` (was `@ap/tokens`).
 - Update workspace dependents: `packages/ui/package.json`, `apps/dashboard/package.json`, anywhere else that lists it as a dep.
-- Grep-and-replace all `@ap/tokens` imports → `@poeticui/tokens` in both TypeScript and CSS (`@import`).
+- Grep-and-replace all `@ap/tokens` imports → `@artificialpoets/tokens` in both TypeScript and CSS (`@import`).
 - Verify: `bun install`, `bun run build`, `bun run test`.
 
-### Step 2 — Rename `@ap/ui` → `@poeticui/components`
+### Step 2 — Rename `@ap/ui` → `@artificialpoets/components`
 
 - Create `packages/components/` (renamed directory) OR keep `packages/ui/` on disk but rebrand the package name. Recommendation: **rename the directory too** so filesystem matches package name (cleaner mental model). `git mv packages/ui packages/components`.
-- Update `packages/components/package.json` with `"name": "@poeticui/components"` + subpath exports.
-- Update all imports across the monorepo: `@ap/ui` → `@poeticui/components`, `@ap/ui/forms` → `@poeticui/components/forms`, etc. (Mechanical find-and-replace.)
+- Update `packages/components/package.json` with `"name": "@artificialpoets/components"` + subpath exports.
+- Update all imports across the monorepo: `@ap/ui` → `@artificialpoets/components`, `@ap/ui/forms` → `@artificialpoets/components/forms`, etc. (Mechanical find-and-replace.)
 - Update `tsconfig.json` path aliases if any reference `packages/ui/`.
 - Verify: full workspace build + test.
 
-### Step 3 — Extract `@ap/brand` from `@poeticui/components`
+### Step 3 — Extract `@ap/brand` from `@artificialpoets/components`
 
-- Create `packages/brand/package.json` with `"name": "@ap/brand"`, deps on `@poeticui/components` + `@poeticui/tokens`.
+- Create `packages/brand/package.json` with `"name": "@ap/brand"`, deps on `@artificialpoets/components` + `@artificialpoets/tokens`.
 - Move 5 files from `packages/components/src/layout/` → `packages/brand/src/layout/`:
   - `app-shell.tsx`
   - `account-dropdown-menu.tsx`
@@ -526,21 +526,21 @@ Phase 2 is a bounded project — estimated **4–6 engineering days**. Landed in
 - Move 4 theme CSS files from `packages/tokens/src/themes/` → `packages/brand/src/theme/`:
   - `platform.css`, `poehost.css`, `intranet.css`
   - Create `outboundmode.css` (currently the outbound layout uses platform's orange — formalize).
-- Replace the `themes/platform.css` in `@poeticui/tokens` with `themes/neutral.css` — a zinc/slate-based default so the public library has a sensible starting look.
+- Replace the `themes/platform.css` in `@artificialpoets/tokens` with `themes/neutral.css` — a zinc/slate-based default so the public library has a sensible starting look.
 - Remove the 5 components from `packages/components/src/layout/index.ts` barrel.
 - Add `packages/brand/src/layout/index.ts` barrel.
-- Update dashboard imports: `@poeticui/components/layout` → `@ap/brand/layout` for the moved 5; CSS imports `@poeticui/tokens/themes/platform` → `@ap/brand/theme/platform`.
+- Update dashboard imports: `@artificialpoets/components/layout` → `@ap/brand/layout` for the moved 5; CSS imports `@artificialpoets/tokens/themes/platform` → `@ap/brand/theme/platform`.
 
 ### Step 4 — Add `--info` semantic role + formalize the theme contract
 
-- Add `--info` and `--info-foreground` to `@poeticui/tokens/semantic.css` (both `:root` and `.dark`). Default: `--info: var(--color-blue-500)`, `--info-foreground: oklch(1 0 0)`.
+- Add `--info` and `--info-foreground` to `@artificialpoets/tokens/semantic.css` (both `:root` and `.dark`). Default: `--info: var(--color-blue-500)`, `--info-foreground: oklch(1 0 0)`.
 - Add the `@theme inline` mapping so `bg-info`, `text-info-foreground`, etc. are valid Tailwind utilities.
 - Update `packages/components/CONTRIBUTING.md` (formerly `packages/ui/CONTRIBUTING.md`) to document the updated theme contract (6 required + optional `--secondary`).
 - Update `apps/dashboard/AGENTS.md` token map table to include `--info`.
 
 ### Step 5 — Typography cleanup
 
-- Remove the `@layer utilities { .type-h1 { … } }` block from `@poeticui/tokens/typography.css`.
+- Remove the `@layer utilities { .type-h1 { … } }` block from `@artificialpoets/tokens/typography.css`.
 - Grep the monorepo for `.type-h[1-4]` usage (should be zero after DES-22/23 cleanup, but confirm).
 - If any usages remain: replace with the HTML element or `style={{ fontSize: 'var(--heading-N-size)', … }}`.
 
@@ -548,7 +548,7 @@ Phase 2 is a bounded project — estimated **4–6 engineering days**. Landed in
 
 - Install Storybook (`@storybook/react-vite`, `@storybook/addon-a11y`, `@storybook/addon-themes`) as dev deps of `packages/components`.
 - Configure `.storybook/main.ts` to scan `packages/components/src/**/*.stories.tsx`.
-- `.storybook/preview.tsx` imports `@poeticui/tokens` + `neutral` theme; provides a theme toggle (neutral / AP-platform / AP-poehost / AP-intranet).
+- `.storybook/preview.tsx` imports `@artificialpoets/tokens` + `neutral` theme; provides a theme toggle (neutral / AP-platform / AP-poehost / AP-intranet).
 - Port every page under `apps/dashboard/app/design-system/` to a story file next to its component. Suggested mapping:
   - `design-system/buttons/*.tsx` → `packages/components/src/core/button.stories.tsx`
   - `design-system/forms/*.tsx` → `packages/components/src/forms/{checkbox,switch,input,…}.stories.tsx`
@@ -570,16 +570,16 @@ Phase 2 is a bounded project — estimated **4–6 engineering days**. Landed in
 
 ### Step 8 — Documentation updates
 
-- `packages/components/CONTRIBUTING.md` — rename references (was `@ap/ui` → now `@poeticui/components`), add the "how to add a Story" section.
+- `packages/components/CONTRIBUTING.md` — rename references (was `@ap/ui` → now `@artificialpoets/components`), add the "how to add a Story" section.
 - `packages/components/docs/RFC-ARCHITECTURE.md` — mark this RFC as "Phase 2 — Shipped" at the top once the branch merges.
-- `apps/dashboard/AGENTS.md` — update import examples from `@ap/ui` → `@poeticui/components` and from `@ap/ui/layout` → `@ap/brand/layout` for AppShell et al.
+- `apps/dashboard/AGENTS.md` — update import examples from `@ap/ui` → `@artificialpoets/components` and from `@ap/ui/layout` → `@ap/brand/layout` for AppShell et al.
 - Monorepo root `AGENTS.md` — update the Shared Packages table.
 
 ### Step 9 — Verification
 
 - `bun install` — workspace graph resolves cleanly.
-- `bun run build` — every workspace builds (`@poeticui/tokens`, `@poeticui/components`, `@ap/brand`, `@ap/dashboard`, etc.).
-- `bun run test` — `@poeticui/components` tests pass (156+ expected); `@ap/dashboard` tests pass (211+ expected).
+- `bun run build` — every workspace builds (`@artificialpoets/tokens`, `@artificialpoets/components`, `@ap/brand`, `@ap/dashboard`, etc.).
+- `bun run test` — `@artificialpoets/components` tests pass (156+ expected); `@ap/dashboard` tests pass (211+ expected).
 - `bun run lint` — zero errors at error level.
 - `bun run storybook` — starts; every component has at least one story; theme toggle works.
 - Manual sweep: all 4 dashboards (platform / intranet / poehost / outboundmode) + `/a13s` render identically. Light and dark modes verified for each.
@@ -592,13 +592,13 @@ Phase 2 is a bounded project — estimated **4–6 engineering days**. Landed in
 ### Monorepo phase (now through public launch)
 
 - Packages stay at `0.x` with no changelog discipline. Workspace = source of truth.
-- `@poeticui/tokens` and `@poeticui/components` version in lockstep.
+- `@artificialpoets/tokens` and `@artificialpoets/components` version in lockstep.
 - `@ap/brand` versions independently (it's private and coupled to our app cadence).
 
-### Once `@poeticui/*` ships on npm (Phase 3, not this RFC)
+### Once `@artificialpoets/*` ships on npm (Phase 3, not this RFC)
 
-- Adopt Changesets for PRs touching either `@poeticui/*` package.
-- `@poeticui/tokens` and `@poeticui/components` at matched major versions.
+- Adopt Changesets for PRs touching either `@artificialpoets/*` package.
+- `@artificialpoets/tokens` and `@artificialpoets/components` at matched major versions.
 - Semantic versioning strictly: a component's public prop changes → major; internal refactor → patch.
 - `@ap/brand` stays private, still independent.
 
@@ -606,13 +606,13 @@ Phase 2 is a bounded project — estimated **4–6 engineering days**. Landed in
 
 ## Open questions
 
-1. **Does `@poeticui/components` ship a default theme import?** Proposal: `@poeticui/components/styles.css` re-exports `@poeticui/tokens` + the neutral theme so a consumer needs exactly one CSS import. Trade-off: bundles the neutral theme into consumers who will override it anyway. Current lean: **yes**, because the ergonomics win — consumers who need to override just layer their overlay after the import.
+1. **Does `@artificialpoets/components` ship a default theme import?** Proposal: `@artificialpoets/components/styles.css` re-exports `@artificialpoets/tokens` + the neutral theme so a consumer needs exactly one CSS import. Trade-off: bundles the neutral theme into consumers who will override it anyway. Current lean: **yes**, because the ergonomics win — consumers who need to override just layer their overlay after the import.
 
-2. **`@poeticui/components` or `@poeticui/ui` as the package name?** You've specified `@poeticui/components`. It's more descriptive but longer. Sticking with it unless you want to revisit.
+2. **`@artificialpoets/components` or `@artificialpoets/ui` as the package name?** You've specified `@artificialpoets/components`. It's more descriptive but longer. Sticking with it unless you want to revisit.
 
 3. **Secondary as brand-color-2, or secondary as low-emphasis-neutral (shadcn convention)?** Proposal in this RFC: the default is neutral (shadcn-compatible), but themes MAY override `--secondary` to a second brand color if they want it. Dashboards that don't need two brand colors leave it at the default. Open to overriding this call.
 
-4. **Does AP dashboard migrate to the neutral theme of `@poeticui/tokens`, then opt into `@ap/brand/theme/platform`, or does it always import AP's theme?** Proposal: the dashboard always imports the AP theme (it's an AP product; there's no reason to render with neutral). But Storybook does toggle between neutral and AP themes to demonstrate the theming system.
+4. **Does AP dashboard migrate to the neutral theme of `@artificialpoets/tokens`, then opt into `@ap/brand/theme/platform`, or does it always import AP's theme?** Proposal: the dashboard always imports the AP theme (it's an AP product; there's no reason to render with neutral). But Storybook does toggle between neutral and AP themes to demonstrate the theming system.
 
 5. **Does Storybook live in its own package (`packages/storybook`) or inside `packages/components`?** Proposal: inside `packages/components` because the stories are colocated with component source (and we want them to stay that way for open-source shipping). If build concerns arise, we can extract later.
 
@@ -631,7 +631,7 @@ Phase 2 is a bounded project — estimated **4–6 engineering days**. Landed in
 | `--info` semantic addition causes color clashes in existing dashboard code | Low | Low | Default `--info: var(--color-blue-500)` is visually distinct from every existing role. ESLint rule would catch any new raw-blue usage. |
 | Removing `.type-h1` breaks dashboard pages | Low | Medium | Grep before the removal; confirm zero usage or migrate the holdouts. |
 | Deleting `/design-system` page surprises a teammate | Medium | Low | Announce in the PR description; the docs already redirect them to Storybook. |
-| `@ap/brand` accidentally gets imported from `@poeticui/components` | Medium | High | `no-restricted-imports` ESLint rule + CI grep. Revert any PR that adds the import. |
+| `@ap/brand` accidentally gets imported from `@artificialpoets/components` | Medium | High | `no-restricted-imports` ESLint rule + CI grep. Revert any PR that adds the import. |
 | Public release (Phase 3) reveals a leaked AP assumption | Medium | Medium | Storybook with theme toggle is our early-warning system — if a neutral-theme render shows AP orange somewhere, that's a leak. |
 | `bun.lock` churn creates merge conflicts with other branches | High | Low | Do the rename + `bun install` as one of the first commits in Phase 2; every downstream branch rebases from there. |
 
@@ -659,7 +659,7 @@ Phase 2 is a bounded project — estimated **4–6 engineering days**. Landed in
 
 ### After Phase 2 lands
 
-Phase 3 (not in scope of this RFC) is the public launch: npm publish `@poeticui/tokens` + `@poeticui/components`, set up `poeticui.com` using the Storybook build, write a getting-started guide, announce.
+Phase 3 (not in scope of this RFC) is the public launch: npm publish `@artificialpoets/tokens` + `@artificialpoets/components`, set up `poeticui.com` using the Storybook build, write a getting-started guide, announce.
 
 ---
 
@@ -677,9 +677,9 @@ Phase 3 (not in scope of this RFC) is the public launch: npm publish `@poeticui/
 
 | Name | Scope | Deps | Contents |
 |------|-------|------|----------|
-| `@poeticui/tokens` | public-ready | none | palette, semantic vars, typography base rules, neutral default theme |
-| `@poeticui/components` | public-ready | `@poeticui/tokens` | ~50 React primitives + Storybook |
-| `@ap/brand` | private | `@poeticui/components` + `@poeticui/tokens` | AppShell, brand badges, account menus, AP theme overlays |
+| `@artificialpoets/tokens` | public-ready | none | palette, semantic vars, typography base rules, neutral default theme |
+| `@artificialpoets/components` | public-ready | `@artificialpoets/tokens` | ~50 React primitives + Storybook |
+| `@ap/brand` | private | `@artificialpoets/components` + `@artificialpoets/tokens` | AppShell, brand badges, account menus, AP theme overlays |
 | `apps/dashboard` | private | all of the above | four dashboards + a13s |
 
 ## Appendix — see also

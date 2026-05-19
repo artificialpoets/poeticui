@@ -1,7 +1,7 @@
 "use client";
 
-import { cx } from "@poeticui/components/lib";
-import { SegmentedTabs } from "@poeticui/components/navigation";
+import { cx } from "@artificialpoets/components/lib";
+import { SegmentedTabs } from "@artificialpoets/components/navigation";
 import type { ReactNode } from "react";
 
 import { usePref } from "./pref-store";

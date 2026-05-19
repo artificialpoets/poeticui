@@ -1,5 +1,5 @@
 /*
- * @poeticui/content — CodeBlock dual-theme stylesheet.
+ * @artificialpoets/content — CodeBlock dual-theme stylesheet.
  *
  * Shiki emits code with both light + dark colors as CSS variables on
  * every token span. This stylesheet picks between them based on the
@@ -8,7 +8,7 @@
  *
  * Opt-in: import this file from your app entry (or equivalent):
  *
- *     import "@poeticui/content/styles/code-block";
+ *     import "@artificialpoets/content/styles/code-block";
  *
  * The selectors are scoped under `.shiki` (Shiki's default class) so
  * they won't accidentally touch unrelated DOM.

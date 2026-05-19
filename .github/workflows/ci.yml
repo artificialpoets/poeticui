@@ -42,19 +42,19 @@ jobs:
       - name: Anti-hallucination conventions (CONTRIBUTING §9)
         run: |
           set -e
-          echo "→ Checking that any file with throw new Error() also includes the [@poeticui/components/...] prefix"
+          echo "→ Checking that any file with throw new Error() also includes the [@artificialpoets/components/...] prefix"
           UNPREFIXED=""
           while IFS= read -r f; do
-            if ! grep -q "\[@poeticui/components/" "$f"; then
+            if ! grep -q "\[@artificialpoets/components/" "$f"; then
               UNPREFIXED="$UNPREFIXED$f"$'\n'
             fi
           done < <(grep -rl "throw new Error(" packages/components/src --include='*.tsx' --include='*.ts' 2>/dev/null || true)
           if [ -n "$UNPREFIXED" ]; then
-            echo "FAIL: files with throw new Error() but no [@poeticui/components/...] prefix — see CONTRIBUTING §9.3:"
+            echo "FAIL: files with throw new Error() but no [@artificialpoets/components/...] prefix — see CONTRIBUTING §9.3:"
             echo "$UNPREFIXED"
             exit 1
           fi
-          echo "OK: every throw new Error() lives in a file that contains the [@poeticui/components/...] prefix"
+          echo "OK: every throw new Error() lives in a file that contains the [@artificialpoets/components/...] prefix"
 
           echo "→ Checking that primitives have a JSDoc @example block (warn-only until AP-503 sweep completes)"
           MISSING=""

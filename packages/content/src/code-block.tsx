@@ -1,4 +1,4 @@
-import { cx } from "@poeticui/components/lib";
+import { cx } from "@artificialpoets/components/lib";
 import type { BundledLanguage, BundledTheme, HighlighterGeneric } from "shiki";
 
 import {
@@ -43,7 +43,7 @@ export interface CodeBlockProps {
  * **Dual-theme flip via CSS variables** — `.dark` ancestor class selects
  * the dark palette with no re-render. Companion styles:
  *
- *     import "@poeticui/content/styles/code-block";
+ *     import "@artificialpoets/content/styles/code-block";
  *
  * Without those styles, code renders readably in the light theme but
  * won't flip on `.dark`.
@@ -77,7 +77,7 @@ export async function CodeBlock({
   if (resolvedLang !== lang && process.env.NODE_ENV !== "production") {
     // eslint-disable-next-line no-console
     console.warn(
-      `[@poeticui/content] <CodeBlock lang="${lang}" /> — language not loaded in the active highlighter. Falling back to plain text. Pass a custom highlighter that includes "${lang}" to fix.`,
+      `[@artificialpoets/content] <CodeBlock lang="${lang}" /> — language not loaded in the active highlighter. Falling back to plain text. Pass a custom highlighter that includes "${lang}" to fix.`,
     );
   }
 
