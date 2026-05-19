@@ -1,6 +1,8 @@
 {
   "name": "@poeticui/components",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "type": "module",
   "description": "Poetic UI — neutral React UI primitives. Consume design tokens exclusively; zero brand assumptions; framework-agnostic (no next/* imports).",
   "repository": {
     "type": "git",
@@ -8,8 +10,8 @@
     "directory": "packages/components"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "access": "restricted"
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "files": [
     "src"

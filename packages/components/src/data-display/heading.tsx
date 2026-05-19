@@ -39,16 +39,15 @@ function sizeStyleFor(level: HeadingLevel): React.CSSProperties {
  * `level` only when the visual size must differ from the tag — e.g. a page
  * title that's semantically `<h1>` but rendered at h2 size.
  *
- * ```tsx
- * // Semantically and visually an h1 — the default
- * <Heading>Hero</Heading>
+ * @example
+ * <Heading>Activity</Heading>
  *
- * // Section heading (h2 everywhere)
- * <Heading as="h2">Activity</Heading>
+ * @example
+ * <Heading as="h2">Section title</Heading>
  *
- * // Page title: h1 for a11y + SEO, but visually smaller (h2 size)
+ * @example
+ * // h1 for a11y + SEO, but visually smaller (h2 size)
  * <Heading as="h1" level={2}>Content Intent — Posts</Heading>
- * ```
  */
 export function Heading({
   as = "h1",
@@ -61,6 +60,7 @@ export function Heading({
   const resolvedLevel = parseLevel(as, level);
   return (
     <Tag
+      data-component="heading"
       {...props}
       className={cx("text-foreground", className)}
       style={{ ...sizeStyleFor(resolvedLevel), ...style }}
@@ -69,7 +69,10 @@ export function Heading({
 }
 
 /**
- * Muted variant of Heading. Same API; renders with `text-muted-foreground`.
+ * Muted variant of {@link Heading}. Same API; renders with `text-muted-foreground`.
+ *
+ * @example
+ * <Subheading as="h3">Less-prominent section heading</Subheading>
  */
 export function Subheading({
   as = "h2",
@@ -82,6 +85,7 @@ export function Subheading({
   const resolvedLevel = parseLevel(as, level);
   return (
     <Tag
+      data-component="subheading"
       {...props}
       className={cx("text-muted-foreground", className)}
       style={{ ...sizeStyleFor(resolvedLevel), ...style }}

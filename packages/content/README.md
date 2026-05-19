@@ -263,4 +263,4 @@ Open a PR with tests (`jest` + `@testing-library/react`) and a story. See [`pack
 
 ## License
 
-Part of the [`artificial-poets/monorepo`](https://github.com/artificial-poets/monorepo). License TBD — this package will be MIT when the `@poeticui/*` family publishes publicly.
+Apache-2.0. See [LICENSE](../../LICENSE) at the repo root.

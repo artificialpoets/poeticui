@@ -1,6 +1,8 @@
 {
   "name": "@poeticui/tokens",
   "version": "0.1.0",
+  "license": "Apache-2.0",
+  "type": "module",
   "description": "Poetic UI design tokens — pure CSS, zero dependencies. Works in any context: Next.js, WordPress, plain HTML.",
   "repository": {
     "type": "git",
@@ -8,8 +10,8 @@
     "directory": "packages/tokens"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "access": "restricted"
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "files": [
     "src"

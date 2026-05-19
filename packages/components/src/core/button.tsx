@@ -248,6 +248,26 @@ type ButtonProps = BaseButtonProps &
       >)
   );
 
+/**
+ * Solid, outline, or plain button with 18 color presets and 3 sizes.
+ * Polymorphic: when `href` is set, renders an `<a>` (via {@link Link});
+ * otherwise renders a HeadlessUI `<button>`. The hit area is automatically
+ * expanded to ≥44px on touch devices via {@link TouchTarget}.
+ *
+ * `color` is only honored when `variant === "solid"` — the outline and
+ * plain variants derive their styling from semantic tokens.
+ *
+ * @example
+ * <Button color="dark/zinc" onClick={() => console.log("clicked")}>
+ *   Save
+ * </Button>
+ *
+ * @example
+ * <Button variant="outline" size="sm">Cancel</Button>
+ *
+ * @example
+ * <Button href="/docs" variant="plain">Read the docs</Button>
+ */
 export const Button = forwardRef(function Button(
   {
     variant,
@@ -263,6 +283,16 @@ export const Button = forwardRef(function Button(
 ) {
   const resolvedVariant = resolveVariant(variant, outline, plain);
 
+  if (
+    process.env.NODE_ENV !== "production" &&
+    resolvedVariant !== "solid" &&
+    color
+  ) {
+    console.warn(
+      `[@poeticui/components/core/button] \`color\` is only applied when \`variant="solid"\`; got variant="${resolvedVariant}". The color="${color}" prop will be ignored.`,
+    );
+  }
+
   const classes = cx(
     buttonVariants({ variant: resolvedVariant, size }),
     // Color presets only apply to the solid variant — outline/plain have
@@ -273,6 +303,7 @@ export const Button = forwardRef(function Button(
 
   return typeof props.href === "string" ? (
     <Link
+      data-component="button"
       {...props}
       className={classes}
       ref={ref as React.ForwardedRef<HTMLAnchorElement>}
@@ -281,6 +312,7 @@ export const Button = forwardRef(function Button(
     </Link>
   ) : (
     <Headless.Button
+      data-component="button"
       {...props}
       className={cx(classes, "cursor-default")}
       ref={ref}
@@ -291,7 +323,16 @@ export const Button = forwardRef(function Button(
 });
 
 /**
- * Expand the hit area to at least 44x44px on touch devices.
+ * Expand the hit area to at least 44x44px on touch devices. Used internally
+ * by {@link Button} and {@link BadgeButton}; export is for primitives that
+ * compose their own clickable surface.
+ *
+ * @example
+ * <button className="relative inline-flex p-1">
+ *   <TouchTarget>
+ *     <Icon />
+ *   </TouchTarget>
+ * </button>
  */
 export function TouchTarget({ children }: { children: React.ReactNode }) {
   return (

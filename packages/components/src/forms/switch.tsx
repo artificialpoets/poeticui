@@ -4,12 +4,23 @@ import type React from "react";
 
 import { cx } from "../lib";
 
+/**
+ * Vertical group of {@link SwitchField} elements. Spacing tightens when
+ * fields lack descriptions; loosens when they have them.
+ *
+ * @example
+ * <SwitchGroup>
+ *   <SwitchField><Label>Comments</Label><Switch defaultChecked /></SwitchField>
+ *   <SwitchField><Label>Newsletter</Label><Switch /></SwitchField>
+ * </SwitchGroup>
+ */
 export function SwitchGroup({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   return (
     <div
+      data-component="switch-group"
       data-slot="control"
       {...props}
       className={cx(
@@ -23,12 +34,24 @@ export function SwitchGroup({
   );
 }
 
+/**
+ * Pair a {@link Switch} with a {@link Label} and optional {@link Description}.
+ * Two-column grid: label/description on the left, switch on the right.
+ *
+ * @example
+ * <SwitchField>
+ *   <Label>Email me weekly summaries</Label>
+ *   <Description>Sent on Monday mornings.</Description>
+ *   <Switch name="weekly" defaultChecked />
+ * </SwitchField>
+ */
 export function SwitchField({
   className,
   ...props
 }: { className?: string } & Omit<Headless.FieldProps, "as" | "className">) {
   return (
     <Headless.Field
+      data-component="switch-field"
       data-slot="field"
       {...props}
       className={cx(
@@ -226,6 +249,16 @@ export type SwitchSize = NonNullable<
   VariantProps<typeof switchVariants>["size"]
 >;
 
+/**
+ * On/off toggle. Three sizes (`sm`, `md`, `lg`) and 22 color presets.
+ * Keyboard-accessible (Space toggles, Tab navigates) via HeadlessUI.
+ *
+ * @example
+ * <Switch defaultChecked />
+ *
+ * @example
+ * <Switch color="green" size="sm" defaultChecked />
+ */
 export function Switch({
   color,
   size,
@@ -238,6 +271,7 @@ export function Switch({
 } & Omit<Headless.SwitchProps, "as" | "className" | "children">) {
   return (
     <Headless.Switch
+      data-component="switch"
       data-slot="control"
       {...props}
       className={cx(switchVariants({ color, size }), className)}

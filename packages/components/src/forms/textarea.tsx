@@ -3,6 +3,16 @@ import React, { forwardRef } from "react";
 
 import { cx } from "../lib";
 
+/**
+ * Multi-line text input. Same chrome as {@link Input} (border, focus ring,
+ * data-state attributes). `resizable` (default `true`) toggles vertical resize.
+ *
+ * @example
+ * <Textarea name="bio" placeholder="Tell us about yourself" rows={4} />
+ *
+ * @example
+ * <Textarea name="comment" resizable={false} />
+ */
 export const Textarea = forwardRef(function Textarea(
   {
     className,
@@ -16,6 +26,7 @@ export const Textarea = forwardRef(function Textarea(
 ) {
   return (
     <span
+      data-component="textarea"
       data-slot="control"
       className={cx(
         className,

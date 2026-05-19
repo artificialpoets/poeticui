@@ -38,3 +38,34 @@ jobs:
 
       - name: Storybook build (smoke test)
         run: bun run storybook:build
+
+      - name: Anti-hallucination conventions (CONTRIBUTING §9)
+        run: |
+          set -e
+          echo "→ Checking that throw new Error() in components uses the [@poeticui/components/...] prefix"
+          UNPREFIXED=$(grep -rEn 'throw new Error\(' packages/components/src --include='*.tsx' --include='*.ts' \
+            | grep -v '\[@poeticui/components/' \
+            || true)
+          if [ -n "$UNPREFIXED" ]; then
+            echo "FAIL: unprefixed throw new Error() — see CONTRIBUTING §9.3:"
+            echo "$UNPREFIXED"
+            exit 1
+          fi
+          echo "→ Checking that primitives have a JSDoc @example block"
+          # Audit pass tracked in AP-503; once complete, switch to fail.
+          MISSING=$(bash -c '
+            for f in $(find packages/components/src -name "*.tsx" \
+                      ! -name "*.stories.tsx" \
+                      ! -path "*/__tests__/*"); do
+              if ! grep -q "@example" "$f"; then
+                echo "$f"
+              fi
+            done
+          ')
+          if [ -n "$MISSING" ]; then
+            COUNT=$(echo "$MISSING" | wc -l | tr -d " ")
+            echo "WARN: $COUNT component file(s) missing @example block (tracked by AP-503):"
+            echo "$MISSING"
+          else
+            echo "OK: every component has @example"
+          fi

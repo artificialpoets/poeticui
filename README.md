@@ -1,111 +1,169 @@
 # Poetic UI
 
-**Private. Closed source. Hosted at [`artificialpoets/poeticui`](https://github.com/artificialpoets/poeticui).**
+> A neutral, agent-friendly React design system. Tokens, components, and technical-content primitives. Open source under Apache-2.0.
 
-A three-package design system:
+```bash
+bun  add @poeticui/components @poeticui/tokens
+pnpm add @poeticui/components @poeticui/tokens
+npm  install @poeticui/components @poeticui/tokens
+yarn add @poeticui/components @poeticui/tokens
+```
+
+For technical-content surfaces (docs pages, API references, marketing landing pages):
+
+```bash
+bun add @poeticui/content
+```
+
+## Quick start
+
+```tsx
+import "@poeticui/tokens"; // once in your app entry CSS via @import
+
+import { Button } from "@poeticui/components/core";
+import { Card, Heading, Text, Badge } from "@poeticui/components/data-display";
+
+export default function HelloWorld() {
+  return (
+    <Card>
+      <Badge color="green">v0.1.0</Badge>
+      <Heading as="h2">Welcome to Poetic UI</Heading>
+      <Text>A neutral, themable React design system.</Text>
+      <Button color="dark/zinc">Get started</Button>
+    </Card>
+  );
+}
+```
+
+Wire the CSS once in your app entry — `globals.css`, `src/styles.css`, or equivalent:
+
+```css
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+@import "@poeticui/tokens";
+
+/* Optional: layer your brand by overriding the 6-slot theme contract */
+@layer base {
+  :root {
+    --primary: oklch(0.488 0.243 264);
+    --primary-foreground: oklch(0.985 0 0);
+    --ring: oklch(0.488 0.243 264);
+    --sidebar-primary: oklch(0.488 0.243 264);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-ring: oklch(0.488 0.243 264);
+  }
+  .dark { /* same six, dark values */ }
+}
+```
+
+That's it. The library paints with a neutral theme by default; the six-slot overlay above turns it into your brand.
+
+## What's in the box
 
 | Package | Purpose |
 |---|---|
-| [`@poeticui/tokens`](./packages/tokens) | Pure CSS — OKLCH palette, semantic aliases, typography base, Tailwind v4 theme mapping, default neutral theme. Zero JS deps. |
-| [`@poeticui/components`](./packages/components) | ~50 neutral React primitives. Consume tokens exclusively. No brand assumptions. Framework-agnostic (no `next/*` imports). |
-| [`@poeticui/content`](./packages/content) | Technical-content primitives: Shiki-powered `<CodeBlock>`, KaTeX `<BlockMath>`/`<InlineMath>`, `<PersistentTabs>`, `<PackageManagerTabs>`, `<LanguageTabs>`. Opt-in — consumers who don't install pay zero bytes. |
+| [`@poeticui/tokens`](./packages/tokens) | Pure CSS. OKLCH palette, semantic role variables, Tailwind v4 theme mapping, neutral default theme. Zero JS deps. |
+| [`@poeticui/components`](./packages/components) | ~50 React primitives. Consume tokens exclusively. HeadlessUI v2 + CVA. Framework-agnostic (no `next/*` imports). |
+| [`@poeticui/content`](./packages/content) | Technical-content primitives: Shiki-powered `<CodeBlock>` (server-rendered), KaTeX `<BlockMath>`/`<InlineMath>`, `<PersistentTabs>`, `<PackageManagerTabs>`, `<LanguageTabs>`. Opt-in — consumers who don't install pay zero bytes. |
 
-**Arrows only point downward:** `consumers → content → components → tokens`. The neutral-boundary contract is enforced by the CI workflow (`.github/workflows/ci.yml`).
+**Arrows only point downward:** `consumers → content → components → tokens`. The neutral-boundary contract is enforced by CI (`.github/workflows/ci.yml`).
 
-## How this repo is consumed
-
-### From the Artificial Poets monorepo
-
-Mounted as a git submodule at `vendor/poeticui/`. The monorepo's Bun workspaces glob includes `vendor/poeticui/packages/*`, so every `import '@poeticui/*'` resolves via symlink with no version bump required on day-to-day edits.
+## Live preview — Storybook
 
 ```bash
-# In the monorepo
-git clone --recurse-submodules git@github.com:artificialpoets/monorepo.git
-cd monorepo && bash tooling/bootstrap.sh
-# Edit vendor/poeticui/packages/components/src/... → dashboard hot-reloads
+git clone https://github.com/artificialpoets/poeticui.git
+cd poeticui && bun install
+bun run storybook
 ```
 
-### From any other (future) app
+Opens at `http://localhost:6006` with every component, every variant, light/dark toggle, axe-core a11y addon.
 
-> **External publishing is currently deferred.** The `@poeticui` npm scope doesn't align with any existing GitHub org (this repo lives under `artificialpoets/`), and GitHub Packages requires scope-to-owner alignment. Resolving that is an explicit future decision (create a `poeticui` org, rename packages to `@artificialpoets/*`, or pick a non-GitHub registry).
->
-> Today's only consumer is the `artificialpoets/monorepo` submodule. The plumbing for publishing is already in place (`.npmrc`, `publishConfig` on each package, Changesets + workflow) — it just isn't activated.
+## Design principles
 
-When publishing is re-enabled, the consumer flow will look like:
+Seven non-negotiable rules — full RFC in [`packages/components/docs/RFC-ARCHITECTURE.md`](./packages/components/docs/RFC-ARCHITECTURE.md):
 
-```bash
-# .npmrc (one-time per dev, per machine)
-echo "@poeticui:registry=https://npm.pkg.github.com" >> ~/.npmrc
-echo "//npm.pkg.github.com/:_authToken=ghp_YOUR_PAT_WITH_READ_PACKAGES" >> ~/.npmrc
+1. **HTML semantics first** — `<h1>` with base styles, no `.type-h1` utility classes
+2. **Semantic tokens** — `bg-primary` and `text-muted-foreground`, never `bg-orange-500`
+3. **Neutral by default, customizable per brand** — overlay defines six required slots; everything else inherits
+4. **Light + dark is a contract** — every token has `:root` and `.dark` values; components never write `dark:` prefixes
+5. **Primary / Secondary / Semantic role / Surface** — four distinct token categories
+6. **LLM-friendly** — `data-component` attributes on every primitive, JSDoc `@example` per export, single canonical export path
+7. **No utility class that duplicates HTML meaning**
 
-# Install
-bun add @poeticui/components @poeticui/tokens @poeticui/content
+## Why this exists
+
+Built on the lessons of shipping a design system across four production dashboards. The differentiators vs other React UI libraries:
+
+- **Real package, not copy-paste.** Versioned npm releases — one bug fix propagates to every consumer. No re-running a CLI per repo.
+- **`@poeticui/content`** — server-rendered `<CodeBlock>`, package-manager / language tabs with cross-tab preference sync, KaTeX math. No equivalent in shadcn or Mantine.
+- **Theme as a contract** — six CSS variables rebrand the whole library. Light and dark are first-class, not a `dark:` afterthought.
+- **Built for agents.** `data-component` attributes on every primitive. JSDoc `@example` blocks (the canonical examples agents copy). Stable error messages with `[@poeticui/components/<category>/<name>]` prefix. Forthcoming: a machine-readable component manifest (`registry.json`), `llms.txt`, MCP server, JSON token export.
+- **CI-enforced framework-agnostic.** No `next/*` imports allowed in `@poeticui/components`. Tested in Next.js, Vite, Astro, Remix, plain SPAs.
+
+## Architecture
+
+```
+your-app
+   │ imports @poeticui/components, @poeticui/tokens, optionally @poeticui/content
+   ▼
+@poeticui/content       (opt-in: Shiki + KaTeX + tab primitives)
+   │ depends on @poeticui/components + @poeticui/tokens
+   ▼
+@poeticui/components    (React UI primitives)
+   │ depends on @poeticui/tokens
+   ▼
+@poeticui/tokens        (pure CSS, zero deps)
 ```
 
 ## Develop
 
 ```bash
+git clone https://github.com/artificialpoets/poeticui.git
+cd poeticui
 bun install
-bun run lint          # eslint across all three packages
-bun run test          # jest across components + content (tokens is pure CSS)
-bun run build         # turbo build (source-only packages → echo)
-bun run storybook     # Storybook dev server at http://localhost:6006
+
+bun run lint           # eslint across all packages
+bun run test           # jest across components + content
+bun run build          # turbo build (source-only packages → echo)
+bun run storybook      # http://localhost:6006
 bun run storybook:build
 ```
 
 ## Release
 
-Changesets drives versioning + CHANGELOGs. External publishing is **not active** — see "From any other (future) app" above for rationale.
-
-To propose a version bump, add a changeset entry in the same PR that contains the change:
+Versioning via Changesets. Every PR that touches `packages/*` includes a changeset file describing what bumped and at what level:
 
 ```bash
 bun run changeset
-# → opens an interactive prompt; pick the packages + bump level + write a summary
-# → commits .changeset/<slug>.md in your PR
+# → interactive prompt; creates .changeset/<slug>.md
+git add .changeset && git commit -m "chore: add changeset"
 ```
 
-When PRs land on `main`, the `release.yml` workflow opens (or updates) a "Version Packages" PR. Merging that PR applies the bumps + writes per-package `CHANGELOG.md` entries. The monorepo's submodule pin is then bumped to the new SHA to pick up the version/CHANGELOG commit.
+Bump levels:
+- **patch** — bug fix, internal refactor, a11y tweak
+- **minor** — new primitive, new prop on existing primitive (non-breaking)
+- **major** — breaking API change
 
-When/if external publishing becomes necessary:
+Merging a PR with a changeset opens (or updates) a "Version Packages" PR. Merging the Version Packages PR applies the bumps + writes per-package `CHANGELOG.md` entries + publishes to npm.
 
-1. Resolve the scope/org question (see the README section above + the comment at the top of `.github/workflows/release.yml`).
-2. Add `publish: bun run release` back to the `changesets/action@v1` `with:` block in `release.yml`.
-3. Restore the `packages: write` permission to the job.
-4. The next Version Packages PR merge will also publish.
-
-## Storybook
-
-All three packages share a Storybook hosted in `packages/components/.storybook/`. The MDX pages under `packages/components/.storybook/ContentToolkit.mdx` and `packages/components/.storybook/examples/ApiLandingPage.mdx` live-demo the `@poeticui/content` primitives.
-
-## Layout
-
-```
-poeticui/
-├── .changeset/                 Changesets state + config
-├── .github/workflows/          ci.yml + release.yml
-├── packages/
-│   ├── tokens/                 pure CSS
-│   ├── components/             neutral React primitives (hosts Storybook)
-│   └── content/                content primitives
-├── package.json                workspaces, hoisted devDeps, scripts
-├── tsconfig.base.json          shared TS compilerOptions
-├── turbo.json                  build/test/lint pipelines
-├── .npmrc                      @poeticui → GitHub Packages
-└── bun.lock                    single workspace lock
-```
-
-## Neutral-boundary rules (enforced in CI)
-
-1. `@poeticui/components` never imports `@ap/brand`.
-2. `@poeticui/components` never imports `next/*`.
-3. `@poeticui/components/package.json` has no `@ap/brand` dep.
-4. `@poeticui/tokens` has no `@ap/*` references.
-5. `@poeticui/content` has no `@ap/*` references.
-6. `@poeticui/content` never imports `next/*`.
-
-Each rule is a grep check; a violation fails the CI job.
+Packages are versioned **independently** — `tokens@0.1.1` and `components@0.2.0` can ship together. Only packages listed in the changeset bump.
 
 ## Contributing
 
-See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the authoring spec (tokens-only styling, `cx()`, CVA, etc.) and the full component library contract at [`packages/components/CONTRIBUTING.md`](./packages/components/CONTRIBUTING.md).
+The authoring spec is in [`packages/components/CONTRIBUTING.md`](./packages/components/CONTRIBUTING.md) — ~700 lines covering:
+
+1. Slot-composition pattern (`data-slot` attributes)
+2. CVA for variants (Pattern A single-call, Pattern B for color-as-orthogonal-axis)
+3. Semantic token usage (raw `bg-gray-500` banned)
+4. HeadlessUI integration
+5. Ref forwarding and polymorphic `as`
+6. Testing conventions
+7. File organization
+8. Worked example: `<Toggle>`
+9. Authoring for agents (`data-component`, JSDoc `@example`, error prefixes, dev warnings, single canonical export path)
+
+CI enforces a subset of these rules via greps and ESLint.
+
+## License
+
+Apache-2.0. See [LICENSE](./LICENSE).

@@ -611,6 +611,126 @@ Ship a PR that follows this template and a reviewer should only need to check yo
 
 ---
 
+## 9. Authoring for agents
+
+Coding agents (Claude Code, Cursor, Codex) consume PoeticUI through a machine-readable surface — `registry.json`, `llms.txt`, the MCP server, JSON tokens. The conventions below make components grep-able, predictable, and self-documenting, minimizing the failure modes that cause agents to hallucinate component names, prop values, or compositions.
+
+These rules are **non-negotiable for new components**. Existing components are migrated as part of [DES tracking issue AP-503](https://linear.app/artificial-poets/issue/AP-503/anti-hallucination-authoring-conventions).
+
+### 9.1. `data-component` attribute (required)
+
+Every primitive's root JSX element sets `data-component="<kebab-case-name>"`. Slot-family sub-components each get their own value.
+
+```tsx
+// Single primitive
+export function Card({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
+  return <div data-component="card" {...props} className={cx("...", className)} />;
+}
+
+// Slot family — every sub-component gets its own value
+export function Fieldset(props) { return <Headless.Fieldset data-component="fieldset" {...props} />; }
+export function Legend(props)   { return <Headless.Legend   data-component="legend"   {...props} />; }
+export function FieldGroup(props){ return <div              data-component="field-group" {...props} />; }
+```
+
+This lets an agent inspecting rendered DOM disambiguate `<button data-component="button">` from `<button data-component="dropdown-trigger">`. The attribute is also used by `registry.json`'s tag inference and by integration tests.
+
+**The `data-slot` attribute is preserved alongside.** `data-slot` describes the *role within a parent's layout* (`label`, `control`, `description`); `data-component` describes *which primitive emitted this DOM*. Both can coexist on one element.
+
+### 9.2. JSDoc `@example` block (required)
+
+Every exported primitive has a JSDoc block above its declaration containing **one canonical example**. This becomes the `canonicalExample` field in `registry.json`, the per-component section in `llms-full.txt`, and the `get_component(name)` MCP tool response — the example an agent will copy verbatim.
+
+```tsx
+/**
+ * A solid, outline, or plain button with 18 color presets.
+ *
+ * @example
+ * <Button variant="outline" size="sm">
+ *   Save
+ * </Button>
+ */
+export const Button = forwardRef(...);
+```
+
+Rules:
+- **One** `@example` per export. Pick the most idiomatic — defaults, no exotic combos.
+- The example must be copy-paste-runnable: no undeclared variables, no missing imports.
+- Prefer string children; reserve composed JSX for components whose whole point is composition (Fieldset, Dialog, DataTable).
+- Use callbacks like `onClick={() => console.log(...)}`, not references to undefined `handleClick`.
+
+For a slot family, document each sub-component with its own `@example` showing how it composes:
+
+```tsx
+/** Title for a Dialog. Required first child. */
+export function DialogTitle(props) { ... }
+
+/** @example <DialogActions><Button>Cancel</Button><Button color="dark/zinc">Save</Button></DialogActions> */
+export function DialogActions(props) { ... }
+```
+
+### 9.3. Stable error message prefixes
+
+Any `throw new Error(...)` (or `console.warn`/`console.error` for dev guards) inside a component uses this format:
+
+```
+[@poeticui/components/<category>/<name>] <description>
+```
+
+```tsx
+// Bad — agent has to guess where this came from
+throw new Error("Invalid children");
+
+// Good — single grep finds it
+throw new Error(
+  `[@poeticui/components/navigation/segmented-tabs] expected children to be SegmentedTabsItem; got ${typeof child}`,
+);
+```
+
+### 9.4. Ambiguous overloads → dev warnings
+
+When prop A makes prop B unused (e.g. `Button`'s `color` is only honored when `variant === 'solid'`), warn in development. Production stays silent — warnings exist to surface bugs during agent iteration.
+
+```tsx
+if (process.env.NODE_ENV !== "production" && variant !== "solid" && color) {
+  console.warn(
+    `[@poeticui/components/core/button] \`color\` is only applied when \`variant="solid"\`; got variant=${variant}`,
+  );
+}
+```
+
+### 9.5. One canonical export path
+
+Every primitive is exported through:
+1. Its category's `index.ts` (e.g. `core/index.ts` → `Button`)
+2. The root `src/index.ts` barrel
+
+There is no third path — no deep imports that compete (`@poeticui/components/core/button` versus `@poeticui/components/core` versus `@poeticui/components`). Agents and the MCP server return one stable import for each component; aliases dilute that.
+
+### 9.6. `as` polymorphism stays rare
+
+§5 already says "the `as` prop should be rare." Apply strictly:
+- For non-trivial polymorphism, prefer named exports (`<ButtonLink>`) over `<Button as={Link}>`.
+- Where `as` is essential (HeadlessUI slot patterns like `MenuButton as={Link}`), JSDoc the typing pattern explicitly with an `@example`.
+
+### 9.7. PR checklist
+
+Reviewers verify each item before merging a new primitive:
+
+- [ ] Root element has `data-component="<kebab-name>"`
+- [ ] Every export has a JSDoc block with one `@example`
+- [ ] Errors use the `[@poeticui/components/...]` prefix
+- [ ] Ambiguous prop combinations have dev warnings
+- [ ] Component is exported from category `index.ts` and root barrel
+- [ ] No new `as` prop usage without RFC discussion
+
+CI fails (via `.github/workflows/ci.yml` greps) when:
+- A `.tsx` file under `src/` has an `export function` / `export const` declaration without a preceding `@example` JSDoc tag
+- A primitive's root element omits `data-component`
+- A `throw new Error(` inside `src/` lacks the `[@poeticui/components/` prefix
+
+---
+
 ## Storybook — preview & docs
 
 Every new component lands with a `<component>.stories.tsx` file next to the source. The Storybook surface is the design system reference — live previews, variant matrices, theme switcher, a11y checks, and MDX doc pages.

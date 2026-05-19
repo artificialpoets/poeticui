@@ -3,11 +3,22 @@ import React, { forwardRef } from "react";
 
 import { cx } from "../lib";
 
+/**
+ * Wrap an {@link Input} with leading/trailing icons. Pass icons as children
+ * with `data-slot="icon"`; first becomes leading, last becomes trailing.
+ *
+ * @example
+ * <InputGroup>
+ *   <SearchIcon data-slot="icon" />
+ *   <Input type="search" name="q" />
+ * </InputGroup>
+ */
 export function InputGroup({
   children,
 }: React.ComponentPropsWithoutRef<"span">) {
   return (
     <span
+      data-component="input-group"
       data-slot="control"
       className={cx(
         "relative isolate block",
@@ -25,6 +36,18 @@ export function InputGroup({
 const dateTypes = ["date", "datetime-local", "month", "time", "week"];
 type DateType = (typeof dateTypes)[number];
 
+/**
+ * Text-like input (email, password, number, search, tel, url, text, date,
+ * datetime-local, month, time, week). Wraps HeadlessUI's `Input` for
+ * data-state attributes (`data-hover`, `data-focus`, `data-invalid`,
+ * `data-disabled`).
+ *
+ * @example
+ * <Input type="email" name="email" placeholder="ada@example.com" />
+ *
+ * @example
+ * <Input type="text" name="username" defaultValue="ada" />
+ */
 export const Input = forwardRef(function Input(
   {
     className,
@@ -45,6 +68,7 @@ export const Input = forwardRef(function Input(
 ) {
   return (
     <span
+      data-component="input"
       data-slot="control"
       className={cx(
         className,

@@ -20,6 +20,28 @@ const TableContext = createContext<{
   striped: false,
 });
 
+/**
+ * Tabular data with horizontal scrolling, striping, dense rows, gridlines.
+ * Compose with {@link TableHead}, {@link TableBody}, {@link TableRow},
+ * {@link TableHeader}, and {@link TableCell}. Pass `href` on a row to make
+ * the entire row clickable.
+ *
+ * @example
+ * <Table striped>
+ *   <TableHead>
+ *     <TableRow>
+ *       <TableHeader>Name</TableHeader>
+ *       <TableHeader>Email</TableHeader>
+ *     </TableRow>
+ *   </TableHead>
+ *   <TableBody>
+ *     <TableRow href="/users/1">
+ *       <TableCell>Ada</TableCell>
+ *       <TableCell>ada@example.com</TableCell>
+ *     </TableRow>
+ *   </TableBody>
+ * </Table>
+ */
 export function Table({
   bleed = false,
   compact = false,
@@ -49,7 +71,7 @@ export function Table({
         >
       }
     >
-      <div className="flow-root">
+      <div data-component="table" className="flow-root">
         <div
           {...props}
           className={clsx(
@@ -79,17 +101,31 @@ export function Table({
   );
 }
 
+/**
+ * Header section of a {@link Table}. Wraps `<thead>`.
+ *
+ * @example <TableHead><TableRow><TableHeader>Name</TableHeader></TableRow></TableHead>
+ */
 export function TableHead({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"thead">) {
   return (
-    <thead {...props} className={clsx(className, "text-muted-foreground")} />
+    <thead
+      data-component="table-head"
+      {...props}
+      className={clsx(className, "text-muted-foreground")}
+    />
   );
 }
 
+/**
+ * Body section of a {@link Table}. Wraps `<tbody>`.
+ *
+ * @example <TableBody><TableRow>...</TableRow></TableBody>
+ */
 export function TableBody(props: React.ComponentPropsWithoutRef<"tbody">) {
-  return <tbody {...props} />;
+  return <tbody data-component="table-body" {...props} />;
 }
 
 const TableRowContext = createContext<{
@@ -102,6 +138,16 @@ const TableRowContext = createContext<{
   title: undefined,
 });
 
+/**
+ * A row in a {@link Table}. When `href` is provided, the entire row becomes
+ * clickable (an invisible Link covers each cell while preserving cell content).
+ *
+ * @example
+ * <TableRow href="/customers/abc">
+ *   <TableCell>Acme Co.</TableCell>
+ *   <TableCell>$1,200</TableCell>
+ * </TableRow>
+ */
 export function TableRow({
   href,
   target,
@@ -122,6 +168,7 @@ export function TableRow({
       }
     >
       <tr
+        data-component="table-row"
         {...props}
         className={clsx(
           className,
@@ -134,6 +181,11 @@ export function TableRow({
   );
 }
 
+/**
+ * Column-header cell within a {@link TableHead} {@link TableRow}.
+ *
+ * @example <TableHeader>Name</TableHeader>
+ */
 export function TableHeader({
   className,
   ...props
@@ -142,6 +194,7 @@ export function TableHeader({
 
   return (
     <th
+      data-component="table-header"
       {...props}
       className={clsx(
         className,
@@ -156,6 +209,11 @@ export function TableHeader({
   );
 }
 
+/**
+ * Data cell within a {@link TableBody} {@link TableRow}.
+ *
+ * @example <TableCell>Acme Co.</TableCell>
+ */
 export function TableCell({
   className,
   children,
@@ -167,6 +225,7 @@ export function TableCell({
 
   return (
     <td
+      data-component="table-cell"
       ref={href ? setCellRef : undefined}
       {...props}
       className={clsx(

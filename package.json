@@ -1,9 +1,10 @@
 {
   "name": "poeticui",
   "private": true,
-  "description": "Poetic UI — design tokens, neutral React primitives, and technical-content primitives. Consumed as a private dependency by the Artificial Poets monorepo (via git submodule) and by future external apps (via GitHub Packages).",
+  "license": "Apache-2.0",
+  "description": "Poetic UI — design tokens, neutral React primitives, and technical-content primitives. Open source under Apache-2.0.",
   "packageManager": "bun@1.3.11",
-  "workspaces": ["packages/*"],
+  "workspaces": ["packages/*", "apps/*"],
   "scripts": {
     "build": "turbo build",
     "test": "turbo test",

@@ -86,7 +86,7 @@ function useSegmentedTabsContext(component: string): SegmentedTabsContextValue {
   const ctx = React.useContext(SegmentedTabsContext);
   if (!ctx) {
     throw new Error(
-      `<${component} /> must be rendered inside a <SegmentedTabs> parent.`,
+      `[@poeticui/components/navigation/segmented-tabs] <${component} /> must be rendered inside a <SegmentedTabs> parent.`,
     );
   }
   return ctx;

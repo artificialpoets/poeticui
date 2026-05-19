@@ -87,35 +87,22 @@ export interface StatProps extends VariantProps<typeof statVariants> {
 // ─── Component ────────────────────────────────────────────────────────────
 
 /**
- * Stat — KPI / metric block.
+ * KPI / metric block. Subsumes label + value, optional icon (tinted square),
+ * optional trend (up/down arrow with semantic color), optional change badge,
+ * and optional `bordered` card chrome for grid layouts.
  *
- * Unified successor to the various hand-rolled stat patterns (MetricCard,
- * scanner StatCard, and the earlier dashboard-local Stat). Subsumes all
- * three via optional props:
- *
- * - Plain label + value — minimal inline KPI
- * - `icon` — adds a tinted icon square (iconVariant picks the tint)
- * - `trend` — adds a rich up/down indicator
- * - `change` — legacy badge-style "+8.2%" change chip
- * - `bordered` — wraps everything in a card chrome (for grid layouts)
- *
- * ```tsx
- * // Minimal
+ * @example
  * <Stat label="Total visitors" value="38.2K" />
  *
- * // With icon + trend, card-framed
+ * @example
  * <Stat
  *   bordered
  *   icon={Users}
  *   iconVariant="info"
  *   label="Monthly active"
- *   value={mau}
- *   trend={{ direction: 'up', label: '+12% this week' }}
+ *   value={1284}
+ *   trend={{ direction: "up", label: "+12% this week" }}
  * />
- *
- * // Legacy change-badge form
- * <Stat label="Weekly active users" value="1,234" change="+12%" />
- * ```
  */
 export function Stat({
   label,
@@ -164,9 +151,10 @@ export function Stat({
 
   return (
     <div
+      data-component="stat"
+      data-slot="stat"
       {...props}
       className={cx(statVariants({ size: resolvedSize, bordered }), className)}
-      data-slot="stat"
     >
       {Icon ? (
         <div className="flex items-start gap-3">

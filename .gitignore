@@ -5,6 +5,13 @@ storybook-static/
 *.tsbuildinfo
 .DS_Store
 
+# PoeJS build artifacts
+.poejs/
+apps/*/public/styles.css
+
+# Landing site / experimental apps — kept locally, not part of the open-source repo
+apps/
+
 # Bun
 .bun-debug*
 

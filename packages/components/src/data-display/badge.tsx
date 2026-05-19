@@ -77,6 +77,16 @@ type BadgeVariantProps = {
   size?: BadgeSize;
 };
 
+/**
+ * Status chip / count indicator / label tag. Eighteen color presets covering
+ * neutral + every Tailwind hue. Two sizes (`sm`, `md`).
+ *
+ * @example
+ * <Badge color="green">active</Badge>
+ *
+ * @example
+ * <Badge color="red" size="sm">3</Badge>
+ */
 export function Badge({
   color,
   size,
@@ -85,12 +95,25 @@ export function Badge({
 }: BadgeVariantProps & React.ComponentPropsWithoutRef<"span">) {
   return (
     <span
+      data-component="badge"
       {...props}
       className={cx(badgeVariants({ color, size }), className)}
     />
   );
 }
 
+/**
+ * Clickable / linkable {@link Badge}. Use for chips that filter, navigate,
+ * or trigger an action. Renders `<a>` when `href` is present, else `<button>`.
+ *
+ * @example
+ * <BadgeButton color="blue" onClick={() => alert("clicked")}>
+ *   filter
+ * </BadgeButton>
+ *
+ * @example
+ * <BadgeButton color="zinc" href="/customers/123">View</BadgeButton>
+ */
 export const BadgeButton = forwardRef(function BadgeButton(
   {
     color,
@@ -114,6 +137,7 @@ export const BadgeButton = forwardRef(function BadgeButton(
 
   return typeof props.href === "string" ? (
     <Link
+      data-component="badge-button"
       {...props}
       className={classes}
       ref={ref as React.ForwardedRef<HTMLAnchorElement>}
@@ -125,7 +149,12 @@ export const BadgeButton = forwardRef(function BadgeButton(
       </TouchTarget>
     </Link>
   ) : (
-    <Headless.Button {...props} className={classes} ref={ref}>
+    <Headless.Button
+      data-component="badge-button"
+      {...props}
+      className={classes}
+      ref={ref}
+    >
       <TouchTarget>
         <Badge color={color} size={size}>
           {children}

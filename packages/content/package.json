@@ -1,6 +1,8 @@
 {
   "name": "@poeticui/content",
   "version": "0.1.0",
+  "license": "Apache-2.0",
+  "type": "module",
   "description": "Poetic UI — primitives for rendering technical content (code, math, persistent tabs). Usable in any React app. Opt-in: consumers who don't install this package pay zero bytes.",
   "repository": {
     "type": "git",
@@ -8,8 +10,8 @@
     "directory": "packages/content"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "access": "restricted"
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "files": [
     "src",
