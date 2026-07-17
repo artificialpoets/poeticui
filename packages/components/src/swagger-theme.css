@@ -13,7 +13,7 @@
 html { background: var(--ap-bg); }
 body { background: var(--ap-bg); color: var(--ap-text); }
 
-.swagger-ui { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+.swagger-ui { font-family: 'Geist Mono', ui-monospace, monospace; }
 
 .swagger-ui .topbar { background: var(--ap-card); border-bottom: 1px solid var(--ap-border); padding: 8px 0; }
 .swagger-ui .topbar .download-url-wrapper .select-label select { border-color: var(--ap-border); }
@@ -30,7 +30,7 @@ body { background: var(--ap-bg); color: var(--ap-text); }
 
 .swagger-ui .opblock { background: var(--ap-card); border-color: var(--ap-border); border-radius: 6px; margin-bottom: 8px; }
 .swagger-ui .opblock .opblock-summary { border-bottom-color: var(--ap-border); }
-.swagger-ui .opblock .opblock-summary-method { border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+.swagger-ui .opblock .opblock-summary-method { border-radius: 4px; font-family: 'Geist Mono', monospace; font-size: 11px; }
 .swagger-ui .opblock .opblock-summary-path { color: var(--ap-text); }
 .swagger-ui .opblock .opblock-summary-description { color: var(--ap-muted); }
 

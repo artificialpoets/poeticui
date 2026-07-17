@@ -8,8 +8,8 @@
 @theme inline {
   /* Heading font (Instrument Serif), loaded via next/font in layout */
   --font-serif: var(--font-instrument-serif), ui-serif, serif;
-  /* JetBrains Mono for h4 headings */
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  /* Geist Mono for h4 headings */
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   /* Surfaces */
   --color-background: var(--background);
