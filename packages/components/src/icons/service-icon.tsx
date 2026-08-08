@@ -572,7 +572,6 @@ const FALLBACK_BRAND_MAP: Record<string, { icon: LucideIcon; hex: string }> = {
   // Video / streaming
   mux: { icon: Video, hex: "#FB2491" },
   bunnycdn: { icon: Globe, hex: "#FF9900" },
-
 };
 
 /**
