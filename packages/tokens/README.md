@@ -102,7 +102,7 @@ SIDEBAR  (dark-first chrome — decoupled from theme mode)
   --sidebar-border      --sidebar-ring
 ```
 
-Every token has explicit `:root` and `.dark` definitions; the design system inverts cleanly without component-level `dark:` prefixes.
+Every token has explicit `:root` and `.dark` definitions; the design system inverts cleanly without component-level `dark:` prefixes. The chart ramp is the one exception — `--chart-1` … `--chart-10` are mode-invariant (a series keeps its color when the reader flips the theme, because that color carries the legend), so they are declared in `:root` only and inherit into dark.
 
 ## Use without Tailwind
 

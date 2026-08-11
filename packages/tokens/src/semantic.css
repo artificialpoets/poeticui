@@ -28,6 +28,13 @@
    Components never write dark:<palette> pairs — they reference the token
    and let the mode switch happen automatically.
 
+   The one exception is the chart ramp (--chart-1 … --chart-10), which is
+   MODE-INVARIANT: a series keeps its color when the reader flips the
+   theme, because the color is the series' identity — it carries the
+   legend, and changing it re-labels the data. Those ten are declared in
+   :root only and inherit into dark. Themes may still override them, in
+   both modes or one.
+
    Usage (standalone): @import '@artificialpoets/tokens/palette'; @import '@artificialpoets/tokens/semantic';
      -> --primary, --background, etc. available as CSS custom properties
 
@@ -96,18 +103,21 @@
     --input: var(--color-neutral-200);
     --ring: var(--primary);
 
-    /* ─── Chart (data-viz chromatic accents; NOT brand) ───────────────── */
-    --chart-1: var(--color-blue-500);
-    /* Rose between blue and amber: avoids emerald/green (success) and stays off cyan/teal (blue family) */
-    --chart-2: var(--color-rose-500);
-    --chart-3: var(--color-violet-500);
-    --chart-4: var(--color-amber-500);
-    --chart-5: var(--color-orange-500);
-    --chart-6: var(--color-cyan-500);
-    --chart-7: var(--color-fuchsia-500);
-    --chart-8: var(--color-teal-500);
-    --chart-9: var(--color-pink-500);
-    --chart-10: var(--color-lime-500);
+    /* ─── Chart (data-viz chromatic accents; NOT brand) ───────────────────
+       The ten brand data-viz colors, in series order. Declared HERE ONLY —
+       see the mode-invariance note in the header; do not add a .dark copy.
+       Each slot names the brand color it carries so a swatch sheet can be
+       checked against this list without resolving the palette by hand. */
+    --chart-1: var(--color-blue-500); /* Blue   #2874D7 */
+    --chart-2: var(--color-rose-600); /* Rose   #DE3A74 */
+    --chart-3: var(--color-violet-600); /* Violet #906DCC */
+    --chart-4: var(--color-amber-500); /* Amber  #FF9501 */
+    --chart-5: var(--color-orange-500); /* Orange #FC4903 */
+    --chart-6: var(--color-sky-500); /* Sky    #27B4D7 */
+    --chart-7: var(--color-indigo-600); /* Indigo #7078D8 */
+    --chart-8: var(--color-yellow-500); /* Yellow #FFC801 */
+    --chart-9: var(--color-red-600); /* Red    #E8362A */
+    --chart-10: var(--color-lime-400); /* Lime   #B2BF2D */
 
     /* ─── Sidebar (dark-first chrome, decoupled from theme mode) ──────── */
     --sidebar: var(--color-neutral-950);
@@ -156,17 +166,11 @@
     --input: oklch(1 0 0 / 15%);
     --ring: var(--primary);
 
-    /* ─── Chart (data-viz chromatic accents; NOT brand) ───────────────── */
-    --chart-1: var(--color-blue-500);
-    --chart-2: var(--color-rose-500);
-    --chart-3: var(--color-amber-500);
-    --chart-4: var(--color-violet-500);
-    --chart-5: var(--color-orange-500);
-    --chart-6: var(--color-cyan-500);
-    --chart-7: var(--color-fuchsia-500);
-    --chart-8: var(--color-teal-500);
-    --chart-9: var(--color-pink-500);
-    --chart-10: var(--color-lime-500);
+    /* ─── Chart (data-viz chromatic accents; NOT brand) ───────────────────
+       Deliberately absent: --chart-1 … --chart-10 are mode-invariant and
+       inherit from :root. A .dark copy is what let chart-3 and chart-4
+       drift apart between modes — a series changed color when the reader
+       flipped the theme. Leave this block empty. */
 
     /* ─── Sidebar (dark-first chrome, decoupled from theme mode) ──────── */
     --sidebar: var(--color-neutral-950);
