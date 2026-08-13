@@ -9,13 +9,16 @@
      2. Add a second CSS file after it that overrides the 6 required slots:
           --primary, --primary-foreground, --ring,
           --sidebar-primary, --sidebar-primary-foreground, --sidebar-ring
-        in both :root and .dark.
+        in both light and dark — and selector your light block
+        `:root, .light` as below, or a scoped light subtree will fall
+        back to the generic values (semantic.css, principle P5).
 
    See packages/tokens/src/semantic.css header comment for the full
    theme contract. */
 
 @layer base {
-  :root {
+  :root,
+  .light {
     /* Neutral primary — a balanced zinc, not colored. Signals
        "design system default, override me with your brand". */
     --primary: var(--color-zinc-900);
