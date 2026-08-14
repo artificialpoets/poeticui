@@ -95,6 +95,17 @@ STRUCTURE
 CHART  (data viz; chromatic, not theme-brand)
   --chart-1 … --chart-10
 
+FIGMA BRIDGE  (1:1 dictionary to the AP Design System sheet, kebab-cased)
+  --content-primary/-secondary/-tertiary      + --content-inverse-*
+  --background-primary/-secondary/-tertiary   + --background-inverse-*
+  --border-primary/-secondary/-tertiary       + --border-inverse-*
+  --background-hover                          --background-hover-overlay
+  --border-hover-overlay                      + both *-inverse-hover-overlay
+  Aliases resolve through the role tokens above (they follow mode flips
+  and brand overlays for free); the tertiary text tier and the hover
+  layer are net-new and carry real values. The Inverse family is
+  dark-first chrome in any mode — the sidebar model, not a mode flip.
+
 SIDEBAR  (dark-first chrome — decoupled from theme mode)
   --sidebar             --sidebar-foreground
   --sidebar-primary     --sidebar-primary-foreground

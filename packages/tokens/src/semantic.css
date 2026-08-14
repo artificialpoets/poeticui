@@ -3,7 +3,7 @@
 
    THEME CONTRACT
    ==============
-   Every theme overlay MUST define these 6 slots in both :root and .dark:
+   Every theme overlay MUST define these 6 slots in both light and dark:
 
      --primary                    Brand action color (buttons, links, active)
      --primary-foreground         Text color on --primary backgrounds
@@ -24,9 +24,19 @@
    Optional surface override (very rare):
      --background, --card, --popover, --muted, --accent
 
-   Principle P4: every token below has a :root value AND a .dark value.
+   Principle P4: every token below has a light value AND a .dark value.
    Components never write dark:<palette> pairs — they reference the token
-   and let the mode switch happen automatically.
+   and let the mode switch happen automatically. This is load-bearing for
+   scoped modes: a `dark:` utility keys off an ancestor class and cannot
+   be undone by a nested scope, whereas a token re-declares per subtree.
+
+   Principle P5: the light payload is selectored `:root, .light` and the
+   dark payload `.dark`, so either mode can be scoped to a subtree. An
+   overlay that only writes its light values to `:root` (or to its own
+   `html[...]` root) will be SHADOWED inside a `.light` island by the
+   generic values below — overlays must mirror their light selector the
+   same way they already mirror their dark one. See the specificity note
+   in a13s's brand overlay for the shape.
 
    The one exception is the chart ramp (--chart-1 … --chart-10), which is
    MODE-INVARIANT: a series keeps its color when the reader flips the
@@ -68,6 +78,86 @@
     --heading-3-size-fluid: clamp(1.25rem, 2vw + 0.75rem, 1.375rem);
     --heading-4-size-fluid: clamp(0.875rem, 1vw + 0.5rem, 1rem);
 
+    /* ─── Chart (data-viz chromatic accents; NOT brand) ───────────────────
+       The ten brand data-viz colors, in series order. Declared HERE ONLY —
+       see the mode-invariance note in the header; do not add a .dark copy,
+       and do not move these into the `:root, .light` block below. A series
+       keeps its color across modes AND across a scoped light island, so
+       re-declaring them on `.light` would shadow a theme's chart override
+       for every element inside one.
+       Each slot names the brand color it carries so a swatch sheet can be
+       checked against this list without resolving the palette by hand.
+       Every slot sits on -500: one shade is the rule, so a series' weight
+       never reads as a ranking. Four slots used to borrow -600/-400 to
+       dodge the old ramp's broken 500s; the Figma palette fixed those,
+       so the exceptions are gone. */
+    --chart-1: var(--color-blue-500); /* Blue   #5390DF */
+    --chart-2: var(--color-rose-500); /* Rose   #ED458D */
+    --chart-3: var(--color-violet-500); /* Violet #9C6CE1 */
+    --chart-4: var(--color-amber-500); /* Amber  #FF9501 */
+    --chart-5: var(--color-orange-500); /* Orange #FC4903 */
+    --chart-6: var(--color-sky-500); /* Sky    #27B4D7 */
+    --chart-7: var(--color-indigo-500); /* Indigo #737BD9 */
+    --chart-8: var(--color-yellow-500); /* Yellow #FFC801 */
+    --chart-9: var(--color-red-500); /* Red    #F93939 */
+    --chart-10: var(--color-lime-500); /* Lime   #A8B512 */
+
+    /* ─── Figma bridge (AP Design System sheet 231:16350) ─────────────────
+       The design file names these surfaces in a tiered vocabulary
+       (contentPrimary → Secondary → Tertiary, an Inverse family, hover
+       states); the code names them in roles (--foreground, --muted…).
+       This block is the 1:1 dictionary between the two, kebab-cased, so a
+       token read off the Figma sheet resolves in CSS without translation.
+
+       Aliases reference the canonical role token, never a palette value —
+       they re-resolve wherever the role flips (mode blocks below, brand
+       overlays, scoped .light/.dark islands), which is why they can live
+       on :root alone. Tokens with no role counterpart (the tertiary text
+       tier, the hover layer) carry real values and are the additive part
+       of the bridge.
+
+       The Inverse family is dark-first chrome in ANY mode — the same
+       model as the sidebar tokens, not a mode flip. Its border tier binds
+       the stone ramp because that is what the sheet binds (the sheet's
+       zinc-* captions are stale; bindings win). */
+    --content-primary: var(--foreground);
+    --content-secondary: var(--muted-foreground);
+    --content-tertiary: var(--color-neutral-400);
+    --content-inverse-primary: var(--sidebar-foreground);
+    --content-inverse-secondary: var(--color-neutral-300);
+    --content-inverse-tertiary: var(--color-neutral-400);
+
+    --background-primary: var(--background);
+    --background-secondary: var(--card); /* sheet says = primary; the card lift is deliberate, see the brand overlay */
+    --background-tertiary: var(--muted);
+    --background-inverse-primary: var(--sidebar);
+    --background-inverse-secondary: var(--color-neutral-800);
+    --background-inverse-tertiary: var(--color-neutral-600);
+    --background-hover: var(--color-blue-500);
+    --background-inverse-hover-overlay: oklch(1 0 0 / 5%);
+
+    --border-primary: var(--border);
+    --border-secondary: var(--color-neutral-100);
+    --border-tertiary: var(--color-neutral-50);
+    --border-inverse-primary: var(--color-stone-700);
+    --border-inverse-secondary: var(--color-stone-800);
+    --border-inverse-tertiary: var(--color-stone-950);
+    --border-inverse-hover-overlay: oklch(1 0 0 / 10%);
+  }
+
+  /* The light payload. `.light` is the scoped counterpart to `.dark`:
+     custom properties inherit, and a declaration on the element itself
+     always beats a value inherited from an ancestor, so a `.light`
+     subtree restores light tokens even inside a `.dark` document — and
+     arbitrary re-nesting resolves nearest-ancestor-wins for free.
+
+     This block must declare EXACTLY what `.dark` declares, no more. The
+     mode-invariant tokens above (radius, spacing, the heading scale)
+     stay on `:root` alone: re-declaring them here would shadow any
+     higher-scope override — a brand overlay's --radius, say — for every
+     element inside a light island. */
+  :root,
+  .light {
     /* ─── Surface (neutral; rare to override) ─────────────────────────── */
     --background: var(--color-neutral-50);
     --foreground: var(--color-neutral-950);
@@ -103,21 +193,9 @@
     --input: var(--color-neutral-200);
     --ring: var(--primary);
 
-    /* ─── Chart (data-viz chromatic accents; NOT brand) ───────────────────
-       The ten brand data-viz colors, in series order. Declared HERE ONLY —
-       see the mode-invariance note in the header; do not add a .dark copy.
-       Each slot names the brand color it carries so a swatch sheet can be
-       checked against this list without resolving the palette by hand. */
-    --chart-1: var(--color-blue-500); /* Blue   #2874D7 */
-    --chart-2: var(--color-rose-600); /* Rose   #DE3A74 */
-    --chart-3: var(--color-violet-600); /* Violet #906DCC */
-    --chart-4: var(--color-amber-500); /* Amber  #FF9501 */
-    --chart-5: var(--color-orange-500); /* Orange #FC4903 */
-    --chart-6: var(--color-sky-500); /* Sky    #27B4D7 */
-    --chart-7: var(--color-indigo-600); /* Indigo #7078D8 */
-    --chart-8: var(--color-yellow-500); /* Yellow #FFC801 */
-    --chart-9: var(--color-red-600); /* Red    #E8362A */
-    --chart-10: var(--color-lime-400); /* Lime   #B2BF2D */
+    /* ─── Hover layer (Figma bridge; polarity follows the surface) ────── */
+    --background-hover-overlay: oklch(0 0 0 / 2.5%);
+    --border-hover-overlay: oklch(0 0 0 / 20%);
 
     /* ─── Sidebar (dark-first chrome, decoupled from theme mode) ──────── */
     --sidebar: var(--color-neutral-950);
@@ -147,7 +225,10 @@
 
     /* ─── Utility surfaces (neutral) ──────────────────────────────────── */
     --muted: var(--color-neutral-800);
-    --muted-foreground: var(--color-neutral-500);
+    /* neutral-300, not the light block's neutral-500: the Figma sheet's
+       secondary text on dark surfaces (contentInverseSecondary #D6D2C8).
+       The old shared value sat at ~4.4:1 on --background; this is ~9:1. */
+    --muted-foreground: var(--color-neutral-300);
     --accent: var(--color-neutral-800);
     --accent-foreground: var(--color-neutral-50);
 
@@ -165,6 +246,10 @@
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
     --ring: var(--primary);
+
+    /* ─── Hover layer (Figma bridge; polarity follows the surface) ────── */
+    --background-hover-overlay: oklch(1 0 0 / 5%);
+    --border-hover-overlay: oklch(1 0 0 / 10%);
 
     /* ─── Chart (data-viz chromatic accents; NOT brand) ───────────────────
        Deliberately absent: --chart-1 … --chart-10 are mode-invariant and
