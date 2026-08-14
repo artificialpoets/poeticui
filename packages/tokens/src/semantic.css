@@ -86,17 +86,21 @@
        re-declaring them on `.light` would shadow a theme's chart override
        for every element inside one.
        Each slot names the brand color it carries so a swatch sheet can be
-       checked against this list without resolving the palette by hand. */
-    --chart-1: var(--color-blue-500); /* Blue   #2874D7 */
-    --chart-2: var(--color-rose-600); /* Rose   #DE3A74 */
-    --chart-3: var(--color-violet-600); /* Violet #906DCC */
+       checked against this list without resolving the palette by hand.
+       Every slot sits on -500: one shade is the rule, so a series' weight
+       never reads as a ranking. Four slots used to borrow -600/-400 to
+       dodge the old ramp's broken 500s; the Figma palette fixed those,
+       so the exceptions are gone. */
+    --chart-1: var(--color-blue-500); /* Blue   #5390DF */
+    --chart-2: var(--color-rose-500); /* Rose   #ED458D */
+    --chart-3: var(--color-violet-500); /* Violet #9C6CE1 */
     --chart-4: var(--color-amber-500); /* Amber  #FF9501 */
     --chart-5: var(--color-orange-500); /* Orange #FC4903 */
     --chart-6: var(--color-sky-500); /* Sky    #27B4D7 */
-    --chart-7: var(--color-indigo-600); /* Indigo #7078D8 */
+    --chart-7: var(--color-indigo-500); /* Indigo #737BD9 */
     --chart-8: var(--color-yellow-500); /* Yellow #FFC801 */
-    --chart-9: var(--color-red-600); /* Red    #E8362A */
-    --chart-10: var(--color-lime-400); /* Lime   #B2BF2D */
+    --chart-9: var(--color-red-500); /* Red    #F93939 */
+    --chart-10: var(--color-lime-500); /* Lime   #A8B512 */
   }
 
   /* The light payload. `.light` is the scoped counterpart to `.dark`:
