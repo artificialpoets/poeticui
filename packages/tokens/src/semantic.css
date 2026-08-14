@@ -101,6 +101,48 @@
     --chart-8: var(--color-yellow-500); /* Yellow #FFC801 */
     --chart-9: var(--color-red-500); /* Red    #F93939 */
     --chart-10: var(--color-lime-500); /* Lime   #A8B512 */
+
+    /* ─── Figma bridge (AP Design System sheet 231:16350) ─────────────────
+       The design file names these surfaces in a tiered vocabulary
+       (contentPrimary → Secondary → Tertiary, an Inverse family, hover
+       states); the code names them in roles (--foreground, --muted…).
+       This block is the 1:1 dictionary between the two, kebab-cased, so a
+       token read off the Figma sheet resolves in CSS without translation.
+
+       Aliases reference the canonical role token, never a palette value —
+       they re-resolve wherever the role flips (mode blocks below, brand
+       overlays, scoped .light/.dark islands), which is why they can live
+       on :root alone. Tokens with no role counterpart (the tertiary text
+       tier, the hover layer) carry real values and are the additive part
+       of the bridge.
+
+       The Inverse family is dark-first chrome in ANY mode — the same
+       model as the sidebar tokens, not a mode flip. Its border tier binds
+       the stone ramp because that is what the sheet binds (the sheet's
+       zinc-* captions are stale; bindings win). */
+    --content-primary: var(--foreground);
+    --content-secondary: var(--muted-foreground);
+    --content-tertiary: var(--color-neutral-400);
+    --content-inverse-primary: var(--sidebar-foreground);
+    --content-inverse-secondary: var(--color-neutral-300);
+    --content-inverse-tertiary: var(--color-neutral-400);
+
+    --background-primary: var(--background);
+    --background-secondary: var(--card); /* sheet says = primary; the card lift is deliberate, see the brand overlay */
+    --background-tertiary: var(--muted);
+    --background-inverse-primary: var(--sidebar);
+    --background-inverse-secondary: var(--color-neutral-800);
+    --background-inverse-tertiary: var(--color-neutral-600);
+    --background-hover: var(--color-blue-500);
+    --background-inverse-hover-overlay: oklch(1 0 0 / 5%);
+
+    --border-primary: var(--border);
+    --border-secondary: var(--color-neutral-100);
+    --border-tertiary: var(--color-neutral-50);
+    --border-inverse-primary: var(--color-stone-700);
+    --border-inverse-secondary: var(--color-stone-800);
+    --border-inverse-tertiary: var(--color-stone-950);
+    --border-inverse-hover-overlay: oklch(1 0 0 / 10%);
   }
 
   /* The light payload. `.light` is the scoped counterpart to `.dark`:
@@ -151,6 +193,10 @@
     --input: var(--color-neutral-200);
     --ring: var(--primary);
 
+    /* ─── Hover layer (Figma bridge; polarity follows the surface) ────── */
+    --background-hover-overlay: oklch(0 0 0 / 2.5%);
+    --border-hover-overlay: oklch(0 0 0 / 20%);
+
     /* ─── Sidebar (dark-first chrome, decoupled from theme mode) ──────── */
     --sidebar: var(--color-neutral-950);
     --sidebar-foreground: var(--color-neutral-50);
@@ -179,7 +225,10 @@
 
     /* ─── Utility surfaces (neutral) ──────────────────────────────────── */
     --muted: var(--color-neutral-800);
-    --muted-foreground: var(--color-neutral-500);
+    /* neutral-300, not the light block's neutral-500: the Figma sheet's
+       secondary text on dark surfaces (contentInverseSecondary #D6D2C8).
+       The old shared value sat at ~4.4:1 on --background; this is ~9:1. */
+    --muted-foreground: var(--color-neutral-300);
     --accent: var(--color-neutral-800);
     --accent-foreground: var(--color-neutral-50);
 
@@ -197,6 +246,10 @@
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
     --ring: var(--primary);
+
+    /* ─── Hover layer (Figma bridge; polarity follows the surface) ────── */
+    --background-hover-overlay: oklch(1 0 0 / 5%);
+    --border-hover-overlay: oklch(1 0 0 / 10%);
 
     /* ─── Chart (data-viz chromatic accents; NOT brand) ───────────────────
        Deliberately absent: --chart-1 … --chart-10 are mode-invariant and

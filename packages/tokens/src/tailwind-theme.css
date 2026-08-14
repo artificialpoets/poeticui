@@ -56,6 +56,33 @@
   --color-chart-9: var(--chart-9);
   --color-chart-10: var(--chart-10);
 
+  /* Figma bridge (AP Design System sheet 231:16350 — see semantic.css).
+     Registers the tiered vocabulary as utilities: text-content-tertiary,
+     bg-background-hover, border-border-primary, etc. */
+  --color-content-primary: var(--content-primary);
+  --color-content-secondary: var(--content-secondary);
+  --color-content-tertiary: var(--content-tertiary);
+  --color-content-inverse-primary: var(--content-inverse-primary);
+  --color-content-inverse-secondary: var(--content-inverse-secondary);
+  --color-content-inverse-tertiary: var(--content-inverse-tertiary);
+  --color-background-primary: var(--background-primary);
+  --color-background-secondary: var(--background-secondary);
+  --color-background-tertiary: var(--background-tertiary);
+  --color-background-inverse-primary: var(--background-inverse-primary);
+  --color-background-inverse-secondary: var(--background-inverse-secondary);
+  --color-background-inverse-tertiary: var(--background-inverse-tertiary);
+  --color-background-hover: var(--background-hover);
+  --color-background-hover-overlay: var(--background-hover-overlay);
+  --color-background-inverse-hover-overlay: var(--background-inverse-hover-overlay);
+  --color-border-primary: var(--border-primary);
+  --color-border-secondary: var(--border-secondary);
+  --color-border-tertiary: var(--border-tertiary);
+  --color-border-inverse-primary: var(--border-inverse-primary);
+  --color-border-inverse-secondary: var(--border-inverse-secondary);
+  --color-border-inverse-tertiary: var(--border-inverse-tertiary);
+  --color-border-hover-overlay: var(--border-hover-overlay);
+  --color-border-inverse-hover-overlay: var(--border-inverse-hover-overlay);
+
   /* Sidebar */
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
