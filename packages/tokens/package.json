@@ -1,9 +1,9 @@
 {
   "name": "@artificialpoets/tokens",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "Apache-2.0",
   "type": "module",
-  "description": "Poetic UI design tokens \u2014 pure CSS, zero dependencies. Works in any context: Next.js, WordPress, plain HTML.",
+  "description": "Poetic UI design tokens — pure CSS, zero dependencies. Works in any context: Next.js, WordPress, plain HTML.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/artificialpoets/poeticui.git",

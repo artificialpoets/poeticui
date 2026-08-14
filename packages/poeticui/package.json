@@ -1,6 +1,6 @@
 {
   "name": "poeticui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "Apache-2.0",
   "type": "module",
   "description": "Poetic UI — a neutral, agent-friendly React design system. One install for tokens + components. Apache-2.0.",
@@ -49,8 +49,8 @@
     "./styles/tokens": "./styles/tokens.css"
   },
   "dependencies": {
-    "@artificialpoets/components": "^0.1.0",
-    "@artificialpoets/tokens": "^0.1.0"
+    "@artificialpoets/components": "^0.2.0",
+    "@artificialpoets/tokens": "^0.2.0"
   },
   "peerDependencies": {
     "react": "^19.0.0",
