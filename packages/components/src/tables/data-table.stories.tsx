@@ -114,3 +114,18 @@ export const Empty: Story = {
     />
   ),
 };
+
+/** Row numbers — `rowNumbers="always"` adds a leading "#" column that counts across pages. `"auto"` shows it only above `rowNumbersThreshold` records (default 10). */
+export const RowNumbers: Story = {
+  args: {},
+  render: () => (
+    <DataTable
+      columns={COLUMNS}
+      rows={ROWS}
+      getRowKey={(row) => row.id}
+      defaultSortKey="visitors"
+      defaultSortDir="desc"
+      rowNumbers="always"
+    />
+  ),
+};
