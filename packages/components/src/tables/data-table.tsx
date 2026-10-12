@@ -153,7 +153,8 @@ export function DataTable<Row>({
                     scope="col"
                     className={cx(
                       ROW_NUMBER_WIDTH_CLASS,
-                      "text-right font-bold text-muted-foreground",
+                      // Sticky like every other DataTable header, so "#" stays with them on scroll.
+                      "table-header-sticky text-right font-bold text-muted-foreground",
                     )}
                   >
                     #

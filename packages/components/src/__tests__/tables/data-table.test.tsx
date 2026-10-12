@@ -132,4 +132,35 @@ describe("DataTable row numbers", () => {
     expect(screen.getAllByText(/^Match /)).toHaveLength(3);
     expect(screen.getByRole("cell", { name: "3" })).toBeInTheDocument();
   });
+
+  test("the # header sticks with the other headers", () => {
+    render(
+      <DataTable
+        columns={filterable}
+        rows={many}
+        getRowKey={(r) => r.id}
+        rowNumbers="always"
+      />,
+    );
+    expect(screen.getByRole("columnheader", { name: "#" })).toHaveClass(
+      "table-header-sticky",
+    );
+  });
+
+  test("the empty state spans the # column too", () => {
+    render(
+      <DataTable
+        columns={filterable}
+        rows={many}
+        getRowKey={(r) => r.id}
+        rowNumbers="auto"
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Filter column" }));
+    fireEvent.change(screen.getByPlaceholderText("Type to filter…"), {
+      target: { value: "no such row" },
+    });
+    const cell = screen.getByRole("cell");
+    expect(cell).toHaveAttribute("colspan", String(filterable.length + 1));
+  });
 });
