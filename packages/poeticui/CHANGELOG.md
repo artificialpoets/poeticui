@@ -1,5 +1,13 @@
 # poeticui
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [f30ae3c]
+- Updated dependencies [8bcbb70]
+  - @artificialpoets/components@0.3.0
+
 ## 0.1.1
 
 ### Patch Changes
