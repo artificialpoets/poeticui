@@ -14,6 +14,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
+  TableHeader,
   TableRow,
 } from "../data-display/table";
 import { cx } from "../lib";
@@ -40,9 +41,42 @@ export type DataTableProps<Row> = {
   defaultSortDir?: "asc" | "desc";
   pageSizeOptions?: readonly number[];
   emptyMessage?: string;
+  /**
+   * A leading "#" column with each row's position in the current sort and
+   * filter, counting across pages (page 3 at 25 per page starts at 51).
+   * - `"never"` (default): no column.
+   * - `"always"`: always shown.
+   * - `"auto"`: shown when `rows` (the unfiltered total) has more than
+   *   `rowNumbersThreshold` records. It stays while the reader filters.
+   */
+  rowNumbers?: "never" | "always" | "auto";
+  /** Record count `"auto"` row numbers must exceed. Default 10. */
+  rowNumbersThreshold?: number;
 };
 
 const DEFAULT_PAGE_SIZE_OPTIONS = [25, 50, 100] as const;
+const DEFAULT_ROW_NUMBERS_THRESHOLD = 10;
+const ROW_NUMBER_WIDTH_CLASS = "w-12 min-w-12 max-w-12";
+
+/** Whether a DataTable with `total` records shows its "#" column. */
+export function showsRowNumbers(
+  mode: NonNullable<DataTableProps<unknown>["rowNumbers"]>,
+  total: number,
+  threshold: number = DEFAULT_ROW_NUMBERS_THRESHOLD,
+): boolean {
+  switch (mode) {
+    case "always":
+      return true;
+    case "never":
+      return false;
+    case "auto":
+      return total > threshold;
+    default: {
+      const exhaustive: never = mode;
+      return exhaustive;
+    }
+  }
+}
 
 /**
  * DataTable — orchestrator for a sortable, filterable, paginated table.
@@ -65,6 +99,8 @@ export function DataTable<Row>({
   defaultSortDir = "desc",
   pageSizeOptions = DEFAULT_PAGE_SIZE_OPTIONS,
   emptyMessage = "No results.",
+  rowNumbers = "never",
+  rowNumbersThreshold = DEFAULT_ROW_NUMBERS_THRESHOLD,
 }: DataTableProps<Row>) {
   const state = useDataTableState({
     columns,
@@ -80,6 +116,13 @@ export function DataTable<Row>({
       : state.totalCount === 1
         ? "1 result"
         : `${state.totalCount.toLocaleString()} results`;
+
+  const numbered = showsRowNumbers(
+    rowNumbers,
+    rows.length,
+    rowNumbersThreshold,
+  );
+  const firstRowNumber = (state.page - 1) * state.pageSize + 1;
 
   return (
     <div
@@ -105,6 +148,18 @@ export function DataTable<Row>({
           >
             <TableHead>
               <TableRow>
+                {numbered && (
+                  <TableHeader
+                    scope="col"
+                    className={cx(
+                      ROW_NUMBER_WIDTH_CLASS,
+                      // Sticky like every other DataTable header, so "#" stays with them on scroll.
+                      "table-header-sticky text-right font-bold text-muted-foreground",
+                    )}
+                  >
+                    #
+                  </TableHeader>
+                )}
                 {columns.map((col) => (
                   <DataTableColumnHeader
                     key={col.key}
@@ -128,13 +183,23 @@ export function DataTable<Row>({
             <TableBody>
               {state.paginatedRows.length === 0 ? (
                 <DataTableEmptyState
-                  colSpan={columns.length}
+                  colSpan={columns.length + (numbered ? 1 : 0)}
                   message={emptyMessage}
                   hasFilters={state.filterChips.length > 0}
                 />
               ) : (
                 state.paginatedRows.map((row, i) => (
                   <TableRow key={getRowKey ? getRowKey(row, i) : i}>
+                    {numbered && (
+                      <TableCell
+                        className={cx(
+                          ROW_NUMBER_WIDTH_CLASS,
+                          "text-right tabular-nums text-muted-foreground",
+                        )}
+                      >
+                        {firstRowNumber + i}
+                      </TableCell>
+                    )}
                     {columns.map((col) => (
                       <TableCell
                         key={col.key}
