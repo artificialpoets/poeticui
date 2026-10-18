@@ -93,8 +93,8 @@ export const switchVariants = cva(
     "transition duration-0 ease-in-out data-changing:duration-200",
     // Forced-colors mode
     "forced-colors:outline forced-colors:[--switch-bg:Highlight] dark:forced-colors:[--switch-bg:Highlight]",
-    // Unchecked
-    "bg-muted ring-1 ring-border ring-inset",
+    // Unchecked: an outlined track; the grey thumb carries the 3:1 contrast on light and dark cards
+    "bg-muted ring-1 ring-muted-foreground/60 ring-inset",
     // Checked
     "data-checked:bg-(--switch-bg) data-checked:ring-(--switch-bg-ring) dark:data-checked:bg-(--switch-bg) dark:data-checked:ring-(--switch-bg-ring)",
     // Focus
@@ -107,6 +107,14 @@ export const switchVariants = cva(
   {
     variants: {
       color: {
+        /**
+         * The theme's brand color, the default. The track is `--primary` deepened toward black,
+         * as on the primary Button, so it stands out from the muted off track in both themes.
+         */
+        primary: [
+          "[--switch-bg:color-mix(in_oklab,var(--primary)_82%,black)] [--switch-bg-ring:color-mix(in_oklab,var(--primary)_70%,black)] dark:[--switch-bg-ring:transparent]",
+          "[--switch:white] [--switch-ring:color-mix(in_oklab,var(--primary)_70%,black)] [--switch-shadow:var(--color-black)]/20",
+        ],
         "dark/zinc": [
           "[--switch-bg-ring:var(--color-neutral-950)]/90 [--switch-bg:var(--color-neutral-900)] dark:[--switch-bg-ring:transparent] dark:[--switch-bg:var(--color-white)]/25",
           "[--switch-ring:var(--color-neutral-950)]/90 [--switch-shadow:var(--color-black)]/10 [--switch:white] dark:[--switch-ring:var(--color-neutral-700)]/90",
@@ -203,7 +211,7 @@ export const switchVariants = cva(
       },
     },
     defaultVariants: {
-      color: "dark/zinc",
+      color: "primary",
       size: "md",
     },
   },
@@ -221,8 +229,8 @@ const switchThumbVariants = cva(
     "translate-x-0 transition duration-200 ease-in-out",
     // Invisible border for forced-colors visibility
     "border border-transparent",
-    // Unchecked
-    "bg-white shadow-sm ring-1 ring-black/5",
+    // Unchecked: grey, so an off switch reads at 3:1 against its track in both themes
+    "bg-muted-foreground shadow-sm ring-1 ring-black/5",
     // Checked
     "group-data-checked:bg-(--switch) group-data-checked:shadow-(--switch-shadow) group-data-checked:ring-(--switch-ring)",
     // Disabled

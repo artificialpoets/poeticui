@@ -370,3 +370,13 @@
   --color-olive-900: oklch(0.395 0.015 107.32);
   --color-olive-950: oklch(0.270 0.012 107.32);
 }
+
+/* White and black are referenced only inside arbitrary values, such as
+   `dark:[--switch-bg:var(--color-white)]/25` in Switch, Checkbox, Radio and
+   Button. Tailwind does not count that as use, so it dropped them from :root,
+   and every checked control that mixes them rendered with no color in dark
+   mode. `static` always emits them. */
+@theme static {
+  --color-white: #fff;
+  --color-black: #000;
+}
