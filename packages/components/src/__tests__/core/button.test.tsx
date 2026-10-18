@@ -145,4 +145,36 @@ describe("TouchTarget", () => {
     expect(hidden).toBeInTheDocument();
     expect(screen.getByText("Content")).toBeInTheDocument();
   });
+
+  describe("color presets", () => {
+    test('color="primary" draws on the semantic primary pair, deepened for contrast', () => {
+      render(<Button color="primary">Save</Button>);
+      const btn = screen.getByRole("button", { name: /save/i });
+      expect(btn.className).toMatch(/text-primary-foreground/);
+      expect(btn.className).toMatch(
+        /\[--btn-bg:color-mix\(in_oklab,var\(--primary\)_82%,black\)\]/,
+      );
+    });
+
+    test("the default dark mode inverts on semantic tokens, never white on a light neutral", () => {
+      render(<Button>Default</Button>);
+      const btn = screen.getByRole("button", { name: /default/i });
+      expect(btn.className).toMatch(/dark:\[--btn-bg:var\(--foreground\)\]/);
+      expect(btn.className).toMatch(/dark:text-background/);
+      expect(btn.className).not.toMatch(
+        /dark:\[--btn-bg:var\(--color-neutral-400\)\]/,
+      );
+    });
+
+    test("outline and plain take no solid color", () => {
+      render(
+        <Button variant="plain" color="primary">
+          Plain
+        </Button>,
+      );
+      expect(
+        screen.getByRole("button", { name: /plain/i }).className,
+      ).not.toMatch(/text-primary-foreground/);
+    });
+  });
 });

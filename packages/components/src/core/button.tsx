@@ -91,8 +91,20 @@ export const buttonVariants = cva(
 const buttonColors = {
   "dark/zinc": [
     "text-white [--btn-bg:var(--color-neutral-900)] [--btn-border:var(--color-neutral-950)]/90 [--btn-hover-overlay:var(--color-white)]/10",
-    "dark:text-white dark:[--btn-bg:var(--color-neutral-400)] dark:[--btn-hover-overlay:var(--color-white)]/5",
-    "[--btn-icon:var(--color-neutral-600)] data-active:[--btn-icon:var(--color-neutral-700)] data-hover:[--btn-icon:var(--color-neutral-700)]",
+    // Dark mode inverts on the semantic pair. The palette's neutral-400 is far lighter than
+    // Tailwind's zinc-400 (L 0.77), so white text on it read at about 1.9:1.
+    "dark:text-background dark:[--btn-bg:var(--foreground)] dark:[--btn-hover-overlay:var(--background)]/10",
+    "[--btn-icon:var(--color-neutral-600)] data-active:[--btn-icon:var(--color-neutral-700)] data-hover:[--btn-icon:var(--color-neutral-700)] dark:[--btn-icon:var(--muted-foreground)]",
+  ],
+  /**
+   * The theme's brand color, for the main action on a page. The background is `--primary`
+   * deepened toward black, so `--primary-foreground` (white) clears 4.5:1 for a mid-lightness
+   * brand hue in both themes; a plain `--primary` orange sits near 3.4:1.
+   */
+  primary: [
+    "text-primary-foreground [--btn-bg:color-mix(in_oklab,var(--primary)_82%,black)] [--btn-border:color-mix(in_oklab,var(--primary)_70%,black)] [--btn-hover-overlay:var(--color-white)]/10",
+    "dark:[--btn-hover-overlay:var(--color-white)]/10",
+    "[--btn-icon:color-mix(in_oklab,var(--primary-foreground)_80%,transparent)] data-active:[--btn-icon:var(--primary-foreground)] data-hover:[--btn-icon:var(--primary-foreground)]",
   ],
   light: [
     "text-neutral-950 [--btn-bg:white] [--btn-border:var(--color-neutral-950)]/10 [--btn-hover-overlay:var(--color-neutral-950)]/2.5 data-active:[--btn-border:var(--color-neutral-950)]/15 data-hover:[--btn-border:var(--color-neutral-950)]/15",
