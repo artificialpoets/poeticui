@@ -4,6 +4,7 @@ import { Description, Label } from "./fieldset";
 import { Switch, SwitchField, SwitchGroup } from "./switch";
 
 const COLOR_OPTIONS = [
+  "primary",
   "dark/zinc",
   "dark/white",
   "dark",
@@ -38,7 +39,7 @@ const meta = {
     disabled: { control: "boolean" },
   },
   args: {
-    color: "dark/zinc",
+    color: "primary",
     size: "md",
     disabled: false,
   },

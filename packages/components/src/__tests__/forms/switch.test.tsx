@@ -11,10 +11,17 @@ describe("Switch", () => {
       expect(sw).toBeInTheDocument();
     });
 
-    test("default color is dark/zinc (applies preset CSS variables)", () => {
+    test("default color is primary: the theme's brand color, deepened for contrast", () => {
       render(<Switch aria-label="Default color" />);
       const sw = screen.getByRole("switch", { name: /default color/i });
-      // dark/zinc sets --switch-bg to neutral-900
+      expect(sw.className).toContain(
+        "--switch-bg:color-mix(in_oklab,var(--primary)_82%,black)",
+      );
+    });
+
+    test('color="dark/zinc" still sets the neutral track', () => {
+      render(<Switch color="dark/zinc" aria-label="Neutral" />);
+      const sw = screen.getByRole("switch", { name: /neutral/i });
       expect(sw.className).toContain("--switch-bg:var(--color-neutral-900)");
     });
   });
@@ -83,5 +90,16 @@ describe("Switch", () => {
       );
       expect(document.querySelector("[data-slot='field']")).toBeInTheDocument();
     });
+  });
+});
+
+describe("off state", () => {
+  test("the thumb is grey on an outlined track, so an off switch is visible on a light card", () => {
+    render(<Switch aria-label="Off" />);
+    const sw = screen.getByRole("switch", { name: /off/i });
+    expect(sw.className).toContain("ring-muted-foreground/60");
+    expect(sw.querySelector("span")?.className).toContain(
+      "bg-muted-foreground",
+    );
   });
 });
