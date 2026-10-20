@@ -26,6 +26,10 @@ export const buttonVariants = cva(
     "data-disabled:opacity-50",
     // Icon slot
     "*:data-[slot=icon]:-mx-0.5 *:data-[slot=icon]:my-0.5 *:data-[slot=icon]:shrink-0 *:data-[slot=icon]:self-center *:data-[slot=icon]:text-(--btn-icon) forced-colors:[--btn-icon:ButtonText] forced-colors:data-hover:[--btn-icon:ButtonText]",
+    // A bare svg child (an icon passed without `data-slot="icon"`) gets the same treatment.
+    // The base aligns items on the text baseline, which sat such an icon's bottom edge on the
+    // baseline and raised it above the label's centre.
+    "[&>svg]:-mx-0.5 [&>svg]:my-0.5 [&>svg]:shrink-0 [&>svg]:self-center [&>svg]:text-(--btn-icon)",
   ],
   {
     variants: {
@@ -59,15 +63,15 @@ export const buttonVariants = cva(
       size: {
         sm: [
           "px-[calc(--spacing(2.5)-1px)] py-[calc(--spacing(1.5)-1px)] text-xs sm:px-[calc(--spacing(2)-1px)] sm:py-[calc(--spacing(1)-1px)] sm:text-xs",
-          "*:data-[slot=icon]:size-4 sm:*:data-[slot=icon]:size-3.5",
+          "*:data-[slot=icon]:size-4 sm:*:data-[slot=icon]:size-3.5 [&>svg]:size-4 sm:[&>svg]:size-3.5",
         ],
         md: [
           "px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] text-base/6 sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] sm:text-sm/6",
-          "*:data-[slot=icon]:size-5 sm:*:data-[slot=icon]:my-1 sm:*:data-[slot=icon]:size-4",
+          "*:data-[slot=icon]:size-5 sm:*:data-[slot=icon]:my-1 sm:*:data-[slot=icon]:size-4 [&>svg]:size-5 sm:[&>svg]:my-1 sm:[&>svg]:size-4",
         ],
         lg: [
           "px-[calc(--spacing(5)-1px)] py-[calc(--spacing(3)-1px)] text-lg sm:px-[calc(--spacing(4)-1px)] sm:py-[calc(--spacing(2)-1px)] sm:text-base",
-          "*:data-[slot=icon]:size-6 sm:*:data-[slot=icon]:size-5",
+          "*:data-[slot=icon]:size-6 sm:*:data-[slot=icon]:size-5 [&>svg]:size-6 sm:[&>svg]:size-5",
         ],
       },
     },

@@ -177,4 +177,29 @@ describe("TouchTarget", () => {
       ).not.toMatch(/text-primary-foreground/);
     });
   });
+
+  describe("icons", () => {
+    test("centres a bare svg child on the label, sized and coloured like a slotted icon", () => {
+      render(
+        <Button>
+          <svg aria-hidden="true" />
+          Add / Explore
+        </Button>,
+      );
+      const cls = screen.getByRole("button", {
+        name: /add \/ explore/i,
+      }).className;
+      expect(cls).toContain("[&>svg]:self-center");
+      expect(cls).toContain("[&>svg]:shrink-0");
+      expect(cls).toContain("[&>svg]:text-(--btn-icon)");
+      expect(cls).toContain("[&>svg]:size-5"); // md default
+    });
+
+    test("sizes bare svg icons per button size", () => {
+      render(<Button size="sm">Small</Button>);
+      expect(
+        screen.getByRole("button", { name: /small/i }).className,
+      ).toContain("[&>svg]:size-4");
+    });
+  });
 });
