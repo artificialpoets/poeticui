@@ -55,6 +55,7 @@ describe("@artificialpoets/components barrel exports", () => {
     expect(forms.Field).toBeDefined();
     expect(forms.Label).toBeDefined();
     expect(forms.Input).toBeDefined();
+    expect(forms.Slider).toBeDefined();
     expect(forms.InputGroup).toBeDefined();
     expect(forms.Listbox).toBeDefined();
     expect(forms.ListboxOption).toBeDefined();
