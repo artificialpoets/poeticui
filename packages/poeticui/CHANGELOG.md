@@ -1,5 +1,17 @@
 # poeticui
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [214e61b]
+- Updated dependencies [43dde6a]
+- Updated dependencies [f30ae3c]
+- Updated dependencies [8bcbb70]
+- Updated dependencies [74779c5]
+  - @artificialpoets/components@0.3.0
+  - @artificialpoets/tokens@0.2.1
+
 ## 0.1.1
 
 ### Patch Changes
