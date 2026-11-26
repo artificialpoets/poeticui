@@ -1,8 +1,9 @@
 "use client";
 
-import clsx from "clsx";
 import dayjs from "dayjs";
-import { useMemo } from "react";
+import { useCallback, useId, useMemo, useRef, useState } from "react";
+
+import { cx } from "../../lib";
 
 /** First month shown in the calendar (July 2025), like Google Analytics from 2017 to present */
 const FIRST_CALENDAR_MONTH = dayjs("2025-07-01").startOf("month");
@@ -56,6 +57,49 @@ function isStartOrEnd(
   return false;
 }
 
+/**
+ * Arrow-key moves, as in the WAI-ARIA date picker pattern: a day, a week,
+ * the start or end of the week, a month.
+ */
+function nextDate(date: dayjs.Dayjs, key: string): dayjs.Dayjs | null {
+  switch (key) {
+    case "ArrowLeft":
+      return date.subtract(1, "day");
+    case "ArrowRight":
+      return date.add(1, "day");
+    case "ArrowUp":
+      return date.subtract(1, "week");
+    case "ArrowDown":
+      return date.add(1, "week");
+    case "Home":
+      return date.startOf("week");
+    case "End":
+      return date.endOf("week");
+    case "PageUp":
+      return date.subtract(1, "month");
+    case "PageDown":
+      return date.add(1, "month");
+    default:
+      return null;
+  }
+}
+
+/**
+ * The months from July 2025 to the current one, one day button per date.
+ *
+ * The days are one Tab stop (a roving tabindex): Tab lands on the range end,
+ * or the last day moved to, and the arrow keys, Home/End and PageUp/PageDown
+ * move between days. So a keyboard user reaches what follows the calendar
+ * (the picker's Cancel and Apply) in one Tab, not one per day.
+ *
+ * @example
+ * <Calendar
+ *   from="2026-11-01"
+ *   to="2026-11-07"
+ *   selectingRange
+ *   onSelectDate={(date) => console.log(date)}
+ * />
+ */
 export function Calendar({
   from,
   to,
@@ -66,6 +110,10 @@ export function Calendar({
   className,
 }: CalendarProps) {
   const today = useMemo(() => dayjs().format("YYYY-MM-DD"), []);
+  const daysRef = useRef<HTMLDivElement>(null);
+  const idPrefix = useId();
+  // The day the user last moved to; until then the Tab stop follows the range.
+  const [focusDate, setFocusDate] = useState<string | null>(null);
 
   const monthList = useMemo(() => {
     const list: dayjs.Dayjs[] = [];
@@ -78,12 +126,42 @@ export function Calendar({
     return list;
   }, []);
 
+  const firstDate = monthList[0].format("YYYY-MM-DD");
+  const lastDate = monthList[monthList.length - 1]
+    .endOf("month")
+    .format("YYYY-MM-DD");
+  const clamp = useCallback(
+    (date: string) =>
+      date < firstDate ? firstDate : date > lastDate ? lastDate : date,
+    [firstDate, lastDate],
+  );
+  // The one day in the Tab order. YYYY-MM-DD strings compare as dates.
+  const tabStop = clamp(focusDate ?? tempFrom ?? to ?? today);
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLElement;
+    const current = target.dataset.date;
+    if (!current) return;
+    const next = nextDate(dayjs(current), event.key);
+    if (!next) return;
+    event.preventDefault();
+    const nextStr = clamp(next.format("YYYY-MM-DD"));
+    daysRef.current
+      ?.querySelector<HTMLButtonElement>(`[data-date="${nextStr}"]`)
+      ?.focus();
+    setFocusDate(nextStr);
+  };
+
   return (
     <div
-      className={clsx("flex flex-col", className)}
+      className={cx("flex flex-col", className)}
       data-testid="date-range-calendar"
     >
-      <div className="flex flex-col gap-6 overflow-y-auto overflow-x-hidden">
+      <div
+        ref={daysRef}
+        onKeyDown={handleKeyDown}
+        className="flex flex-col gap-6 overflow-y-auto overflow-x-hidden"
+      >
         {monthList.map((monthStart) => {
           const monthLabel = monthStart.format("MMMM YYYY");
           const firstDay = monthStart.startOf("month");
@@ -97,11 +175,16 @@ export function Calendar({
             <div
               key={monthStart.format("YYYY-MM")}
               className="date-range-calendar-month"
+              role="group"
+              aria-labelledby={`${idPrefix}-${monthStart.format("YYYY-MM")}`}
             >
-              <div className="date-range-calendar-month-label">
+              <div
+                id={`${idPrefix}-${monthStart.format("YYYY-MM")}`}
+                className="date-range-calendar-month-label"
+              >
                 {monthLabel}
               </div>
-              <div className="date-range-calendar-weekdays">
+              <div className="date-range-calendar-weekdays" aria-hidden="true">
                 {WEEKDAY_LABELS.map((label) => (
                   <div key={label}>{label}</div>
                 ))}
@@ -135,9 +218,13 @@ export function Calendar({
                     <button
                       key={i}
                       type="button"
-                      onClick={() => onSelectDate?.(dateStr)}
+                      onClick={() => {
+                        setFocusDate(dateStr);
+                        onSelectDate?.(dateStr);
+                      }}
                       disabled={!isSelectable}
-                      className={clsx(
+                      tabIndex={dateStr === tabStop ? 0 : -1}
+                      className={cx(
                         "date-range-calendar-day",
                         isSelectable && "date-range-calendar-day-selectable",
                         !isSelectable && "cursor-default",
@@ -150,10 +237,10 @@ export function Calendar({
                       )}
                       // The visible label is only the day number; name the full date.
                       aria-label={d.format("dddd, MMMM D, YYYY")}
+                      // Pressed marks the chosen dates, the range start and end;
+                      // the days between are shaded, not chosen.
                       aria-pressed={
-                        isSelectable
-                          ? Boolean(inRange || startOrEnd)
-                          : undefined
+                        isSelectable ? Boolean(startOrEnd) : undefined
                       }
                       aria-current={isToday ? "date" : undefined}
                       data-date={dateStr}

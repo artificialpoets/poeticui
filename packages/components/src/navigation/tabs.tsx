@@ -32,9 +32,11 @@ const TAB_BASE_CLASS =
   "rounded-md px-3 py-1.5 text-sm/6 font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
 // The fill alone marks the selected tab, and forced colors drop fills: there it
-// takes the system selection colours instead.
+// takes the system selection colours instead. forced-color-adjust-none also
+// keeps the focus ring in the brand colour, so there the focused selected tab
+// colours the outline that outline-hidden leaves (2px, transparent) Highlight.
 const TAB_SELECTED_CLASS =
-  "bg-foreground text-background forced-colors:forced-color-adjust-none forced-colors:bg-[SelectedItem] forced-colors:text-[SelectedItemText]";
+  "bg-foreground text-background forced-colors:forced-color-adjust-none forced-colors:bg-[SelectedItem] forced-colors:text-[SelectedItemText] forced-colors:focus-visible:outline-[Highlight]";
 
 const TAB_UNSELECTED_CLASS =
   "text-muted-foreground hover:bg-muted hover:text-foreground";

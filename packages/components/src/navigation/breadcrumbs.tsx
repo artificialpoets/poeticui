@@ -10,6 +10,14 @@ interface BreadcrumbItem {
 /**
  * Breadcrumb trail. An ordered list inside a labelled `<nav>`; the last item
  * is the current page (`aria-current="page"`) and is never a link.
+ *
+ * @example
+ * <Breadcrumbs
+ *   items={[
+ *     { label: "Sites", href: "/sites" },
+ *     { label: "example.com" },
+ *   ]}
+ * />
  */
 export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   return (

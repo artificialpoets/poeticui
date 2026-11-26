@@ -214,7 +214,8 @@ Raw Tailwind color utilities (`text-gray-500`, `bg-white`, `border-red-200`, `te
 | Divider | `border-border`, `ring-border`, `divide-border` | Every structural border |
 | Focus outline | `outline-ring`, `ring-ring` | Focus affordance (maps to brand color via theme) |
 | Brand accent | `bg-primary` + `text-primary-foreground` | Primary CTA, active state with brand color |
-| Brand colour as text | `text-primary-text` | Links, eyebrows, outline-button labels, tinted chips. `text-primary` fails 4.5:1 as text; icons, fills, borders and rings keep `primary` |
+| Brand colour as text | `text-primary-text` | Links, eyebrows, outline-button labels, tinted chips. `text-primary` fails 4.5:1 as text; icons, fills, borders and rings keep `primary`. Tuned on the AP orange: a green-to-cyan primary can land near 3.8:1 in light mode (tokens README) |
+| Scrim | `bg-overlay` | The veil behind dialogs, drawers and mobile sidebars. Never `bg-foreground/N`: that turns light grey in dark mode |
 | Destructive | `text-destructive`, `bg-destructive/10`, `border-destructive/40` | Errors, destructive actions |
 | Success | `text-success`, `bg-success/10` | Positive confirmation, success chips |
 | Warning | `text-warning`, `bg-warning/10` | Amber warnings |

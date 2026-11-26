@@ -26,6 +26,11 @@ describe("Selected tabs in forced colors", () => {
       "forced-colors:text-[SelectedItemText]",
     );
     expect(other.className).not.toContain("forced-colors:bg-[SelectedItem]");
+    // forced-color-adjust-none keeps the brand ring; the focus outline takes
+    // the system Highlight colour there instead.
+    expect(selected.className).toContain(
+      "forced-colors:focus-visible:outline-[Highlight]",
+    );
   });
 
   test("SegmentedTabs marks the active tab the same way", () => {
@@ -41,6 +46,9 @@ describe("Selected tabs in forced colors", () => {
     );
     expect(screen.getByRole("tab", { name: "Day" }).className).toContain(
       "forced-colors:bg-[SelectedItem]",
+    );
+    expect(screen.getByRole("tab", { name: "Day" }).className).toContain(
+      "forced-colors:focus-visible:outline-[Highlight]",
     );
     expect(screen.getByRole("tab", { name: "Week" }).className).not.toContain(
       "forced-colors:bg-[SelectedItem]",

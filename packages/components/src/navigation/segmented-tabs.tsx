@@ -67,8 +67,9 @@ const itemVariants = cva(
       },
       active: {
         // Forced colors drop the card fill and shadow, so the active tab takes
-        // the system selection colours there.
-        true: "bg-card text-foreground shadow-sm forced-colors:forced-color-adjust-none forced-colors:bg-[SelectedItem] forced-colors:text-[SelectedItemText]",
+        // the system selection colours there. forced-color-adjust-none would
+        // also keep the brand-coloured focus outline: use Highlight instead.
+        true: "bg-card text-foreground shadow-sm forced-colors:forced-color-adjust-none forced-colors:bg-[SelectedItem] forced-colors:text-[SelectedItemText] forced-colors:focus-visible:outline-[Highlight]",
         false: "text-muted-foreground hover:text-foreground",
       },
     },

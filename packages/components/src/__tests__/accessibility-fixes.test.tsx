@@ -1,10 +1,12 @@
 import {
+  act,
   fireEvent,
   render,
   screen,
   waitFor,
   within,
 } from "@testing-library/react";
+import dayjs from "dayjs";
 import React from "react";
 
 import { Dialog, DialogTitle } from "../feedback/dialog";
@@ -16,6 +18,7 @@ import { Slider } from "../forms/slider";
 import { DrawerShell } from "../layout/drawer-shell";
 import { Breadcrumbs } from "../navigation/breadcrumbs";
 import { Navbar, NavbarItem } from "../navigation/navbar";
+import { SidebarItem } from "../navigation/sidebar";
 import { SiteSwitcher } from "../navigation/site-switcher";
 import { DataTableColumnHeader } from "../tables/data-table-column-header";
 import { DataTableFilterPopover } from "../tables/data-table-filter-popover";
@@ -170,6 +173,64 @@ describe("Navigation current-page semantics", () => {
     );
   });
 
+  // aria-current used to come after {...props} and wipe the caller's value.
+  test("NavbarItem keeps a caller's aria-current when current is unset", () => {
+    render(
+      <Navbar>
+        <NavbarItem href="/step-2" aria-current="step">
+          Step 2
+        </NavbarItem>
+        <NavbarItem aria-current="true">Filter</NavbarItem>
+        <NavbarItem href="/home" current aria-current="step">
+          Home
+        </NavbarItem>
+      </Navbar>,
+    );
+    expect(screen.getByRole("link", { name: "Step 2" })).toHaveAttribute(
+      "aria-current",
+      "step",
+    );
+    expect(screen.getByRole("button", { name: "Filter" })).toHaveAttribute(
+      "aria-current",
+      "true",
+    );
+    // current wins: the item is the page.
+    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+  });
+
+  test("SidebarItem keeps a caller's aria-current when current is unset", () => {
+    render(
+      <>
+        <SidebarItem href="/step-2" aria-current="step">
+          Step 2
+        </SidebarItem>
+        <SidebarItem aria-current="location">Here</SidebarItem>
+        <SidebarItem href="/home" current>
+          Home
+        </SidebarItem>
+        <SidebarItem href="/docs">Docs</SidebarItem>
+      </>,
+    );
+    expect(screen.getByRole("link", { name: "Step 2" })).toHaveAttribute(
+      "aria-current",
+      "step",
+    );
+    expect(screen.getByRole("button", { name: "Here" })).toHaveAttribute(
+      "aria-current",
+      "location",
+    );
+    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+    expect(screen.getByRole("link", { name: "Docs" })).not.toHaveAttribute(
+      "aria-current",
+    );
+  });
+
   test("Breadcrumbs is a list and marks the last item as the current page", () => {
     render(
       <Breadcrumbs
@@ -219,6 +280,32 @@ describe("DateRangePicker", () => {
     ).toBeGreaterThan(0);
   });
 
+  // Since the panel became a Popover every day was a Tab stop: about 500
+  // Tabs from the calendar to Cancel and Apply.
+  test("the calendar is one Tab stop between the date inputs and Cancel/Apply", () => {
+    render(
+      <DateRangePicker
+        value={{ from: "2026-11-01", to: "2026-11-07" }}
+        onChange={() => {}}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Time range" }));
+    const tabbable = Array.from(
+      document.querySelectorAll<HTMLElement>(
+        ".date-range-dropdown button, .date-range-dropdown input",
+      ),
+    ).filter((el) => el.tabIndex >= 0 && !el.hasAttribute("disabled"));
+    const names = tabbable.map(
+      (el) => el.getAttribute("aria-label") ?? el.textContent ?? el.id,
+    );
+    const calendarStop = names.indexOf("Saturday, November 7, 2026");
+    expect(calendarStop).toBeGreaterThan(-1);
+    expect(names.slice(calendarStop + 1)).toEqual(["Cancel", "Apply"]);
+    expect(tabbable.filter((el) => el.hasAttribute("data-date"))).toHaveLength(
+      1,
+    );
+  });
+
   test("Apply sends the draft and closes the panel", async () => {
     const onChange = jest.fn();
     render(
@@ -240,7 +327,7 @@ describe("DateRangePicker", () => {
 });
 
 describe("Calendar day buttons", () => {
-  test("are named by their full date and expose selection", () => {
+  const renderCalendar = () =>
     render(
       <Calendar
         from="2026-11-02"
@@ -249,13 +336,71 @@ describe("Calendar day buttons", () => {
         onSelectDate={() => {}}
       />,
     );
-    const day = screen.getByTestId("calendar-day-2026-11-03");
-    expect(day).toHaveAttribute("aria-label", "Tuesday, November 3, 2026");
-    expect(day).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByTestId("calendar-day-2026-11-20")).toHaveAttribute(
-      "aria-pressed",
-      "false",
+  const day = (date: string) => screen.getByTestId(`calendar-day-${date}`);
+  const tabStops = () =>
+    within(screen.getByTestId("date-range-calendar"))
+      .getAllByRole("button")
+      .filter((button) => button.tabIndex === 0);
+
+  test("are named by their full date; only the range start and end are pressed", () => {
+    renderCalendar();
+    expect(day("2026-11-03")).toHaveAttribute(
+      "aria-label",
+      "Tuesday, November 3, 2026",
     );
+    expect(day("2026-11-02")).toHaveAttribute("aria-pressed", "true");
+    expect(day("2026-11-04")).toHaveAttribute("aria-pressed", "true");
+    // In the range, so shaded, but not one of the chosen dates.
+    expect(day("2026-11-03")).toHaveAttribute("aria-pressed", "false");
+    expect(day("2026-11-20")).toHaveAttribute("aria-pressed", "false");
+  });
+
+  test("are one Tab stop, on the range end", () => {
+    renderCalendar();
+    expect(tabStops()).toEqual([day("2026-11-04")]);
+  });
+
+  test("arrow keys, Home/End and PageUp/PageDown move focus and the Tab stop", () => {
+    renderCalendar();
+    act(() => day("2026-11-04").focus());
+    const press = (key: string, expected: string) => {
+      fireEvent.keyDown(document.activeElement as Element, { key });
+      expect(document.activeElement).toBe(day(expected));
+      expect(tabStops()).toEqual([day(expected)]);
+    };
+    press("ArrowRight", "2026-11-05");
+    press("ArrowLeft", "2026-11-04");
+    press("ArrowDown", "2026-11-11");
+    press("ArrowUp", "2026-11-04");
+    press("Home", "2026-11-01"); // Sunday
+    press("End", "2026-11-07"); // Saturday
+    press("PageUp", "2026-10-07");
+    press("PageDown", "2026-11-07");
+  });
+
+  test("movement stops at the first and last day shown", () => {
+    render(
+      <Calendar
+        from="2025-07-01"
+        to="2025-07-01"
+        selectingRange
+        onSelectDate={() => {}}
+      />,
+    );
+    act(() => day("2025-07-01").focus());
+    fireEvent.keyDown(document.activeElement as Element, { key: "ArrowUp" });
+    expect(document.activeElement).toBe(day("2025-07-01"));
+
+    const last = dayjs().endOf("month").format("YYYY-MM-DD");
+    act(() => day(last).focus());
+    fireEvent.keyDown(document.activeElement as Element, { key: "PageDown" });
+    expect(document.activeElement).toBe(day(last));
+  });
+
+  test("a click moves the Tab stop to the clicked day", () => {
+    renderCalendar();
+    fireEvent.click(day("2026-11-12"));
+    expect(tabStops()).toEqual([day("2026-11-12")]);
   });
 });
 

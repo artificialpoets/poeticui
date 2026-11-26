@@ -16,7 +16,8 @@
      --primary-text               --primary as TEXT (text-primary-text):
                                   links, eyebrows, outline-button labels.
                                   Computed from --primary below, so an
-                                  overlay that sets --primary gets it free.
+                                  overlay that sets --primary gets it free
+                                  (check green to cyan hues: see below).
 
    Optional brand override (for themes with two brand accents):
      --secondary, --secondary-foreground
@@ -329,6 +330,10 @@
        card, 4.6:1 on dark --muted).
      A black or white primary (the a13s brand, the neutral theme's
      zinc-900 / zinc-50) passes through unchanged.
+     It is not 4.5:1 for every hue: a green, teal or cyan primary (about
+     125-240 degrees) keeps more luminance at the 0.55 cap and reads as low
+     as 3.8:1 on white. Dark mode clears 4.5:1 for every hue. A theme in
+     that range should check its text, or set its own --primary-text.
 
      Declared on `:root, .light` and `.dark` like every mode token, so a
      scoped island derives its own value from its own --primary (custom

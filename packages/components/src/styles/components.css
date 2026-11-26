@@ -11,8 +11,10 @@
    Use semantic tokens so dark mode is built-in.
    ======================================================================== */
 @layer components {
+  /* --overlay, like the drawer and sidebar scrims: a dark veil in both
+     modes (a foreground tint turned it light grey in dark mode). */
   .modal-backdrop {
-    @apply fixed inset-0 flex w-screen justify-center overflow-y-auto bg-foreground/15 px-2 py-2 transition duration-100 focus:outline-0 data-closed:opacity-0 data-enter:ease-out data-leave:ease-in dark:bg-foreground/50 sm:px-6 sm:py-8 lg:px-8 lg:py-16;
+    @apply fixed inset-0 flex w-screen justify-center overflow-y-auto bg-overlay px-2 py-2 transition duration-100 focus:outline-0 data-closed:opacity-0 data-enter:ease-out data-leave:ease-in sm:px-6 sm:py-8 lg:px-8 lg:py-16;
   }
 
   .modal-panel {

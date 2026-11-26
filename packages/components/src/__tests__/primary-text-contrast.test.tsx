@@ -174,6 +174,41 @@ describe("--primary-text", () => {
     }
   });
 
+  // The clamps were tuned on the AP orange. Lightness alone does not fix
+  // contrast across hues: at the 0.55 cap a green, teal or cyan primary
+  // (hue about 125° to 240°) keeps more luminance and reads 3.8:1 to 4.5:1
+  // on white. The tokens README says so; this sweep keeps that sentence true.
+  // Each primary is taken lighter and more saturated than the caps, so the
+  // caps decide the result (the worst case for that hue).
+  const HUES = Array.from({ length: 72 }, (_, i) => i * 5);
+  const SHORT_BAND = { from: 120, to: 245, floor: 3.8 };
+
+  test("light: every hue outside green to cyan reads 4.5:1 on the background and card; none under 3.8:1", () => {
+    const short: number[] = [];
+    for (const h of HUES) {
+      const text = srgb(derive(LIGHT, [0.7, 0.25, h]));
+      for (const surface of [light.background, light.card]) {
+        const ratio = contrast(text, srgb(surface));
+        expect(ratio).toBeGreaterThanOrEqual(SHORT_BAND.floor);
+        if (ratio < 4.5) short.push(h);
+      }
+    }
+    expect(short.length).toBeGreaterThan(0); // else the README overstates it
+    for (const h of short) {
+      expect(h).toBeGreaterThanOrEqual(SHORT_BAND.from);
+      expect(h).toBeLessThanOrEqual(SHORT_BAND.to);
+    }
+  });
+
+  test("dark: every hue reads 4.5:1 on the dark background and card", () => {
+    for (const h of HUES) {
+      const text = srgb(derive(DARK, [0.4, 0.25, h]));
+      for (const surface of [dark.background, dark.card]) {
+        expect(contrast(text, srgb(surface))).toBeGreaterThanOrEqual(4.5);
+      }
+    }
+  });
+
   test("leaves a black or white primary (the a13s brand) unchanged", () => {
     expect(derive(LIGHT, BLACK)).toEqual(BLACK);
     expect(derive(DARK, WHITE)).toEqual(WHITE);
