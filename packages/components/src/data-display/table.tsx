@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import type React from "react";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 
 import { Link } from "../core/link";
 
@@ -63,6 +63,16 @@ export function Table({
   /** Merged onto the native `<table>` element (e.g. `table-fixed border-collapse`). */
   tableClassName?: string;
 } & React.ComponentPropsWithoutRef<"div">) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const overflowing = useHorizontalOverflow(scrollRef, scroll);
+  // Safari never makes a scroll container a Tab stop, so a keyboard user could
+  // not reach the hidden columns. While the table overflows, the wrapper is
+  // focusable (arrow keys scroll it) and, when the caller names it, a region.
+  const named = props["aria-label"] != null || props["aria-labelledby"] != null;
+  const scrollA11y: React.ComponentPropsWithoutRef<"div"> = overflowing
+    ? { tabIndex: 0, ...(named ? { role: "region" } : {}) }
+    : {};
+
   return (
     <TableContext.Provider
       value={
@@ -73,11 +83,15 @@ export function Table({
     >
       <div data-component="table" className="flow-root">
         <div
+          ref={scrollRef}
+          {...scrollA11y}
           {...props}
           className={clsx(
             className,
             "-mx-(--gutter) whitespace-nowrap",
             scroll && "overflow-x-auto",
+            overflowing &&
+              "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
           )}
         >
           <div
@@ -99,6 +113,33 @@ export function Table({
       </div>
     </TableContext.Provider>
   );
+}
+
+/**
+ * True while the element's content is wider than its box. Starts false on both
+ * server and client (no hydration mismatch) and is measured in an effect.
+ */
+function useHorizontalOverflow(
+  ref: React.RefObject<HTMLElement | null>,
+  enabled: boolean,
+): boolean {
+  const [overflowing, setOverflowing] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!enabled || !el) {
+      setOverflowing(false);
+      return;
+    }
+    const measure = () => setOverflowing(el.scrollWidth > el.clientWidth + 1);
+    measure();
+    if (typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    // The table grows inside the wrapper without resizing it: watch it too.
+    if (el.firstElementChild) observer.observe(el.firstElementChild);
+    return () => observer.disconnect();
+  }, [ref, enabled]);
+  return overflowing;
 }
 
 /**

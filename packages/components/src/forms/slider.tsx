@@ -69,10 +69,14 @@ export function Slider({
       style={{ ...style, "--slider-fill": `${fill}%` } as React.CSSProperties}
       className={cx(
         "h-1.5 w-full cursor-pointer appearance-none rounded-full bg-transparent",
-        // Track: --primary up to the thumb, then a neutral that reads on cards in both themes.
+        // Track: --primary up to the thumb, then a light neutral, so the fill stands apart.
         "bg-[linear-gradient(to_right,var(--primary)_var(--slider-fill),color-mix(in_oklab,var(--foreground)_15%,transparent)_var(--slider-fill))]",
         // Right-to-left: the thumb starts at the right edge, so the fill must too.
         "rtl:bg-[linear-gradient(to_left,var(--primary)_var(--slider-fill),color-mix(in_oklab,var(--foreground)_15%,transparent)_var(--slider-fill))]",
+        // The light neutral alone read about 1.4:1, so a 1px inset edge at 55% foreground
+        // outlines the whole track at 3:1 or more on --card and --background in both themes.
+        // A darker empty track would match an orange fill in lightness instead.
+        "shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--foreground)_55%,transparent)]",
         // Thumb (WebKit/Blink)
         "[&::-webkit-slider-thumb]:size-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-primary [&::-webkit-slider-thumb]:bg-background [&::-webkit-slider-thumb]:shadow-sm",
         // Thumb (Firefox)

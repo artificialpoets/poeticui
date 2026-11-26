@@ -31,7 +31,10 @@ const TABLIST_CLASS =
 const TAB_BASE_CLASS =
   "rounded-md px-3 py-1.5 text-sm/6 font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
-const TAB_SELECTED_CLASS = "bg-foreground text-background";
+// The fill alone marks the selected tab, and forced colors drop fills: there it
+// takes the system selection colours instead.
+const TAB_SELECTED_CLASS =
+  "bg-foreground text-background forced-colors:forced-color-adjust-none forced-colors:bg-[SelectedItem] forced-colors:text-[SelectedItemText]";
 
 const TAB_UNSELECTED_CLASS =
   "text-muted-foreground hover:bg-muted hover:text-foreground";
