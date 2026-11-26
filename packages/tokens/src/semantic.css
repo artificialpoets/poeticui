@@ -182,7 +182,11 @@
 
     /* ─── Utility surfaces (neutral) ──────────────────────────────────── */
     --muted: var(--color-neutral-100);
-    --muted-foreground: var(--color-neutral-500);
+    /* neutral-700, not neutral-500: secondary text sat at ~3.2:1 on
+       --background and ~3.1:1 on --muted, under WCAG's 4.5:1 for body
+       text. neutral-600 still missed on --muted (~4.4:1); neutral-700 is
+       ~5.4:1 on --background and ~5.3:1 on --muted. */
+    --muted-foreground: var(--color-neutral-700);
     --accent: var(--color-neutral-100);
     --accent-foreground: var(--color-neutral-800);
 
