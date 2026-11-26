@@ -116,6 +116,14 @@
        tier, the hover layer) carry real values and are the additive part
        of the bridge.
 
+       Two real-valued bridge tokens DO flip with the mode, so they live in
+       the mode blocks below rather than here: --border-secondary and
+       --border-tertiary (light neutral-100 / neutral-50, dark neutral-800 /
+       white at 6%). On :root alone they stayed near-white on dark
+       surfaces. The dark tertiary tier is translucent because dark --card
+       IS neutral-900, so a neutral-900 divider vanished on every card.
+       The Figma sheet binds the same values per mode.
+
        The Inverse family is dark-first chrome in ANY mode — the same
        model as the sidebar tokens, not a mode flip. Its border tier binds
        the stone ramp because that is what the sheet binds (the sheet's
@@ -137,8 +145,8 @@
     --background-inverse-hover-overlay: oklch(1 0 0 / 5%);
 
     --border-primary: var(--border);
-    --border-secondary: var(--color-neutral-100);
-    --border-tertiary: var(--color-neutral-50);
+    /* --border-secondary / --border-tertiary: mode-dependent, declared in
+       the `:root, .light` and `.dark` blocks below. */
     --border-inverse-primary: var(--color-stone-700);
     --border-inverse-secondary: var(--color-stone-800);
     --border-inverse-tertiary: var(--color-stone-950);
@@ -174,12 +182,20 @@
 
     /* ─── Utility surfaces (neutral) ──────────────────────────────────── */
     --muted: var(--color-neutral-100);
-    --muted-foreground: var(--color-neutral-500);
+    /* neutral-700, not neutral-500: secondary text sat at ~3.2:1 on
+       --background and ~3.1:1 on --muted, under WCAG's 4.5:1 for body
+       text. neutral-600 still missed on --muted (~4.4:1); neutral-700 is
+       ~5.4:1 on --background and ~5.3:1 on --muted. */
+    --muted-foreground: var(--color-neutral-700);
     --accent: var(--color-neutral-100);
     --accent-foreground: var(--color-neutral-800);
 
     /* ─── Semantic roles (meaning, not brand) ─────────────────────────── */
-    --destructive: var(--color-red-500);
+    /* red-700, not red-500: --destructive is mostly TEXT (text-destructive)
+       and the fill of a white-label button. red-500 measured ~3.7:1 against
+       white and neutral-50, under WCAG's 4.5:1 for body text; red-700 is
+       ~6:1 on both. */
+    --destructive: var(--color-red-700);
     --destructive-foreground: oklch(1 0 0);
     --success: var(--color-green-600);
     --success-foreground: oklch(1 0 0);
@@ -196,6 +212,13 @@
     /* ─── Hover layer (Figma bridge; polarity follows the surface) ────── */
     --background-hover-overlay: oklch(0 0 0 / 2.5%);
     --border-hover-overlay: oklch(0 0 0 / 20%);
+
+    /* ─── Divider tiers (Figma bridge; follow the mode) ───────────────── */
+    --border-secondary: var(--color-neutral-100);
+    --border-tertiary: var(--color-neutral-50);
+
+    /* ─── Scrim behind modals, drawers and mobile sidebars ────────────── */
+    --overlay: oklch(0 0 0 / 30%);
 
     /* ─── Sidebar (dark-first chrome, decoupled from theme mode) ──────── */
     --sidebar: var(--color-neutral-950);
@@ -233,8 +256,12 @@
     --accent-foreground: var(--color-neutral-50);
 
     /* ─── Semantic roles (meaning, not brand) ─────────────────────────── */
-    --destructive: var(--color-red-500);
-    --destructive-foreground: oklch(1 0 0);
+    /* red-400 with a dark label, the same shape as success/warning/info
+       below: red-500 sat at ~4.1:1 as text on --background and ~3.7:1
+       under a white label. red-400 is ~5.8:1 both as text on --background
+       and under a neutral-950 label. */
+    --destructive: var(--color-red-400);
+    --destructive-foreground: var(--color-neutral-950);
     --success: var(--color-green-400);
     --success-foreground: var(--color-neutral-950);
     --warning: var(--color-amber-400);
@@ -250,6 +277,15 @@
     /* ─── Hover layer (Figma bridge; polarity follows the surface) ────── */
     --background-hover-overlay: oklch(1 0 0 / 5%);
     --border-hover-overlay: oklch(1 0 0 / 10%);
+
+    /* ─── Divider tiers (Figma bridge; follow the mode) ───────────────── */
+    --border-secondary: var(--color-neutral-800);
+    --border-tertiary: oklch(1 0 0 / 6%);
+
+    /* ─── Scrim behind modals, drawers and mobile sidebars ────────────── */
+    /* Deeper than light: a 30% scrim barely separates a dark panel from a
+       dark page. */
+    --overlay: oklch(0 0 0 / 60%);
 
     /* ─── Chart (data-viz chromatic accents; NOT brand) ───────────────────
        Deliberately absent: --chart-1 … --chart-10 are mode-invariant and

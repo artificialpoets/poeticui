@@ -2,6 +2,7 @@
 
 import React, { useCallback, useMemo, useState } from "react";
 
+import { handleTablistKeyDown } from "./tablist-keyboard";
 import { cx } from "../lib";
 
 export type TabItem = {
@@ -28,7 +29,7 @@ const TABLIST_CLASS =
   "inline-flex items-center gap-1 rounded-lg border border-border bg-card p-1";
 
 const TAB_BASE_CLASS =
-  "rounded-md px-3 py-1.5 text-sm/6 font-medium transition-colors focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background";
+  "rounded-md px-3 py-1.5 text-sm/6 font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
 const TAB_SELECTED_CLASS = "bg-foreground text-background";
 
@@ -45,6 +46,9 @@ const TAB_UNSELECTED_CLASS =
  *
  * - Controlled: pass `value` + `onValueChange`.
  * - Uncontrolled: pass `defaultTabId` (defaults to the first non-disabled tab).
+ *
+ * Keyboard: Tab reaches the selected tab; ArrowLeft/ArrowRight (wrapping),
+ * Home and End move between enabled tabs, and selection follows focus.
  */
 export function Tabs({
   tabs,
@@ -89,6 +93,7 @@ export function Tabs({
         role="tablist"
         aria-orientation="horizontal"
         className={cx(TABLIST_CLASS, tabsClassName)}
+        onKeyDown={handleTablistKeyDown}
       >
         {tabs.map((tab) => {
           const selected = tab.id === activeId;
@@ -99,7 +104,7 @@ export function Tabs({
                 key={tab.id}
                 role="tab"
                 aria-selected={false}
-                aria-controls={`panel-${tab.id}`}
+                aria-disabled="true"
                 id={`tab-${tab.id}`}
                 className={cx(TAB_BASE_CLASS, "cursor-not-allowed opacity-50")}
               >
@@ -114,7 +119,8 @@ export function Tabs({
               type="button"
               role="tab"
               aria-selected={selected}
-              aria-controls={`panel-${tab.id}`}
+              // Only the selected tab's panel is rendered, so only it has a panel to point at.
+              aria-controls={selected ? `panel-${tab.id}` : undefined}
               id={`tab-${tab.id}`}
               tabIndex={selected ? 0 : -1}
               onClick={() => handleChange(tab.id)}
@@ -133,6 +139,8 @@ export function Tabs({
         role="tabpanel"
         id={`panel-${activeTab?.id}`}
         aria-labelledby={`tab-${activeTab?.id}`}
+        // Reachable by Tab even when the panel holds nothing focusable.
+        tabIndex={0}
         className={cx("mt-6", panelClassName)}
       >
         {activeTab?.content}

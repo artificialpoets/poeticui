@@ -14,15 +14,15 @@ const calloutVariants = cva(
     variants: {
       variant: {
         neutral: "border-border bg-muted/40 text-foreground",
-        info: "border-info/40 bg-info/10 text-info dark:border-info/40 dark:bg-info/20",
+        info: "border-info/40 bg-info/10 text-info dark:bg-info/20",
         success:
-          "border-success/40 bg-success/10 text-success dark:border-success/40 dark:bg-success/20",
+          "border-success/40 bg-success/10 text-success dark:bg-success/20",
         warning:
-          "border-warning/40 bg-warning/10 text-warning dark:border-warning/40 dark:bg-warning/20",
+          "border-warning/40 bg-warning/10 text-warning dark:bg-warning/20",
         destructive:
-          "border-destructive/40 bg-destructive/10 text-destructive dark:border-destructive/40 dark:bg-destructive/20",
+          "border-destructive/40 bg-destructive/10 text-destructive dark:bg-destructive/20",
         primary:
-          "border-primary/40 bg-primary/10 text-primary dark:border-primary/40 dark:bg-primary/20",
+          "border-primary/40 bg-primary/10 text-primary dark:bg-primary/20",
       },
     },
     defaultVariants: { variant: "neutral" },

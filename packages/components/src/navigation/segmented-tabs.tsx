@@ -3,6 +3,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 
+import { handleTablistKeyDown } from "./tablist-keyboard";
 import { cx } from "../lib";
 
 /**
@@ -30,6 +31,9 @@ import { cx } from "../lib";
  *      <SegmentedTabs.Item value="desktop"><Monitor /> Desktop</SegmentedTabs.Item>
  *    </SegmentedTabs>
  *    ```
+ *
+ * Keyboard: Tab reaches the active tab; ArrowLeft/ArrowRight (wrapping), Home
+ * and End move to another tab and select it.
  */
 
 const containerVariants = cva("inline-flex gap-1 rounded-lg bg-muted/50", {
@@ -50,7 +54,11 @@ const containerVariants = cva("inline-flex gap-1 rounded-lg bg-muted/50", {
 });
 
 const itemVariants = cva(
-  "inline-flex items-center justify-center rounded-md font-medium leading-none transition-colors",
+  [
+    "inline-flex items-center justify-center rounded-md font-medium leading-none transition-colors",
+    // Keyboard focus (only the active tab is a Tab stop; arrows move between tabs)
+    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+  ],
   {
     variants: {
       size: {
@@ -152,6 +160,7 @@ export function SegmentedTabs<TValue extends string = string>({
         role="tablist"
         aria-label={rest["aria-label"]}
         className={cx(containerVariants({ size, fullWidth }), className)}
+        onKeyDown={handleTablistKeyDown}
       >
         {options
           ? options.map((opt) => (

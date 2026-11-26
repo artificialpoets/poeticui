@@ -61,6 +61,13 @@ export function DataTableColumnHeader({
   return (
     <TableHeader
       scope="col"
+      aria-sort={
+        sortable && sorted
+          ? sortDir === "asc"
+            ? "ascending"
+            : "descending"
+          : undefined
+      }
       className={cx(
         getSortedHeaderClass({ align, isActive: sorted }),
         className,

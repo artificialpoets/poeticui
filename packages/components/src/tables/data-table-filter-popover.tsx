@@ -1,7 +1,7 @@
 "use client";
 
 import { Filter, X } from "lucide-react";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 
 import { cx } from "../lib";
 import { Popover, PopoverButton, PopoverPanel } from "../misc/popover";
@@ -46,14 +46,20 @@ export function DataTableFilterPopover({
   className?: string;
 }) {
   const isActive = value.trim() !== "";
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  // A stable ref callback runs once when the panel mounts the input. An inline
+  // one ran on every render and pulled focus back from the clear buttons.
+  const focusOnMount = useCallback((el: HTMLInputElement | null) => {
+    inputRef.current = el;
+    if (el) el.focus({ preventScroll: true });
+  }, []);
 
   return (
     <Popover className={cx("relative", className)}>
       <PopoverButton
         as="button"
         className={cx(
-          "relative flex items-center justify-center rounded p-0.5 transition-colors focus:outline-none",
+          "relative flex items-center justify-center rounded p-0.5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
           isActive
             ? "text-primary hover:text-primary/80"
             : "text-muted-foreground/50 hover:text-muted-foreground",
@@ -76,13 +82,9 @@ export function DataTableFilterPopover({
             <p className="text-xs font-medium text-muted-foreground">{label}</p>
             <div className="relative">
               <input
-                ref={(el) => {
-                  (
-                    inputRef as React.MutableRefObject<HTMLInputElement | null>
-                  ).current = el;
-                  if (el) el.focus({ preventScroll: true });
-                }}
+                ref={focusOnMount}
                 type="text"
+                aria-label={label}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 placeholder={placeholder}

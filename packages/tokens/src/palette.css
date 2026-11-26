@@ -8,7 +8,9 @@
      -> @theme block below registers colors as Tailwind design tokens. */
 
 @theme {
-  --font-sans: Inter, sans-serif;
+  /* --font-inter is set by an app that self-hosts Inter (next/font in the
+     dashboard); everywhere else the family name resolves as before. */
+  --font-sans: var(--font-inter, Inter), Inter, sans-serif;
   --font-sans--font-feature-settings: 'cv11';
 
   /* Chart UI (generic — used by any chart system) */

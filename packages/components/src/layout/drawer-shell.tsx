@@ -16,7 +16,7 @@ export function DrawerShell({
   return (
     <Headless.Dialog open={open} onClose={onClose} className="relative z-50">
       <div
-        className="fixed inset-0 bg-black/30 backdrop-blur-sm"
+        className="fixed inset-0 bg-overlay backdrop-blur-sm"
         aria-hidden="true"
       />
       <div className="fixed inset-0 overflow-hidden">
@@ -25,9 +25,13 @@ export function DrawerShell({
             <Headless.DialogPanel className="pointer-events-auto w-screen max-w-md">
               <div className="flex h-full flex-col overflow-y-auto bg-card shadow-xl">
                 {title ? (
-                  <div className="border-b border-border px-6 py-4">
+                  // DialogTitle names the dialog for screen readers.
+                  <Headless.DialogTitle
+                    as="div"
+                    className="border-b border-border px-6 py-4"
+                  >
                     {title}
-                  </div>
+                  </Headless.DialogTitle>
                 ) : null}
                 {children}
               </div>
