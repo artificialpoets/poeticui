@@ -42,6 +42,13 @@ function isInRange(
   );
 }
 
+/** A date as YYYY-MM-DD, or "" when it is empty or not a date. */
+function toDay(date?: string | null): string {
+  if (!date) return "";
+  const d = dayjs(date);
+  return d.isValid() ? d.format("YYYY-MM-DD") : "";
+}
+
 function isStartOrEnd(
   date: string,
   from: string,
@@ -49,9 +56,9 @@ function isStartOrEnd(
   tempFrom?: string | null,
   tempTo?: string | null,
 ): "start" | "end" | false {
-  const a = tempFrom ?? from;
-  const b = tempTo ?? to;
-  const dateStr = dayjs(date).format("YYYY-MM-DD");
+  const a = toDay(tempFrom ?? from);
+  const b = toDay(tempTo ?? to);
+  const dateStr = toDay(date);
   if (dateStr === a) return "start";
   if (dateStr === b) return "end";
   return false;
@@ -71,10 +78,11 @@ function nextDate(date: dayjs.Dayjs, key: string): dayjs.Dayjs | null {
       return date.subtract(1, "week");
     case "ArrowDown":
       return date.add(1, "week");
+    // The grid always starts on Sunday, whatever the dayjs locale says.
     case "Home":
-      return date.startOf("week");
+      return date.subtract(date.day(), "day");
     case "End":
-      return date.endOf("week");
+      return date.add(6 - date.day(), "day");
     case "PageUp":
       return date.subtract(1, "month");
     case "PageDown":
@@ -112,8 +120,14 @@ export function Calendar({
   const today = useMemo(() => dayjs().format("YYYY-MM-DD"), []);
   const daysRef = useRef<HTMLDivElement>(null);
   const idPrefix = useId();
-  // The day the user last moved to; until then the Tab stop follows the range.
-  const [focusDate, setFocusDate] = useState<string | null>(null);
+  // The day the user last moved to, with the range it was set under. A new
+  // range (a preset, the date inputs) drops it: the Tab stop follows the range.
+  const rangeKey = `${toDay(from)}|${toDay(to)}|${toDay(tempFrom)}`;
+  const [moved, setMoved] = useState<{ range: string; date: string } | null>(
+    null,
+  );
+  const focusDate = moved?.range === rangeKey ? moved.date : "";
+  const setFocusDate = (date: string) => setMoved({ range: rangeKey, date });
 
   const monthList = useMemo(() => {
     const list: dayjs.Dayjs[] = [];
@@ -135,13 +149,17 @@ export function Calendar({
       date < firstDate ? firstDate : date > lastDate ? lastDate : date,
     [firstDate, lastDate],
   );
-  // The one day in the Tab order. YYYY-MM-DD strings compare as dates.
-  const tabStop = clamp(focusDate ?? tempFrom ?? to ?? today);
+  // The one day in the Tab order. YYYY-MM-DD strings compare as dates; `||`,
+  // not `??`, so a cleared input ("") falls through to the next candidate.
+  const tabStop = clamp(
+    focusDate || toDay(tempFrom) || toDay(to) || toDay(from) || today,
+  );
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const target = event.target as HTMLElement;
     const current = target.dataset.date;
-    if (!current) return;
+    // Leave Alt+Arrow (browser Back) and Ctrl/Cmd combinations to the browser.
+    if (!current || event.altKey || event.ctrlKey || event.metaKey) return;
     const next = nextDate(dayjs(current), event.key);
     if (!next) return;
     event.preventDefault();
@@ -160,7 +178,8 @@ export function Calendar({
       <div
         ref={daysRef}
         onKeyDown={handleKeyDown}
-        className="flex flex-col gap-6 overflow-y-auto overflow-x-hidden"
+        // p-1: room for the day focus outline inside the clipped scroller.
+        className="flex flex-col gap-6 overflow-y-auto overflow-x-hidden p-1"
       >
         {monthList.map((monthStart) => {
           const monthLabel = monthStart.format("MMMM YYYY");
@@ -235,8 +254,11 @@ export function Calendar({
                           !inRange &&
                           "date-range-calendar-day-today",
                       )}
-                      // The visible label is only the day number; name the full date.
-                      aria-label={d.format("dddd, MMMM D, YYYY")}
+                      // The visible label is only the day number; name the full
+                      // date, and say when a day between the ends is in range.
+                      aria-label={`${d.format("dddd, MMMM D, YYYY")}${
+                        inRange && !startOrEnd ? ", in range" : ""
+                      }`}
                       // Pressed marks the chosen dates, the range start and end;
                       // the days between are shaded, not chosen.
                       aria-pressed={

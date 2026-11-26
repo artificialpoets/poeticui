@@ -91,22 +91,14 @@ describe("Table", () => {
 });
 
 describe("Table keyboard scrolling (ResizeObserver path)", () => {
-  // jest.setup.cjs polyfills a ResizeObserver that never calls back. Swap in
-  // one that records its callback, so the test can play a resize.
+  // jest.setup.cjs polyfills a ResizeObserver that never calls back, and
+  // CONTRIBUTING §6 says not to re-stub it per test. This suite is the
+  // exception: it is testing the resize path, so it swaps in an observer that
+  // records its callback and restores the shared polyfill afterwards.
   let callbacks: ResizeObserverCallback[] = [];
   let scrollWidth = 0;
   let clientWidth = 0;
   const original = globalThis.ResizeObserver;
-  const descriptors = {
-    scrollWidth: Object.getOwnPropertyDescriptor(
-      HTMLElement.prototype,
-      "scrollWidth",
-    ),
-    clientWidth: Object.getOwnPropertyDescriptor(
-      HTMLElement.prototype,
-      "clientWidth",
-    ),
-  };
 
   beforeEach(() => {
     callbacks = [];
@@ -118,6 +110,8 @@ describe("Table keyboard scrolling (ResizeObserver path)", () => {
       unobserve() {}
       disconnect() {}
     } as unknown as typeof ResizeObserver;
+    // jsdom defines these on Element.prototype; shadow them on HTMLElement
+    // and delete the shadows afterwards, so the jsdom getters come back.
     Object.defineProperty(HTMLElement.prototype, "scrollWidth", {
       configurable: true,
       get: () => scrollWidth,
@@ -130,10 +124,9 @@ describe("Table keyboard scrolling (ResizeObserver path)", () => {
 
   afterEach(() => {
     globalThis.ResizeObserver = original;
-    for (const [name, descriptor] of Object.entries(descriptors)) {
-      if (descriptor)
-        Object.defineProperty(HTMLElement.prototype, name, descriptor);
-    }
+    const proto = HTMLElement.prototype as unknown as Record<string, unknown>;
+    delete proto.scrollWidth;
+    delete proto.clientWidth;
   });
 
   const resize = (scroll: number, client: number) => {
@@ -204,5 +197,16 @@ describe("Table keyboard scrolling (ResizeObserver path)", () => {
     );
     act(() => screen.getByRole("button", { name: "Edit" }).focus());
     expect(screen.getByTestId("wrapper")).not.toHaveAttribute("tabindex");
+  });
+});
+
+describe("Table measurement stubs", () => {
+  test("leave no shadow on HTMLElement.prototype after the suite above", () => {
+    expect(
+      Object.getOwnPropertyDescriptor(HTMLElement.prototype, "scrollWidth"),
+    ).toBeUndefined();
+    expect(
+      Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientWidth"),
+    ).toBeUndefined();
   });
 });

@@ -101,6 +101,8 @@ export function Table({
             if (event.target === event.currentTarget) setWrapperFocused(false);
             onBlur?.(event);
           }}
+          // clsx, not cx: tailwind-merge would let the -mx-(--gutter) below
+          // silently drop a caller's own margin in className.
           className={clsx(
             className,
             "-mx-(--gutter) whitespace-nowrap",
