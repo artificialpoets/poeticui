@@ -17,7 +17,10 @@ function bluePreset(source: string): string {
   // `blue: "…"` (one string) or `blue: [ "…", "…" ]` (an array of strings,
   // closed by a `]` on its own line: the class strings contain brackets too).
   const match = source.match(/\n\s*blue:\s*(\[[\s\S]*?\n\s*\]|"[^"]*")/);
-  if (!match) throw new Error("blue preset not found");
+  if (!match)
+    throw new Error(
+      "[@artificialpoets/components/__tests__/blue-color-preset] blue preset not found",
+    );
   return match[1];
 }
 

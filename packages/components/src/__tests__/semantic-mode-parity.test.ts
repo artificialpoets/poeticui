@@ -14,7 +14,10 @@ const semantic = readFileSync(
 
 function block(selector: RegExp): string {
   const match = semantic.match(selector);
-  if (!match) throw new Error(`block not found: ${selector}`);
+  if (!match)
+    throw new Error(
+      `[@artificialpoets/components/__tests__/semantic-mode-parity] block not found: ${selector}`,
+    );
   return match[1];
 }
 
