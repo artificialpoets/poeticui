@@ -91,6 +91,7 @@ export function Dialog({
   size,
   className,
   children,
+  role,
   ...props
 }: DialogProps) {
   // Match the old Alert default (md) when variant is 'alert' and no size is set.
@@ -98,7 +99,12 @@ export function Dialog({
 
   return (
     <DialogVariantContext.Provider value={variant}>
-      <Headless.Dialog {...props}>
+      {/* An alert interrupts with a message that needs a response, so screen
+          readers get `alertdialog` unless the caller sets a role. */}
+      <Headless.Dialog
+        {...props}
+        role={role ?? (variant === "alert" ? "alertdialog" : "dialog")}
+      >
         <Headless.DialogBackdrop transition className="modal-backdrop" />
 
         <div className="fixed inset-0 w-screen overflow-y-auto pt-6 sm:pt-0">

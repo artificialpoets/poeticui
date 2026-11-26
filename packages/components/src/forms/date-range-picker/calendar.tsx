@@ -148,6 +148,14 @@ export function Calendar({
                           !inRange &&
                           "date-range-calendar-day-today",
                       )}
+                      // The visible label is only the day number; name the full date.
+                      aria-label={d.format("dddd, MMMM D, YYYY")}
+                      aria-pressed={
+                        isSelectable
+                          ? Boolean(inRange || startOrEnd)
+                          : undefined
+                      }
+                      aria-current={isToday ? "date" : undefined}
                       data-date={dateStr}
                       data-testid={`calendar-day-${dateStr}`}
                     >

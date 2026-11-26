@@ -1,10 +1,17 @@
 "use client";
 
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import clsx from "clsx";
 import dayjs from "dayjs";
 import { ChevronDown } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import { Calendar } from "./calendar";
 import {
@@ -43,6 +50,10 @@ export function DateRangePicker({
   );
   const [customStart, setCustomStart] = useState<string | null>(null);
   const calendarScrollRef = useRef<HTMLDivElement>(null);
+  // Unique per instance, so two pickers on a page keep their labels attached.
+  const inputIdPrefix = useId();
+  const startInputId = `${inputIdPrefix}-start`;
+  const endInputId = `${inputIdPrefix}-end`;
   const lastSyncedValueRef = useRef<DateRange>(value);
 
   const setCalendarScrollRef = useCallback((el: HTMLDivElement | null) => {
@@ -176,122 +187,130 @@ export function DateRangePicker({
     });
   }, []);
 
+  // A Popover, not a Menu: the panel is a small form (presets, two date
+  // inputs, a calendar). A Menu closes on Tab and owns the arrow keys, so a
+  // keyboard user could not reach the inputs.
   return (
-    <Menu as="div" className={clsx("relative inline-block", className)}>
-      <MenuButton className="date-range-trigger" aria-label="Time range">
+    <Popover className={clsx("relative inline-block", className)}>
+      <PopoverButton className="date-range-trigger" aria-label="Time range">
         {displayLabel}
         <ChevronDown
           aria-hidden="true"
           className="-mr-0.5 size-5 text-muted-foreground"
         />
-      </MenuButton>
+      </PopoverButton>
 
-      <MenuItems
+      <PopoverPanel
         transition
         anchor="bottom start"
         portal={false}
         className="dropdown-panel date-range-dropdown w-[560px]"
       >
-        <div className="flex max-h-[420px]">
-          <div
-            className="date-range-sidebar"
-            role="listbox"
-            aria-label="Date range presets"
-          >
-            {PRESETS.map((preset) => (
-              <button
-                key={preset.id}
-                type="button"
-                role="option"
-                aria-selected={activePreset === preset.id}
-                onClick={() => handlePresetClick(preset.id)}
-                className={clsx(
-                  "date-range-preset-btn",
-                  activePreset === preset.id &&
-                    "bg-primary/20 font-medium text-primary dark:bg-primary/30 dark:text-primary",
-                )}
+        {({ close }) => (
+          <>
+            <div className="flex max-h-[420px]">
+              <div
+                className="date-range-sidebar"
+                role="group"
+                aria-label="Date range presets"
               >
-                {preset.label}
+                {PRESETS.map((preset) => (
+                  <button
+                    key={preset.id}
+                    type="button"
+                    aria-pressed={activePreset === preset.id}
+                    onClick={() => handlePresetClick(preset.id)}
+                    className={clsx(
+                      "date-range-preset-btn",
+                      activePreset === preset.id &&
+                        "bg-primary/20 font-medium text-primary dark:bg-primary/30",
+                    )}
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="date-range-content">
+                {/* Top row: Start date and End date */}
+                <div className="grid grid-cols-2 gap-4 pb-4">
+                  <div>
+                    <label
+                      htmlFor={startInputId}
+                      className="date-range-input-label"
+                    >
+                      Start date
+                    </label>
+                    <input
+                      id={startInputId}
+                      type="date"
+                      value={startInput}
+                      onChange={(e) => setStartInput(e.target.value)}
+                      className="input-date"
+                      data-testid="date-range-start-input"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor={endInputId}
+                      className="date-range-input-label"
+                    >
+                      End date
+                    </label>
+                    <input
+                      id={endInputId}
+                      type="date"
+                      value={endInput}
+                      onChange={(e) => setEndInput(e.target.value)}
+                      className="input-date"
+                      data-testid="date-range-end-input"
+                    />
+                  </div>
+                </div>
+                {/* Scrollable row: months from July 2025 to current month; scroll to bottom when opened */}
+                <div
+                  ref={setCalendarScrollRef}
+                  className="date-range-calendar-scroll"
+                >
+                  <Calendar
+                    from={draft.from}
+                    to={draft.to}
+                    selectingRange={true}
+                    tempFrom={customStart}
+                    tempTo={customStart ? null : null}
+                    onSelectDate={handleCalendarSelect}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="date-range-footer">
+              <button
+                type="button"
+                onClick={() => {
+                  handleCancel();
+                  close();
+                }}
+                className="date-range-btn-secondary"
+                data-testid="date-range-cancel"
+              >
+                Cancel
               </button>
-            ))}
-          </div>
-
-          <div className="date-range-content">
-            {/* Top row: Start date and End date */}
-            <div className="grid grid-cols-2 gap-4 pb-4">
-              <div>
-                <label
-                  htmlFor="date-range-start"
-                  className="date-range-input-label"
-                >
-                  Start date
-                </label>
-                <input
-                  id="date-range-start"
-                  type="date"
-                  value={startInput}
-                  onChange={(e) => setStartInput(e.target.value)}
-                  className="input-date"
-                  data-testid="date-range-start-input"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="date-range-end"
-                  className="date-range-input-label"
-                >
-                  End date
-                </label>
-                <input
-                  id="date-range-end"
-                  type="date"
-                  value={endInput}
-                  onChange={(e) => setEndInput(e.target.value)}
-                  className="input-date"
-                  data-testid="date-range-end-input"
-                />
-              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  handleApply();
+                  close();
+                }}
+                className="date-range-btn-primary"
+                data-testid="date-range-apply"
+              >
+                Apply
+              </button>
             </div>
-            {/* Scrollable row: months from July 2025 to current month; scroll to bottom when opened */}
-            <div
-              ref={setCalendarScrollRef}
-              className="date-range-calendar-scroll"
-            >
-              <Calendar
-                from={draft.from}
-                to={draft.to}
-                selectingRange={true}
-                tempFrom={customStart}
-                tempTo={customStart ? null : null}
-                onSelectDate={handleCalendarSelect}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="date-range-footer">
-          <MenuItem>
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="date-range-btn-secondary"
-              data-testid="date-range-cancel"
-            >
-              Cancel
-            </button>
-          </MenuItem>
-          <MenuItem>
-            <button
-              type="button"
-              onClick={handleApply}
-              className="date-range-btn-primary"
-              data-testid="date-range-apply"
-            >
-              Apply
-            </button>
-          </MenuItem>
-        </div>
-      </MenuItems>
-    </Menu>
+          </>
+        )}
+      </PopoverPanel>
+    </Popover>
   );
 }

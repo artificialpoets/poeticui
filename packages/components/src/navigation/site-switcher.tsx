@@ -66,6 +66,8 @@ export function SiteSwitcher({
 }: SiteSwitcherProps) {
   const all = aggregate ? [aggregate, ...sites] : sites;
   const active = all.find((s) => s.id === current) ?? all[0];
+  // No sites and no aggregate: nothing to switch between (and no trigger label).
+  if (!active) return null;
 
   return (
     <Dropdown>
@@ -73,7 +75,7 @@ export function SiteSwitcher({
         as="button"
         className={cx(
           "group inline-flex items-center gap-2.5 rounded-lg border border-border bg-card px-3 py-2 text-left text-sm transition hover:bg-muted",
-          "focus:outline-none focus:ring-2 focus:ring-ring",
+          "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
           className,
         )}
         data-slot="site-switcher-trigger"
@@ -138,6 +140,7 @@ function SiteRow({
     <DropdownItem
       onClick={() => onPick(option.id)}
       data-slot="site-switcher-item"
+      aria-current={active ? "true" : undefined}
     >
       <Avatar
         initials={option.initials ?? option.name.slice(0, 2).toUpperCase()}
@@ -145,16 +148,21 @@ function SiteRow({
         className="size-6 shrink-0"
       />
       <div className="flex min-w-0 flex-1 flex-col leading-tight">
-        <span className="truncate text-sm font-medium text-foreground">
+        <span className="truncate text-sm font-medium text-foreground group-data-focus:text-primary-foreground">
           {option.name}
         </span>
         {option.subtitle ? (
-          <span className="truncate text-xs text-muted-foreground">
+          <span className="truncate text-xs text-muted-foreground group-data-focus:text-primary-foreground/80">
             {option.subtitle}
           </span>
         ) : null}
       </div>
-      {active ? <Check className="size-4 text-foreground" aria-hidden /> : null}
+      {active ? (
+        <Check
+          className="size-4 text-foreground group-data-focus:text-primary-foreground"
+          aria-hidden
+        />
+      ) : null}
     </DropdownItem>
   );
 }

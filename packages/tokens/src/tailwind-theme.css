@@ -82,6 +82,7 @@
   --color-border-inverse-tertiary: var(--border-inverse-tertiary);
   --color-border-hover-overlay: var(--border-hover-overlay);
   --color-border-inverse-hover-overlay: var(--border-inverse-hover-overlay);
+  --color-overlay: var(--overlay);
 
   /* Sidebar */
   --color-sidebar: var(--sidebar);

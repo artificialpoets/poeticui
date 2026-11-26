@@ -72,7 +72,7 @@ const base = [
   "group-data-focus:outline group-data-focus:outline-2 group-data-focus:outline-offset-2 group-data-focus:outline-ring",
   // Disabled state
   "group-data-disabled:opacity-50",
-  "group-data-disabled:border-muted-foreground/30 group-data-disabled:bg-muted/30 group-data-disabled:[--radio-checked-indicator:var(--color-neutral-950)]/50 group-data-disabled:before:bg-transparent",
+  "group-data-disabled:border-muted-foreground/30 group-data-disabled:bg-muted/30 group-data-disabled:[--radio-checked-indicator:var(--foreground)]/50 group-data-disabled:before:bg-transparent",
   "dark:group-data-checked:group-data-disabled:after:hidden",
 ];
 
@@ -104,7 +104,7 @@ const colors = {
   teal: "[--radio-checked-indicator:var(--color-white)] [--radio-checked-bg:var(--color-teal-600)] [--radio-checked-border:var(--color-teal-700)]/90",
   cyan: "[--radio-checked-bg:var(--color-cyan-300)] [--radio-checked-border:var(--color-cyan-400)]/80 [--radio-checked-indicator:var(--color-cyan-950)]",
   sky: "[--radio-checked-indicator:var(--color-white)] [--radio-checked-bg:var(--color-sky-500)] [--radio-checked-border:var(--color-sky-600)]/80",
-  blue: "[--radio-checked-indicator:var(--color-white)] [--radio-checked-bg:var(--color-orange-600)] [--radio-checked-border:var(--color-orange-700)]/90",
+  blue: "[--radio-checked-indicator:var(--color-white)] [--radio-checked-bg:var(--color-blue-600)] [--radio-checked-border:var(--color-blue-700)]/90",
   indigo:
     "[--radio-checked-indicator:var(--color-white)] [--radio-checked-bg:var(--color-indigo-500)] [--radio-checked-border:var(--color-indigo-600)]/90",
   violet:

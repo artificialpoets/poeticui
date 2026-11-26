@@ -180,8 +180,8 @@ const buttonColors = {
     "[--btn-icon:var(--color-white)]/60 data-active:[--btn-icon:var(--color-white)]/80 data-hover:[--btn-icon:var(--color-white)]/80",
   ],
   blue: [
-    "text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-orange-600)] [--btn-border:var(--color-orange-700)]/90",
-    "[--btn-icon:var(--color-orange-400)] data-active:[--btn-icon:var(--color-orange-300)] data-hover:[--btn-icon:var(--color-orange-300)]",
+    "text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-blue-600)] [--btn-border:var(--color-blue-700)]/90",
+    "[--btn-icon:var(--color-blue-400)] data-active:[--btn-icon:var(--color-blue-300)] data-hover:[--btn-icon:var(--color-blue-300)]",
   ],
   violet: [
     "text-white [--btn-hover-overlay:var(--color-white)]/10 [--btn-bg:var(--color-violet-500)] [--btn-border:var(--color-violet-600)]/90",
