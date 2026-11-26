@@ -22,7 +22,7 @@ const calloutVariants = cva(
         destructive:
           "border-destructive/40 bg-destructive/10 text-destructive dark:bg-destructive/20",
         primary:
-          "border-primary/40 bg-primary/10 text-primary dark:bg-primary/20",
+          "border-primary/40 bg-primary/10 text-primary-text dark:bg-primary/20",
       },
     },
     defaultVariants: { variant: "neutral" },

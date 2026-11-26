@@ -54,9 +54,11 @@ export function DataTableFilterChips({
       {filters.map((f) => (
         <span
           key={f.key}
-          className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary"
+          className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary-text"
         >
-          <span className="text-primary/60">{f.label}:</span>
+          {/* Weight, not opacity, sets the label apart: text-primary-text/60
+              read about 2.5:1 on the chip. */}
+          <span className="font-normal">{f.label}:</span>
           <span>&ldquo;{f.value}&rdquo;</span>
           <button
             type="button"
