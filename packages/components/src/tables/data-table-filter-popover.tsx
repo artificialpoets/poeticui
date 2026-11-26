@@ -59,10 +59,11 @@ export function DataTableFilterPopover({
       <PopoverButton
         as="button"
         className={cx(
-          "relative flex items-center justify-center rounded p-0.5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          "relative flex items-center justify-center rounded p-0.5 transition-colors focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring",
           isActive
             ? "text-primary hover:text-primary/80"
-            : "text-muted-foreground/50 hover:text-muted-foreground",
+            : // Full muted-foreground: at /50 the icon read about 2.6:1, under the 3:1 a control needs.
+              "text-muted-foreground hover:text-foreground",
         )}
         aria-label={
           ariaLabel ??
@@ -88,7 +89,7 @@ export function DataTableFilterPopover({
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 placeholder={placeholder}
-                className="w-full rounded-md border border-border bg-background px-2.5 py-1.5 pr-7 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-ring focus:outline-none"
+                className="w-full rounded-md border border-border bg-background px-2.5 py-1.5 pr-7 text-sm text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-hidden"
               />
               {isActive && (
                 <button
@@ -97,7 +98,7 @@ export function DataTableFilterPopover({
                     onChange("");
                     inputRef.current?.focus();
                   }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground/60 hover:text-muted-foreground"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   aria-label="Clear filter"
                 >
                   <X className="size-3.5" />

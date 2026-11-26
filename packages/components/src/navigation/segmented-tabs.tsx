@@ -66,7 +66,9 @@ const itemVariants = cva(
         md: "h-8 px-3 text-sm",
       },
       active: {
-        true: "bg-card text-foreground shadow-sm",
+        // Forced colors drop the card fill and shadow, so the active tab takes
+        // the system selection colours there.
+        true: "bg-card text-foreground shadow-sm forced-colors:forced-color-adjust-none forced-colors:bg-[SelectedItem] forced-colors:text-[SelectedItemText]",
         false: "text-muted-foreground hover:text-foreground",
       },
     },
