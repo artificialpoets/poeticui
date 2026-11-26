@@ -335,8 +335,12 @@
      properties resolve var() where they are declared, then inherit the
      result). Without relative colour syntax the mode blocks' fallback,
      var(--primary), stays: today's colour, never a missing one.
-     The same rule ships in the website theme (apps/poetic-theme). */
-  @supports (color: oklch(from red l c h)) {
+     The same rule ships in the website theme (apps/poetic-theme).
+     The @supports test uses min() inside the channel, like the rules do:
+     Safari 16.4-17 passes the bare `from red l c h` test but implemented
+     an older draft, where the declaration would be invalid at use time and
+     the text would fall back to the inherited foreground, not --primary. */
+  @supports (color: oklch(from red min(l, 0.55) min(c, 0.19) h)) {
     :root,
     .light {
       --primary-text: oklch(from var(--primary) min(l, 0.55) min(c, 0.19) h);

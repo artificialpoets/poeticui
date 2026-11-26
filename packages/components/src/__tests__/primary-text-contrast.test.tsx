@@ -72,7 +72,8 @@ function tint(primary: Oklch, alpha: number, backdrop: Oklch): Rgb {
   return fg.map((x, i) => x * alpha + bg[i] * (1 - alpha)) as Rgb;
 }
 
-const SUPPORTS = "@supports (color: oklch(from red l c h))";
+const SUPPORTS =
+  "@supports (color: oklch(from red min(l, 0.55) min(c, 0.19) h))";
 
 /** The `oklch(from var(--primary) …)` rule declared for `selector`, applied to `primary`. */
 function derive(selector: RegExp, primary: Oklch): Oklch {
