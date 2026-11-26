@@ -60,6 +60,11 @@ These are the aliases most components use. They auto-flip in dark mode because `
       <td><code>bg-primary text-primary-foreground</code></td>
     </tr>
     <tr>
+      <td>Brand colour as text</td>
+      <td><code>--primary-text</code> (derived from <code>--primary</code>)</td>
+      <td><code>text-primary-text</code>: links, eyebrows, outline labels. Icons, fills and rings keep <code>primary</code></td>
+    </tr>
+    <tr>
       <td>Destructive</td>
       <td><code>--destructive</code> + <code>--destructive-foreground</code></td>
       <td><code>text-destructive</code>, <code>bg-destructive/10</code></td>
@@ -113,7 +118,7 @@ Heading levels 1–4 are defined in `@poeticui/tokens/typography`. Reach for sem
 - `<Text>` — body `<p>` with correct line-height + muted-foreground color
 - `<Strong>` — inline emphasis
 - `<Code>` — monospace inline
-- `<TextLink>` — inline link, picks up `--primary`
+- `<TextLink>` — inline link in `--foreground` with an underline
 
 ## Spacing + radius
 

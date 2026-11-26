@@ -8,7 +8,8 @@ import { cx } from "../lib";
 // ─── Tokens ───────────────────────────────────────────────────────────────
 
 const TONE_BG: Record<string, string> = {
-  primary: "bg-primary/10 text-primary",
+  // primary-text, not primary: a spoke with no icon shows its initials.
+  primary: "bg-primary/10 text-primary-text",
   success: "bg-success/10 text-success",
   warning: "bg-warning/10 text-warning",
   destructive: "bg-destructive/10 text-destructive",

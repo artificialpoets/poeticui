@@ -74,6 +74,8 @@ Import only the layers you need:
 ```
 BRAND  (customizable per theme — main personalization surface)
   --primary             --primary-foreground
+  --primary-text        (derived from --primary: the brand colour as
+                        readable text; themes do not set it)
   --secondary           --secondary-foreground
 
 SEMANTIC ROLE  (meaning; theme may re-tint)

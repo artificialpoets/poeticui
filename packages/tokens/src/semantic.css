@@ -12,6 +12,12 @@
      --sidebar-primary-foreground Text color on active sidebar item
      --sidebar-ring               Sidebar focus ring
 
+   Derived, never set by a theme:
+     --primary-text               --primary as TEXT (text-primary-text):
+                                  links, eyebrows, outline-button labels.
+                                  Computed from --primary below, so an
+                                  overlay that sets --primary gets it free.
+
    Optional brand override (for themes with two brand accents):
      --secondary, --secondary-foreground
        Default (below) is a muted neutral — matches shadcn's "secondary
@@ -177,6 +183,9 @@
     /* ─── Brand (required in every theme) ─────────────────────────────── */
     --primary: var(--color-orange-500);
     --primary-foreground: oklch(1 0 0);
+    /* Fallback for browsers without relative colour; the readable value
+       is in the @supports block at the end of this layer. */
+    --primary-text: var(--primary);
     --secondary: var(--color-neutral-100);
     --secondary-foreground: var(--color-neutral-800);
 
@@ -243,6 +252,7 @@
     /* ─── Brand (required in every theme) ─────────────────────────────── */
     --primary: var(--color-orange-500);
     --primary-foreground: oklch(1 0 0);
+    --primary-text: var(--primary); /* see the @supports block below */
     --secondary: var(--color-neutral-800);
     --secondary-foreground: var(--color-neutral-50);
 
@@ -302,5 +312,42 @@
     --sidebar-accent-foreground: var(--color-neutral-50);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: var(--color-orange-500);
+  }
+
+  /* ─── --primary-text: the brand colour when it is text ──────────────
+     Fills, borders, rings and icons keep --primary; text that carries
+     the brand colour uses --primary-text (text-primary-text). The AP
+     orange (orange-500) reads 3.4:1 as text on white and 2.7:1 on the
+     dark card, under the 4.5:1 body text needs.
+
+     It is derived from --primary, never a fixed shade, because every
+     brand overlay replaces --primary:
+     - light: lightness capped at 0.55 and chroma at 0.19, so orange
+       lands on about orange-600 (5.3:1 on white, 5.1:1 on --muted);
+     - dark: lightness raised to at least 0.84 and chroma capped at
+       0.093, so orange lands on about orange-200 (5.5:1 on the dark
+       card, 4.6:1 on dark --muted).
+     A black or white primary (the a13s brand, the neutral theme's
+     zinc-900 / zinc-50) passes through unchanged.
+
+     Declared on `:root, .light` and `.dark` like every mode token, so a
+     scoped island derives its own value from its own --primary (custom
+     properties resolve var() where they are declared, then inherit the
+     result). Without relative colour syntax the mode blocks' fallback,
+     var(--primary), stays: today's colour, never a missing one.
+     The same rule ships in the website theme (apps/poetic-theme).
+     The @supports test uses min() inside the channel, like the rules do:
+     Safari 16.4-17 passes the bare `from red l c h` test but implemented
+     an older draft, where the declaration would be invalid at use time and
+     the text would fall back to the inherited foreground, not --primary. */
+  @supports (color: oklch(from red min(l, 0.55) min(c, 0.19) h)) {
+    :root,
+    .light {
+      --primary-text: oklch(from var(--primary) min(l, 0.55) min(c, 0.19) h);
+    }
+
+    .dark {
+      --primary-text: oklch(from var(--primary) max(l, 0.84) min(c, 0.093) h);
+    }
   }
 }

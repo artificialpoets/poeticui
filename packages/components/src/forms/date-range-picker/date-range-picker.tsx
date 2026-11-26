@@ -223,7 +223,9 @@ export function DateRangePicker({
                     className={clsx(
                       "date-range-preset-btn",
                       activePreset === preset.id &&
-                        "bg-primary/20 font-medium text-primary dark:bg-primary/30",
+                        // /10 and /20, not /20 and /30: the deeper tints dropped
+                        // text-primary-text under 4.5:1 (about 4.1:1 and 4.4:1).
+                        "bg-primary/10 font-medium text-primary-text dark:bg-primary/20",
                     )}
                   >
                     {preset.label}
