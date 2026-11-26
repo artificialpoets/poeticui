@@ -23,7 +23,7 @@ const meta = {
   parameters: {
     layout: "fullscreen",
   },
-  args: {},
+  args: { navbar: null, sidebar: null },
 } satisfies Meta<typeof SidebarLayout>;
 
 export default meta;

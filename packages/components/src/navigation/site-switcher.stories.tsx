@@ -27,6 +27,7 @@ const meta = {
   args: {
     sites,
     current: "all",
+    onChange: () => {},
     aggregate: {
       id: "all",
       name: "All sites",

@@ -14,6 +14,9 @@ const meta = {
   args: {
     size: "md",
     fullWidth: false,
+    value: "",
+    onValueChange: () => {},
+    options: [],
   },
 } satisfies Meta<typeof SegmentedTabs>;
 
@@ -23,11 +26,12 @@ type Story = StoryObj<typeof meta>;
 /** Controlled via `options` array. */
 export const Default: Story = {
   args: {},
-  render: (args) => {
+  render: ({ size, fullWidth }) => {
     const [value, setValue] = useState("combined");
     return (
       <SegmentedTabs
-        {...args}
+        size={size}
+        fullWidth={fullWidth}
         value={value}
         onValueChange={setValue}
         options={[
@@ -42,11 +46,12 @@ export const Default: Story = {
 
 export const Small: Story = {
   args: { size: "sm" },
-  render: (args) => {
+  render: ({ size, fullWidth }) => {
     const [value, setValue] = useState("7d");
     return (
       <SegmentedTabs
-        {...args}
+        size={size}
+        fullWidth={fullWidth}
         value={value}
         onValueChange={setValue}
         options={[
@@ -62,12 +67,13 @@ export const Small: Story = {
 
 export const FullWidth: Story = {
   args: { fullWidth: true },
-  render: (args) => {
+  render: ({ size, fullWidth }) => {
     const [value, setValue] = useState("all");
     return (
       <div className="max-w-md">
         <SegmentedTabs
-          {...args}
+          size={size}
+          fullWidth={fullWidth}
           value={value}
           onValueChange={setValue}
           options={[

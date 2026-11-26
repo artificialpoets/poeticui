@@ -6,7 +6,7 @@ const meta = {
   title: "Navigation/Tabs",
   component: Tabs,
   tags: ["autodocs"],
-  args: {},
+  args: { tabs: [] },
 } satisfies Meta<typeof Tabs>;
 
 export default meta;

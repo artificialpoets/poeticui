@@ -12,6 +12,8 @@ const meta = {
     totalPages: 12,
     pageSize: 25,
     pageSizeOptions: [25, 50, 100],
+    onPageChange: () => {},
+    onPageSizeChange: () => {},
   },
 } satisfies Meta<typeof TablePaginationFooter>;
 

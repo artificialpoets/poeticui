@@ -8,7 +8,7 @@ const meta = {
   title: "Layout/DrawerShell",
   component: DrawerShell,
   tags: ["autodocs"],
-  args: {},
+  args: { open: false, onClose: () => {} },
 } satisfies Meta<typeof DrawerShell>;
 
 export default meta;
