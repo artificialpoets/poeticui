@@ -147,12 +147,17 @@ describe("TouchTarget", () => {
   });
 
   describe("color presets", () => {
-    test('color="primary" draws on the semantic primary pair, deepened for contrast', () => {
+    test('color="primary" draws on the semantic primary pair, at full strength', () => {
       render(<Button color="primary">Save</Button>);
       const btn = screen.getByRole("button", { name: /save/i });
       expect(btn.className).toMatch(/text-primary-foreground/);
-      expect(btn.className).toMatch(
-        /\[--btn-bg:color-mix\(in_oklab,var\(--primary\)_82%,black\)\]/,
+      expect(btn.className).toContain("[--btn-bg:var(--primary)]");
+      // Hover darkens: a white overlay would pull white text on orange-600 under 4.5:1.
+      expect(btn.className).toContain(
+        "[--btn-hover-overlay:var(--color-black)]/10",
+      );
+      expect(btn.className).not.toContain(
+        "[--btn-hover-overlay:var(--color-white)]",
       );
     });
 

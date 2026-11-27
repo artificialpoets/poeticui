@@ -182,7 +182,14 @@
     --popover-foreground: var(--color-neutral-950);
 
     /* ─── Brand (required in every theme) ─────────────────────────────── */
-    --primary: var(--color-orange-500);
+    /* orange-600, not orange-500: --primary is the fill behind
+       --primary-foreground (white) on buttons, banners and badges, and
+       white on orange-500 reads 3.45:1, under the 4.5:1 a 14px label
+       needs. orange-600 reads 5.1:1. The brand shows at full strength on
+       those fills, so the fix is the token, not a shaded copy of it.
+       orange-500 stays the brand for decoration: the gradients, the
+       sidebar focus ring and --chart-5 (AP-2222). */
+    --primary: var(--color-orange-600);
     --primary-foreground: oklch(1 0 0);
     /* Fallback for browsers without relative colour; the readable value
        is in the @supports block at the end of this layer. */
@@ -233,7 +240,7 @@
     /* ─── Sidebar (dark-first chrome, decoupled from theme mode) ──────── */
     --sidebar: var(--color-neutral-950);
     --sidebar-foreground: var(--color-neutral-50);
-    --sidebar-primary: var(--color-orange-500);
+    --sidebar-primary: var(--color-orange-600); /* white on it: 5.1:1 */
     --sidebar-primary-foreground: oklch(1 0 0);
     --sidebar-accent: var(--color-neutral-900);
     --sidebar-accent-foreground: var(--color-neutral-50);
@@ -251,7 +258,7 @@
     --popover-foreground: var(--color-neutral-50);
 
     /* ─── Brand (required in every theme) ─────────────────────────────── */
-    --primary: var(--color-orange-500);
+    --primary: var(--color-orange-600); /* why: the light block */
     --primary-foreground: oklch(1 0 0);
     --primary-text: var(--primary); /* see the @supports block below */
     --secondary: var(--color-neutral-800);
@@ -283,7 +290,11 @@
     /* ─── Structure ───────────────────────────────────────────────────── */
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
-    --ring: var(--primary);
+    /* --primary-text, not --primary: a focus ring needs 3:1 against the
+       page, and orange-600 on the dark background is 2.9:1. The dark
+       --primary-text is the brand lifted for dark grounds (8.9:1 here),
+       and like it a black or white brand passes through unchanged. */
+    --ring: var(--primary-text);
 
     /* ─── Hover layer (Figma bridge; polarity follows the surface) ────── */
     --background-hover-overlay: oklch(1 0 0 / 5%);
@@ -307,7 +318,7 @@
     /* ─── Sidebar (dark-first chrome, decoupled from theme mode) ──────── */
     --sidebar: var(--color-neutral-950);
     --sidebar-foreground: var(--color-neutral-50);
-    --sidebar-primary: var(--color-orange-500);
+    --sidebar-primary: var(--color-orange-600); /* white on it: 5.1:1 */
     --sidebar-primary-foreground: oklch(1 0 0);
     --sidebar-accent: oklch(1 0 0 / 5%);
     --sidebar-accent-foreground: var(--color-neutral-50);
@@ -316,22 +327,24 @@
   }
 
   /* ─── --primary-text: the brand colour when it is text ──────────────
-     Fills, borders, rings and icons keep --primary; text that carries
-     the brand colour uses --primary-text (text-primary-text). The AP
-     orange (orange-500) reads 3.4:1 as text on white and 2.7:1 on the
-     dark card, under the 4.5:1 body text needs.
+     Fills, borders and icons keep --primary; text that carries the
+     brand colour uses --primary-text (text-primary-text), and so does
+     the dark-mode focus ring. A colour that works as a fill does not
+     always work as text: the AP orange (orange-600) reads 5.1:1 on
+     white but 1.8:1 on the dark card, under the 4.5:1 body text needs.
 
      It is derived from --primary, never a fixed shade, because every
      brand overlay replaces --primary:
-     - light: lightness capped at 0.55 and chroma at 0.19, so orange
-       lands on about orange-600 (5.3:1 on white, 5.1:1 on --muted);
+     - light: lightness capped at 0.54 and chroma at 0.19, so orange
+       lands just under orange-600 (5.5:1 on white, 5.3:1 on --muted,
+       4.7:1 on the bg-primary/10 tint the chips put behind it);
      - dark: lightness raised to at least 0.84 and chroma capped at
        0.093, so orange lands on about orange-200 (5.5:1 on the dark
        card, 4.6:1 on dark --muted).
      A black or white primary (the a13s brand, the neutral theme's
      zinc-900 / zinc-50) passes through unchanged.
      It is not 4.5:1 for every hue: a green, teal or cyan primary (about
-     125-240 degrees) keeps more luminance at the 0.55 cap and reads as low
+     125-240 degrees) keeps more luminance at the 0.54 cap and reads as low
      as 3.8:1 on white. Dark mode clears 4.5:1 for every hue. A theme in
      that range should check its text, or set its own --primary-text.
 
@@ -341,14 +354,15 @@
      result). Without relative colour syntax the mode blocks' fallback,
      var(--primary), stays: today's colour, never a missing one.
      The same rule ships in the website theme (apps/poetic-theme).
-     The @supports test uses min() inside the channel, like the rules do:
+     The @supports test uses min() inside the channel, like the rules do
+     (its 0.55 only probes support; the rule's cap is 0.54):
      Safari 16.4-17 passes the bare `from red l c h` test but implemented
      an older draft, where the declaration would be invalid at use time and
      the text would fall back to the inherited foreground, not --primary. */
   @supports (color: oklch(from red min(l, 0.55) min(c, 0.19) h)) {
     :root,
     .light {
-      --primary-text: oklch(from var(--primary) min(l, 0.55) min(c, 0.19) h);
+      --primary-text: oklch(from var(--primary) min(l, 0.54) min(c, 0.19) h);
     }
 
     .dark {
