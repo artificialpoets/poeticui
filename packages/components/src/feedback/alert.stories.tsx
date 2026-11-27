@@ -14,7 +14,7 @@ const meta = {
   title: "Feedback/Alert (Legacy)",
   component: Alert,
   tags: ["autodocs"],
-  args: {},
+  args: { open: false, onClose: () => {}, children: null },
   parameters: {
     docs: {
       description: {

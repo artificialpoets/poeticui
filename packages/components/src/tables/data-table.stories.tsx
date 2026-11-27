@@ -6,7 +6,7 @@ const meta = {
   title: "Tables/DataTable",
   component: DataTable,
   tags: ["autodocs"],
-  args: {},
+  args: { columns: [], rows: [] },
 } satisfies Meta<typeof DataTable>;
 
 export default meta;

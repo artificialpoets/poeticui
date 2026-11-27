@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 
-import { DateRangePicker, type DateRange } from "./date-range-picker";
-import { getRangeForPreset } from "./presets";
+import { DateRangePicker } from "./date-range-picker";
+import { getRangeForPreset, type DateRange } from "./presets";
 
 const meta = {
   title: "Forms/DateRangePicker",
   component: DateRangePicker,
   tags: ["autodocs"],
-  args: {},
+  args: { onChange: () => {} },
 } satisfies Meta<typeof DateRangePicker>;
 
 export default meta;

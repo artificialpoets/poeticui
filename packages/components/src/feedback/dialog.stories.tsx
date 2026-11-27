@@ -24,6 +24,9 @@ const meta = {
   args: {
     variant: "default",
     size: "md",
+    open: false,
+    onClose: () => {},
+    children: null,
   },
 } satisfies Meta<typeof Dialog>;
 
