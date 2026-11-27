@@ -5,9 +5,8 @@
 
 Tokens: a new `overlay` scrim token, readable destructive colours and a visible dark divider.
 
-- New `--overlay` / `bg-overlay`: the scrim behind drawers and mobile
-  sidebars. Black at 30% in light mode, 60% in dark mode. The Dialog
-  backdrop (`.modal-backdrop`) does not use it yet.
+- New `--overlay` / `bg-overlay`: the scrim behind dialogs, drawers and
+  mobile sidebars. Black at 30% in light mode, 60% in dark mode.
 - Light `--muted-foreground` is `neutral-700` (about 5.4:1 on
   `--background`, was `neutral-500` at about 3.2:1). Secondary text,
   placeholders and everything tinted from it (switch track ring, disabled

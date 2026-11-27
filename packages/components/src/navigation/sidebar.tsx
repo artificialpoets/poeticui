@@ -181,7 +181,7 @@ export const SidebarItem = forwardRef(function SidebarItem(
           {...props}
           className={cx("cursor-default", classes, className)}
           data-current={current ? "true" : undefined}
-          aria-current={current ? "page" : undefined}
+          aria-current={current ? "page" : props["aria-current"]}
           ref={ref}
         >
           <TouchTarget>{children}</TouchTarget>
@@ -191,7 +191,7 @@ export const SidebarItem = forwardRef(function SidebarItem(
           {...props}
           className={cx("cursor-default", classes, className)}
           data-current={current ? "true" : undefined}
-          aria-current={current ? "page" : undefined}
+          aria-current={current ? "page" : props["aria-current"]}
           ref={ref}
         >
           <TouchTarget>{children}</TouchTarget>

@@ -52,6 +52,8 @@ export function Table({
   className,
   tableClassName,
   children,
+  onFocus,
+  onBlur,
   ...props
 }: {
   bleed?: boolean;
@@ -65,11 +67,16 @@ export function Table({
 } & React.ComponentPropsWithoutRef<"div">) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const overflowing = useHorizontalOverflow(scrollRef, scroll);
+  // Whether the wrapper itself (not a cell inside it) has focus.
+  const [wrapperFocused, setWrapperFocused] = useState(false);
   // Safari never makes a scroll container a Tab stop, so a keyboard user could
   // not reach the hidden columns. While the table overflows, the wrapper is
   // focusable (arrow keys scroll it) and, when the caller names it, a region.
+  // It stays focusable while it has focus, so a table that stops overflowing
+  // (the window widened) does not drop focus to the body.
+  const focusable = overflowing || wrapperFocused;
   const named = props["aria-label"] != null || props["aria-labelledby"] != null;
-  const scrollA11y: React.ComponentPropsWithoutRef<"div"> = overflowing
+  const scrollA11y: React.ComponentPropsWithoutRef<"div"> = focusable
     ? { tabIndex: 0, ...(named ? { role: "region" } : {}) }
     : {};
 
@@ -86,11 +93,21 @@ export function Table({
           ref={scrollRef}
           {...scrollA11y}
           {...props}
+          onFocus={(event) => {
+            if (event.target === event.currentTarget) setWrapperFocused(true);
+            onFocus?.(event);
+          }}
+          onBlur={(event) => {
+            if (event.target === event.currentTarget) setWrapperFocused(false);
+            onBlur?.(event);
+          }}
+          // clsx, not cx: tailwind-merge would let the -mx-(--gutter) below
+          // silently drop a caller's own margin in className.
           className={clsx(
             className,
             "-mx-(--gutter) whitespace-nowrap",
             scroll && "overflow-x-auto",
-            overflowing &&
+            focusable &&
               "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
           )}
         >

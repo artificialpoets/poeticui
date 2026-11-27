@@ -1,8 +1,9 @@
 "use client";
 
-import clsx from "clsx";
 import dayjs from "dayjs";
-import { useMemo } from "react";
+import { useCallback, useId, useMemo, useRef, useState } from "react";
+
+import { cx } from "../../lib";
 
 /** First month shown in the calendar (July 2025), like Google Analytics from 2017 to present */
 const FIRST_CALENDAR_MONTH = dayjs("2025-07-01").startOf("month");
@@ -41,6 +42,13 @@ function isInRange(
   );
 }
 
+/** A date as YYYY-MM-DD, or "" when it is empty or not a date. */
+function toDay(date?: string | null): string {
+  if (!date) return "";
+  const d = dayjs(date);
+  return d.isValid() ? d.format("YYYY-MM-DD") : "";
+}
+
 function isStartOrEnd(
   date: string,
   from: string,
@@ -48,14 +56,58 @@ function isStartOrEnd(
   tempFrom?: string | null,
   tempTo?: string | null,
 ): "start" | "end" | false {
-  const a = tempFrom ?? from;
-  const b = tempTo ?? to;
-  const dateStr = dayjs(date).format("YYYY-MM-DD");
+  const a = toDay(tempFrom ?? from);
+  const b = toDay(tempTo ?? to);
+  const dateStr = toDay(date);
   if (dateStr === a) return "start";
   if (dateStr === b) return "end";
   return false;
 }
 
+/**
+ * Arrow-key moves, as in the WAI-ARIA date picker pattern: a day, a week,
+ * the start or end of the week, a month.
+ */
+function nextDate(date: dayjs.Dayjs, key: string): dayjs.Dayjs | null {
+  switch (key) {
+    case "ArrowLeft":
+      return date.subtract(1, "day");
+    case "ArrowRight":
+      return date.add(1, "day");
+    case "ArrowUp":
+      return date.subtract(1, "week");
+    case "ArrowDown":
+      return date.add(1, "week");
+    // The grid always starts on Sunday, whatever the dayjs locale says.
+    case "Home":
+      return date.subtract(date.day(), "day");
+    case "End":
+      return date.add(6 - date.day(), "day");
+    case "PageUp":
+      return date.subtract(1, "month");
+    case "PageDown":
+      return date.add(1, "month");
+    default:
+      return null;
+  }
+}
+
+/**
+ * The months from July 2025 to the current one, one day button per date.
+ *
+ * The days are one Tab stop (a roving tabindex): Tab lands on the range end,
+ * or the last day moved to, and the arrow keys, Home/End and PageUp/PageDown
+ * move between days. So a keyboard user reaches what follows the calendar
+ * (the picker's Cancel and Apply) in one Tab, not one per day.
+ *
+ * @example
+ * <Calendar
+ *   from="2026-11-01"
+ *   to="2026-11-07"
+ *   selectingRange
+ *   onSelectDate={(date) => console.log(date)}
+ * />
+ */
 export function Calendar({
   from,
   to,
@@ -66,6 +118,16 @@ export function Calendar({
   className,
 }: CalendarProps) {
   const today = useMemo(() => dayjs().format("YYYY-MM-DD"), []);
+  const daysRef = useRef<HTMLDivElement>(null);
+  const idPrefix = useId();
+  // The day the user last moved to, with the range it was set under. A new
+  // range (a preset, the date inputs) drops it: the Tab stop follows the range.
+  const rangeKey = `${toDay(from)}|${toDay(to)}|${toDay(tempFrom)}`;
+  const [moved, setMoved] = useState<{ range: string; date: string } | null>(
+    null,
+  );
+  const focusDate = moved?.range === rangeKey ? moved.date : "";
+  const setFocusDate = (date: string) => setMoved({ range: rangeKey, date });
 
   const monthList = useMemo(() => {
     const list: dayjs.Dayjs[] = [];
@@ -78,12 +140,47 @@ export function Calendar({
     return list;
   }, []);
 
+  const firstDate = monthList[0].format("YYYY-MM-DD");
+  const lastDate = monthList[monthList.length - 1]
+    .endOf("month")
+    .format("YYYY-MM-DD");
+  const clamp = useCallback(
+    (date: string) =>
+      date < firstDate ? firstDate : date > lastDate ? lastDate : date,
+    [firstDate, lastDate],
+  );
+  // The one day in the Tab order. YYYY-MM-DD strings compare as dates; `||`,
+  // not `??`, so a cleared input ("") falls through to the next candidate.
+  const tabStop = clamp(
+    focusDate || toDay(tempFrom) || toDay(to) || toDay(from) || today,
+  );
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLElement;
+    const current = target.dataset.date;
+    // Leave Alt+Arrow (browser Back) and Ctrl/Cmd combinations to the browser.
+    if (!current || event.altKey || event.ctrlKey || event.metaKey) return;
+    const next = nextDate(dayjs(current), event.key);
+    if (!next) return;
+    event.preventDefault();
+    const nextStr = clamp(next.format("YYYY-MM-DD"));
+    daysRef.current
+      ?.querySelector<HTMLButtonElement>(`[data-date="${nextStr}"]`)
+      ?.focus();
+    setFocusDate(nextStr);
+  };
+
   return (
     <div
-      className={clsx("flex flex-col", className)}
+      className={cx("flex flex-col", className)}
       data-testid="date-range-calendar"
     >
-      <div className="flex flex-col gap-6 overflow-y-auto overflow-x-hidden">
+      <div
+        ref={daysRef}
+        onKeyDown={handleKeyDown}
+        // p-1: room for the day focus outline inside the clipped scroller.
+        className="flex flex-col gap-6 overflow-y-auto overflow-x-hidden p-1"
+      >
         {monthList.map((monthStart) => {
           const monthLabel = monthStart.format("MMMM YYYY");
           const firstDay = monthStart.startOf("month");
@@ -97,11 +194,16 @@ export function Calendar({
             <div
               key={monthStart.format("YYYY-MM")}
               className="date-range-calendar-month"
+              role="group"
+              aria-labelledby={`${idPrefix}-${monthStart.format("YYYY-MM")}`}
             >
-              <div className="date-range-calendar-month-label">
+              <div
+                id={`${idPrefix}-${monthStart.format("YYYY-MM")}`}
+                className="date-range-calendar-month-label"
+              >
                 {monthLabel}
               </div>
-              <div className="date-range-calendar-weekdays">
+              <div className="date-range-calendar-weekdays" aria-hidden="true">
                 {WEEKDAY_LABELS.map((label) => (
                   <div key={label}>{label}</div>
                 ))}
@@ -135,9 +237,13 @@ export function Calendar({
                     <button
                       key={i}
                       type="button"
-                      onClick={() => onSelectDate?.(dateStr)}
+                      onClick={() => {
+                        setFocusDate(dateStr);
+                        onSelectDate?.(dateStr);
+                      }}
                       disabled={!isSelectable}
-                      className={clsx(
+                      tabIndex={dateStr === tabStop ? 0 : -1}
+                      className={cx(
                         "date-range-calendar-day",
                         isSelectable && "date-range-calendar-day-selectable",
                         !isSelectable && "cursor-default",
@@ -148,12 +254,15 @@ export function Calendar({
                           !inRange &&
                           "date-range-calendar-day-today",
                       )}
-                      // The visible label is only the day number; name the full date.
-                      aria-label={d.format("dddd, MMMM D, YYYY")}
+                      // The visible label is only the day number; name the full
+                      // date, and say when a day between the ends is in range.
+                      aria-label={`${d.format("dddd, MMMM D, YYYY")}${
+                        inRange && !startOrEnd ? ", in range" : ""
+                      }`}
+                      // Pressed marks the chosen dates, the range start and end;
+                      // the days between are shaded, not chosen.
                       aria-pressed={
-                        isSelectable
-                          ? Boolean(inRange || startOrEnd)
-                          : undefined
+                        isSelectable ? Boolean(startOrEnd) : undefined
                       }
                       aria-current={isToday ? "date" : undefined}
                       data-date={dateStr}

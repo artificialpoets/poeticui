@@ -1,7 +1,6 @@
 "use client";
 
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import clsx from "clsx";
 import dayjs from "dayjs";
 import { ChevronDown } from "lucide-react";
 import {
@@ -22,6 +21,7 @@ import {
   type PresetId,
   type DateRange,
 } from "./presets";
+import { cx } from "../../lib";
 
 export interface DateRangePickerProps {
   value?: DateRange;
@@ -191,7 +191,7 @@ export function DateRangePicker({
   // inputs, a calendar). A Menu closes on Tab and owns the arrow keys, so a
   // keyboard user could not reach the inputs.
   return (
-    <Popover className={clsx("relative inline-block", className)}>
+    <Popover className={cx("relative inline-block", className)}>
       <PopoverButton className="date-range-trigger" aria-label="Time range">
         {displayLabel}
         <ChevronDown
@@ -220,7 +220,7 @@ export function DateRangePicker({
                     type="button"
                     aria-pressed={activePreset === preset.id}
                     onClick={() => handlePresetClick(preset.id)}
-                    className={clsx(
+                    className={cx(
                       "date-range-preset-btn",
                       activePreset === preset.id &&
                         // /10 and /20, not /20 and /30: the deeper tints dropped
@@ -279,7 +279,6 @@ export function DateRangePicker({
                     to={draft.to}
                     selectingRange={true}
                     tempFrom={customStart}
-                    tempTo={customStart ? null : null}
                     onSelectDate={handleCalendarSelect}
                   />
                 </div>
