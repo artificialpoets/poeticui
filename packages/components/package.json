@@ -1,6 +1,6 @@
 {
   "name": "@artificialpoets/components",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "Apache-2.0",
   "type": "module",
   "description": "Poetic UI — neutral React UI primitives. Consume design tokens exclusively; zero brand assumptions; framework-agnostic (no next/* imports).",
