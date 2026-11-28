@@ -102,12 +102,12 @@ const buttonColors = {
   ],
   /**
    * The theme's brand color, for the main action on a page. The background is `--primary`
-   * deepened toward black, so `--primary-foreground` (white) clears 4.5:1 for a mid-lightness
-   * brand hue in both themes; a plain `--primary` orange sits near 3.4:1.
+   * itself: the token is chosen so `--primary-foreground` reads 4.5:1 on it (white on the AP
+   * orange-600, 5.1:1), and a shaded copy of the brand reads as a different colour. Hover
+   * darkens, in both themes: a white overlay would pull the label under 4.5:1 (4.4:1).
    */
   primary: [
-    "text-primary-foreground [--btn-bg:color-mix(in_oklab,var(--primary)_82%,black)] [--btn-border:color-mix(in_oklab,var(--primary)_70%,black)] [--btn-hover-overlay:var(--color-white)]/10",
-    "dark:[--btn-hover-overlay:var(--color-white)]/10",
+    "text-primary-foreground [--btn-bg:var(--primary)] [--btn-border:color-mix(in_oklab,var(--primary)_70%,black)] [--btn-hover-overlay:var(--color-black)]/10",
     "[--btn-icon:color-mix(in_oklab,var(--primary-foreground)_80%,transparent)] data-active:[--btn-icon:var(--primary-foreground)] data-hover:[--btn-icon:var(--primary-foreground)]",
   ],
   light: [

@@ -11,12 +11,10 @@ describe("Switch", () => {
       expect(sw).toBeInTheDocument();
     });
 
-    test("default color is primary: the theme's brand color, deepened for contrast", () => {
+    test("default color is primary: the theme's brand color", () => {
       render(<Switch aria-label="Default color" />);
       const sw = screen.getByRole("switch", { name: /default color/i });
-      expect(sw.className).toContain(
-        "--switch-bg:color-mix(in_oklab,var(--primary)_82%,black)",
-      );
+      expect(sw.className).toContain("[--switch-bg:var(--primary)]");
     });
 
     test('color="dark/zinc" still sets the neutral track', () => {

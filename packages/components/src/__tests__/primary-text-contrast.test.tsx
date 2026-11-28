@@ -118,7 +118,7 @@ function semanticColor(block: RegExp, token: string): Oklch {
   return color(ref[1]);
 }
 
-const ORANGE = color("orange-500");
+const ORANGE = color("orange-600");
 const light = {
   background: semanticColor(LIGHT, "--background"),
   card: semanticColor(LIGHT, "--card"),
@@ -130,10 +130,55 @@ const dark = {
   muted: semanticColor(DARK, "--muted"),
 };
 
-describe("--primary-text", () => {
-  test("is the default --primary, and was needed: orange-500 as text fails 4.5:1", () => {
+// --primary is the fill behind --primary-foreground: buttons, banners, the
+// active sidebar item. White on the old orange-500 read 3.45:1 (AP-2222).
+describe("--primary as a fill", () => {
+  test("is orange-600 in both modes; orange-500 was under 4.5:1 with white", () => {
     expect(semanticColor(LIGHT, "--primary")).toEqual(ORANGE);
-    expect(contrast(srgb(ORANGE), srgb(light.card))).toBeLessThan(4.5);
+    expect(semanticColor(DARK, "--primary")).toEqual(ORANGE);
+    expect(contrast(srgb(WHITE), srgb(color("orange-500")))).toBeLessThan(4.5);
+  });
+
+  test("--primary-foreground reads 4.5:1 or more on it, at rest and under the Button's hover", () => {
+    for (const block of [LIGHT, DARK]) {
+      const fill = semanticColor(block, "--primary");
+      const ink = srgb(semanticColor(block, "--primary-foreground"));
+      expect(contrast(ink, srgb(fill))).toBeGreaterThanOrEqual(4.5);
+      // The primary Button darkens on hover: black at 10% over the fill.
+      expect(contrast(ink, tint(BLACK, 0.1, fill))).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
+  test("--sidebar-primary-foreground reads 4.5:1 or more on --sidebar-primary", () => {
+    for (const block of [LIGHT, DARK]) {
+      const fill = srgb(semanticColor(block, "--sidebar-primary"));
+      const ink = srgb(semanticColor(block, "--sidebar-primary-foreground"));
+      expect(contrast(ink, fill)).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
+  test("the focus ring reads 3:1 or more on the page in both modes", () => {
+    const ring = (block: RegExp) =>
+      new RegExp(`${block.source}\\s*\\{([^}]*)\\}`)
+        .exec(semantic)?.[1]
+        .match(/--ring:\s*([^;]+);/)?.[1]
+        .trim();
+    // Light: the fill itself. Dark: orange-600 is 2.9:1 on the dark page,
+    // so the ring takes the lifted --primary-text.
+    expect(ring(LIGHT)).toBe("var(--primary)");
+    expect(
+      contrast(srgb(ORANGE), srgb(light.background)),
+    ).toBeGreaterThanOrEqual(3);
+    expect(ring(DARK)).toBe("var(--primary-text)");
+    expect(contrast(srgb(ORANGE), srgb(dark.background))).toBeLessThan(3);
+    expect(
+      contrast(srgb(derive(DARK, ORANGE)), srgb(dark.background)),
+    ).toBeGreaterThanOrEqual(3);
+  });
+});
+
+describe("--primary-text", () => {
+  test("is needed: the orange-600 fill as text fails 4.5:1 on the dark card", () => {
     expect(contrast(srgb(ORANGE), srgb(dark.card))).toBeLessThan(4.5);
   });
 
@@ -175,7 +220,7 @@ describe("--primary-text", () => {
   });
 
   // The clamps were tuned on the AP orange. Lightness alone does not fix
-  // contrast across hues: at the 0.55 cap a green, teal or cyan primary
+  // contrast across hues: at the 0.54 cap a green, teal or cyan primary
   // (hue about 125° to 240°) keeps more luminance and reads 3.8:1 to 4.5:1
   // on white. The tokens README says so; this sweep keeps that sentence true.
   // Each primary is taken lighter and more saturated than the caps, so the

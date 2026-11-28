@@ -108,11 +108,11 @@ export const switchVariants = cva(
     variants: {
       color: {
         /**
-         * The theme's brand color, the default. The track is `--primary` deepened toward black,
-         * as on the primary Button, so it stands out from the muted off track in both themes.
+         * The theme's brand color, the default. The track is `--primary` itself, as on the
+         * primary Button, with a ring deepened toward black.
          */
         primary: [
-          "[--switch-bg:color-mix(in_oklab,var(--primary)_82%,black)] [--switch-bg-ring:color-mix(in_oklab,var(--primary)_70%,black)] dark:[--switch-bg-ring:transparent]",
+          "[--switch-bg:var(--primary)] [--switch-bg-ring:color-mix(in_oklab,var(--primary)_70%,black)] dark:[--switch-bg-ring:transparent]",
           "[--switch:white] [--switch-ring:color-mix(in_oklab,var(--primary)_70%,black)] [--switch-shadow:var(--color-black)]/20",
         ],
         "dark/zinc": [

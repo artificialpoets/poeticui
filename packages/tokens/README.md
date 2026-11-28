@@ -117,7 +117,7 @@ SIDEBAR  (dark-first chrome — decoupled from theme mode)
   --sidebar-border      --sidebar-ring
 ```
 
-`--primary-text` caps the lightness of `--primary` at 0.55 in light mode and raises it to at least 0.84 in dark mode. That gives the AP orange 5.3:1 on white and 5.5:1 on the dark card. It does not promise 4.5:1 for every brand colour. A green, teal or cyan primary (hue about 125° to 240°) keeps more luminance at the cap and can read as low as 3.8:1 on white. Dark mode clears 4.5:1 for every hue. A theme with a primary in that range should check its text contrast, and may set its own `--primary-text` after the token import. `primary-text-contrast.test.tsx` in the components package sweeps the hues.
+`--primary-text` caps the lightness of `--primary` at 0.54 in light mode and raises it to at least 0.84 in dark mode. That gives the AP orange 5.5:1 on white and 5.5:1 on the dark card. It does not promise 4.5:1 for every brand colour. A green, teal or cyan primary (hue about 125° to 240°) keeps more luminance at the cap and can read as low as 3.8:1 on white. Dark mode clears 4.5:1 for every hue. A theme with a primary in that range should check its text contrast, and may set its own `--primary-text` after the token import. `primary-text-contrast.test.tsx` in the components package sweeps the hues.
 
 Every token has explicit `:root` and `.dark` definitions; the design system inverts cleanly without component-level `dark:` prefixes. The chart ramp is the one exception — `--chart-1` … `--chart-10` are mode-invariant (a series keeps its color when the reader flips the theme, because that color carries the legend), so they are declared in `:root` only and inherit into dark.
 
